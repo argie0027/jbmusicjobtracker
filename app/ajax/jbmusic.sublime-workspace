@@ -1,0 +1,1040 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"strto",
+				"strtoupper"
+			],
+			[
+				"jo",
+				"job_orders"
+			],
+			[
+				"customer",
+				"customers"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"re",
+				"response"
+			],
+			[
+				"res",
+				"responsive"
+			],
+			[
+				"d",
+				"disabled"
+			],
+			[
+				"hei",
+				"height"
+			],
+			[
+				"journ",
+				"journal-image-upload"
+			],
+			[
+				"rand",
+				"randomString"
+			],
+			[
+				"functi",
+				"function_exists"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"text",
+				"text-indent"
+			],
+			[
+				"ra",
+				"range"
+			],
+			[
+				"hea",
+				"hearaboutus"
+			],
+			[
+				"i",
+				"interest"
+			],
+			[
+				"padn",
+				"padding"
+			],
+			[
+				"dis",
+				"display"
+			],
+			[
+				"mess",
+				"messagebody"
+			],
+			[
+				"add",
+				"addresslinetwo"
+			],
+			[
+				"fi",
+				"firstname"
+			],
+			[
+				"ad",
+				"addresslineone"
+			],
+			[
+				"unfriend",
+				"unfriendModal"
+			],
+			[
+				"div",
+				"divider"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"c",
+				"checked"
+			],
+			[
+				"pre",
+				"prefercontact"
+			],
+			[
+				"ex",
+				"exit"
+			],
+			[
+				"me",
+				"messagebody"
+			],
+			[
+				"e",
+				"elseif	elseif …"
+			],
+			[
+				"co",
+				"contactemail"
+			],
+			[
+				"messa",
+				"message"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"com",
+				"contactemail"
+			],
+			[
+				"fu",
+				"fullname"
+			],
+			[
+				"conta",
+				"contactemail"
+			],
+			[
+				"remo",
+				"remove"
+			],
+			[
+				"get",
+				"getAttr"
+			],
+			[
+				"bac",
+				"background"
+			],
+			[
+				"be",
+				"before"
+			],
+			[
+				"mi",
+				"min-width"
+			],
+			[
+				"marg",
+				"margin-right"
+			],
+			[
+				"margin",
+				"Margins"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"pa",
+				"padding"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"no",
+				"no-repeat"
+			],
+			[
+				"back",
+				"background"
+			],
+			[
+				"padd",
+				"padding"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"p",
+				"parent"
+			],
+			[
+				"friend",
+				"friends-list"
+			],
+			[
+				"nt",
+				"nth-child"
+			],
+			[
+				"fadeIn",
+				"fadeInLeft"
+			],
+			[
+				"h",
+				"hidden"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"ma",
+				"margin-left"
+			],
+			[
+				"album",
+				"album-title"
+			],
+			[
+				"fit",
+				"first-child"
+			],
+			[
+				"block",
+				"inline-block"
+			],
+			[
+				"bas",
+				"basicInfo"
+			],
+			[
+				"ac",
+				"actions"
+			],
+			[
+				"bor",
+				"border-color"
+			],
+			[
+				"las",
+				"last-child"
+			],
+			[
+				"firt",
+				"first-child"
+			],
+			[
+				"margi",
+				"margin-top"
+			],
+			[
+				"fo",
+				"font-size"
+			],
+			[
+				"cliq12",
+				"cliq12-form"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"For",
+				"formHeight"
+			],
+			[
+				"bar",
+				"background-color"
+			],
+			[
+				"padding-",
+				"padding-top"
+			],
+			[
+				"come",
+				"comment-box"
+			],
+			[
+				"top",
+				"top-nav"
+			],
+			[
+				"table-c",
+				"table-cell"
+			],
+			[
+				"pr",
+				"profile-pic"
+			],
+			[
+				"table-",
+				"table-cell"
+			],
+			[
+				"ta",
+				"table-cell"
+			],
+			[
+				"vis",
+				"visibility"
+			],
+			[
+				"drop",
+				"dropdown-menu"
+			],
+			[
+				"po",
+				"position"
+			],
+			[
+				"a",
+				"addClass"
+			],
+			[
+				"min",
+				"min-width"
+			],
+			[
+				"mag",
+				"margin-bottom"
+			],
+			[
+				"out",
+				"outline"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"bo",
+				"border-style"
+			],
+			[
+				"border-c",
+				"border-color"
+			],
+			[
+				"table",
+				"table-cell"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"pub",
+				"publish"
+			],
+			[
+				"sc",
+				"src"
+			],
+			[
+				"Con",
+				"content"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/1.	Date – created a new staff today but it does no",
+			"settings":
+			{
+				"buffer_size": 811,
+				"line_ending": "Unix",
+				"name": "1.	Date – created a new staff today but it does no"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"upp",
+				"Convert Case: Upper Case"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"en",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"ph",
+				"Set Syntax: PHP"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"htm",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"htmle",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"h",
+				"Set Syntax: HTML"
+			],
+			[
+				"ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"j",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"com",
+				"Toggle Comment"
+			],
+			[
+				"come",
+				"Toggle Comment"
+			],
+			[
+				"co",
+				"Toggle Comment"
+			],
+			[
+				"coment",
+				"Toggle Comment"
+			],
+			[
+				"css",
+				"Set Syntax: CSS"
+			],
+			[
+				"enc",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"encode",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"encp",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"enco",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"ht",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"ENCODE",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"ec",
+				"Emmet: Toggle Comment"
+			],
+			[
+				"eco",
+				"Emmet: Toggle Comment"
+			],
+			[
+				"end",
+				"Emmet: Encode\\Decode Image to data:URL"
+			],
+			[
+				"encod",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"intal",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"se",
+				"Set Syntax: HTML (Erlang)"
+			],
+			[
+				"html co",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"s",
+				"Set Syntax: HTML"
+			],
+			[
+				"set syntax html",
+				"Set Syntax: HTML"
+			],
+			[
+				"tag",
+				"Code Folding: Fold Tag Attributes"
+			],
+			[
+				"close",
+				"File: Close All"
+			],
+			[
+				"set syntax ht",
+				"Set Syntax: HTML"
+			],
+			[
+				"syer",
+				"Set Syntax: HTML (Erlang)"
+			],
+			[
+				"H",
+				"Set Syntax: HTML"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/index.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/soa.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/settings.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/joborders.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/customers.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/branch.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/customers.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/parts.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/revenue.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/soa.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/dashboard.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/login.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/settings.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/viewstaff.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/updatebrand.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createbrand.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ui_main.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/notifview.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/logout.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ui_branch.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/config/config.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/.env",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/include.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/index.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/test.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/journal.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/block_post.php",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/demo/js/main.js",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/demo/index.html",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/examples/responsive-container.html",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/examples/multiple-croppers.html",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/examples/a-range-of-aspect-ratio.html",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/examples/customize-preview.html",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/examples/cropper-in-modal.html",
+		"/Applications/MAMP/htdocs/cliq12/styles/style.css",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/block_journal_upload.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/LocalCloudC12/cloud/main.js",
+		"/Applications/MAMP/htdocs/plugins/cropper-master/dist/cropper.min.css",
+		"/Applications/MAMP/htdocs/cliq12/Cliq12-staging-clone/cloud/main.js",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/block_journal_add.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/block_journal_edit.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/assets/scripts/controllers/journal.js",
+		"/Applications/MAMP/htdocs/cliq12/application/config/constants.php",
+		"/Applications/MAMP/htdocs/cliq12/application/config/config.php",
+		"/Applications/MAMP/htdocs/cliq12/application/controllers/Snd.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/LocalCloudC12/cloud/journal.js",
+		"/Applications/MAMP/htdocs/cliq12/application/models/Query.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/application/views/templates/journal_entry_edit.phtml",
+		"/Applications/MAMP/htdocs/cliq12/scripts/mfupload.js",
+		"/Applications/MAMP/htdocs/cliq12/application/config/routes.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/application/controllers/journal.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/application/libraries/Image_manipulation.php",
+		"/Applications/MAMP/htdocs/cliq12/scripts/mfupload.bak2.js",
+		"/Applications/MAMP/htdocs/cliq12/application/language/english/template_lang.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/block_journal_delete.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/templates/start_message.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/templates/journal_entry.php",
+		"/Applications/MAMP/htdocs/cliq12/application/helpers/filter_helper.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/assets/scripts/controllers/journal.bak.js",
+		"/Applications/MAMP/htdocs/plugins/mfupload/index.html",
+		"/Applications/MAMP/htdocs/cliq12/application/controllers/Qry.php",
+		"/Applications/MAMP/htdocs/cliq12/application/config/autoload.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/application/config/autoload.php",
+		"/Applications/MAMP/htdocs/cliq12/application/helpers/table_helper.php",
+		"/Applications/MAMP/htdocs/cliq12/application/libraries/Validate.php",
+		"/Applications/MAMP/htdocs/cliq12/application/libraries/Credentials.php",
+		"/Applications/MAMP/htdocs/cliq12.bak/application/config/config.php",
+		"/Applications/MAMP/htdocs/croppie-master/demo/demo.js",
+		"/Applications/MAMP/htdocs/croppie-master/index.html",
+		"/Users/Argie/Desktop/.htaccess",
+		"/Projects/.htpasswd",
+		"/Applications/MAMP/htdocs/croppie-master/README.md",
+		"/Applications/MAMP/htdocs/croppie-master/demo/demo-1.jpg",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/newsfeed.html",
+		"/Applications/MAMP/htdocs/croppie-master/bower_components/sweetalert/dist/sweetalert.css",
+		"/Applications/MAMP/htdocs/croppie-master/bower_components/sweetaler/dist/sweetalert.min.js",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/notifications.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/journal.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/journal-empty.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/scripts/header.js",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/styles/style.css",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/scripts/master.js",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/journal-new.html",
+		"/Applications/MAMP/htdocs/cliq12/scripts/cliq12.js",
+		"/Applications/MAMP/htdocs/cliq12/application/controllers/Home.php",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/scripts/journal.js",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/home.php",
+		"/Applications/MAMP/htdocs/cliq12/application/controllers/Journal.php",
+		"/Applications/MAMP/htdocs/cliq12/application/libraries/Layout.php",
+		"/Applications/MAMP/htdocs/cliq12/scripts/master.js",
+		"/Applications/MAMP/htdocs/cliq12/application/views/layout/public.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/templates/stream.php",
+		"/Applications/MAMP/htdocs/cliq12/application/views/home/index.html",
+		"/Applications/MAMP/htdocs/cliq12/application/views/email/forgot.php",
+		"/Applications/MAMP/htdocs/cliq12/application/controllers/Tests.php",
+		"/Applications/MAMP/htdocs/cliq12/application/config/database.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/config/routes.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/controllers/Qry.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/models/Query.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/config/constants.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/config/database.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/config/config.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/scripts/master.js",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/controllers/Home.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/controllers/Tests.php",
+		"/Applications/MAMP/htdocs/cliq12-v6/application/config/autoload.php",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/styles/component.css",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/settings.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/scripts/settings.js",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/scripts/single.js",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/profile.html",
+		"/Applications/MAMP/htdocs/workspacecommapp/php/submit.php",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/about-inside.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/photos-new.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/open-graph.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/profile-friend-album.html",
+		"/Applications/MAMP/htdocs/Cliq12-Web-V6/profile-friend.html",
+		"/Applications/MAMP/htdocs/workspacecommapp/partner.php",
+		"/Applications/MAMP/htdocs/workspacecommapp/_/js/submit.js",
+		"/Applications/MAMP/htdocs/workspacecommapp/contactsupport.php",
+		"/Applications/MAMP/htdocs/workspacecommapp/contactsales.php"
+	],
+	"find":
+	{
+		"height": 44.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/Applications/MAMP/htdocs/cliq12.bak",
+			"/Applications/MAMP/htdocs/",
+			"/Applications/MAMP/htdocs/cliq12.20150107",
+			"/Applications/MAMP/htdocs/cliq12.bak",
+			"/Applications/MAMP/htdocs/croppie-master",
+			"/Applications/MAMP/htdocs/cliq12/",
+			"/Applications/MAMP/htdocs/c1iq12/",
+			"/Applications/MAMP/htdocs/c1iq12",
+			"/Applications/MAMP/htdocs/Cliq12-Web-V6",
+			"/Applications/MAMP/htdocs/cliq12",
+			"/Applications/MAMP/htdocs/cliq12-v6/",
+			"/Applications/MAMP/htdocs/Cliq12-Web-V6/",
+			"/Applications/MAMP/htdocs/Cliq12-Web-V6",
+			"/Applications/MAMP/htdocs/getaka",
+			"/Applications/MAMP/htdocs/bountybites.dev/wp-content/themes/recibo-v1-00",
+			"/Users/Argie/Desktop/ragrc.dev",
+			"/Applications/MAMP/htdocs/issico.dev",
+			"/Users/Argie/Desktop/database",
+			"/Users/Argie/Desktop",
+			"/Applications/MAMP/htdocs/issico.dev",
+			"/Users/Argie/Desktop",
+			"<Applications/Desktop>",
+			"<open files>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"'.view",
+			"\".view",
+			".view",
+			"view",
+			"view-staff",
+			"staff",
+			".permission",
+			"id=\"permi",
+			"id=\"permision",
+			".permission",
+			"id=\"permission",
+			"sidebar-menu",
+			"sidebar",
+			"checkbox",
+			"responsive",
+			"toggleOptions",
+			"toggle option",
+			"toogle",
+			"modal",
+			"journalCrop",
+			"journalImage",
+			"journal",
+			"Imagick",
+			".mfupload({",
+			"journalUpload",
+			".mfupload({",
+			".mfupload",
+			"mfupload",
+			"imagick",
+			"boost",
+			"boots",
+			"upload-demo",
+			"popupResult",
+			"init()",
+			"demoUpload()",
+			"$('#upload-demo')",
+			"upload-demo",
+			"initialize",
+			"$this->cache",
+			"$this->cache->get",
+			"$this->cache->save(",
+			"modal",
+			"update_user",
+			".click",
+			"$.post",
+			"ajax",
+			"$ajax",
+			"$.ajax",
+			"json_encode",
+			"jsonencode",
+			".datepicker(",
+			"datepicker",
+			"indexOf(",
+			"packer.php",
+			"views/templates",
+			"views/home/signin",
+			"views/home",
+			"view",
+			"views",
+			"views/home",
+			"starting-message",
+			"navigation",
+			"style",
+			"click",
+			"navigation",
+			"http://www.w3.org/1999/xhtml",
+			"$this->load->view",
+			"layout",
+			"$this->layout->show",
+			"$this->layout",
+			"layout",
+			"layou",
+			"callback()",
+			"settime",
+			"qry/badge",
+			"www.cliq12.dev",
+			"get_badge()",
+			"qry/badge ",
+			"â€",
+			"notification",
+			"row",
+			"Last",
+			"/* Single",
+			"Single",
+			"settings",
+			"<textarea placeholder=\"Reply...\" class=\"autoresize\" style=\"overflow: hidden; height: 52px;\"></textarea><div class=\"autoresize-mirror\" style=\"padding: 20px 2px 2px; border: 0px none rgb(44, 44, 44); font-family: Roboto, sans-serif; font-size: 14px; line-height: 20px; box-sizing: border-box; width: 578px;\">dasdasdasd<br></div>",
+			"<a href=\"#\" class=\"report\"></a>",
+			"hear",
+			"needs",
+			"contactsales",
+			"here",
+			"name=\"",
+			"Email Address",
+			"email",
+			"zipcode",
+			"city",
+			"loader-content",
+			"completeLoading",
+			"loader-container",
+			"state",
+			"country 1",
+			"country",
+			"</option>",
+			"State 1",
+			"state 1",
+			"state1",
+			"divider",
+			"inviteModal",
+			"messageModal",
+			"<a href=\"#\" class=\"delete\">Delete</a>",
+			"<a href=\"#\" class=\"delete\"></a>",
+			"<li><a href=\"#\" class=\"delete\">Delete Comment</a></li>",
+			"<li><a href=\"change-password.html\">Change Password</a></li>",
+			"<li><a href=\"#\">Remind</a></li>\n													  <li><a href=\"#\">Cancel</a></li>",
+			"<li><a href=\"#\">Remind</a></li>\n<li><a href=\"#\">Cancel</a></li>",
+			"<li><a href=\"#\">Remind</a></li>\n													  <li><a href=\"#\">Cancel</a></li>",
+			"<li><a href=\"#\" class=\"unfriend\">Unfriend</a></li>",
+			"<li><a href=\"#\">Unfriend</a></li>",
+			"<li><a href=\"#\">Unfriend</a></li>'",
+			"<li><a href=\"#\" class=\"report\">Report/Flag this Post</a></li>",
+			"oncli",
+			"<li><a href=\"#\" class=\"delete\">Report/Flag this Post</a></li>",
+			"onclic",
+			"<a href=\"#\" class=\"delete\">Remove Post</a>",
+			"onclic",
+			"messageModal",
+			"<li><a href=\"settings.html\">Settings</a></li>\n						<li><a href=\"change-password.html\">Change Password</a></li>\n						<li role=\"separator\" class=\"divider\"></li>\n						<li><a href=\"help.html\">Help</a></li>\n						<li role=\"separator\" class=\"divider\"></li>\n						<li><a href=\"about.html\">About</a></li>\n						<li><a href=\"terms.html\">Terms of Use</a></li>\n						<li><a href=\"privacy.html\">Privacy Policy</a></li>\n						<li role=\"separator\" class=\"divider\"></li>\n						<li><a href=\"signin.html\">Logout</a></li>",
+			"<li><a href=\"settings.html\">Settings</a></li>\n<li><a href=\"change-password.html\">Change Password</a></li>\n<li role=\"separator\" class=\"divider\"></li>\n<li><a href=\"help.html\">Help</a></li>\n<li role=\"separator\" class=\"divider\"></li>\n<li><a href=\"about.html\">About</a></li>\n<li><a href=\"terms.html\">Terms of Use</a></li>\n<li><a href=\"privacy.html\">Privacy Policy</a></li>\n<li role=\"separator\" class=\"divider\"></li>\n<li><a href=\"signin.html\">Logout</a></li>"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"<textarea placeholder=\"Reply...\" class=\"autoresize\"></textarea>",
+			"<a href=\"#\" class=\"report\" data-toggle=\"modal\" data-target=\"#reportModal\"></a>",
+			"",
+			"<li><a href=\"#\" class=\"delete\"></a></li>",
+			"",
+			"<li><a href=\"#\" class=\"remind\"></a></li>\n													  <li><a href=\"#\" class=\"cancel\"></a></li>",
+			"<li><a href=\"#\" class=\"unfriend\"></a></li>",
+			"<li><a href=\"#\" class=\"unfriend\">Unfriend</a></li>",
+			"<li><a href=\"#\" class=\"report\"></a></li>",
+			"<li><a href=\"#\" class=\"report\">Report/Flag this Post</a></li>",
+			"<a href=\"#\" class=\"delete\">Report/Flag this Post</a>",
+			"<li><a href=\"settings.html\">Settings</a></li>\n						<li><a href=\"change-password.html\">Change Password</a></li>\n						<li role=\"separator\" class=\"divider\"></li>\n						<li><a href=\"help.html\">Help</a></li>\n						<li role=\"separator\" class=\"divider\"></li>\n						<li><a href=\"about-inside.html\">About</a></li>\n						<li><a href=\"terms-inside.html\">Terms of Use</a></li>\n						<li><a href=\"privacy-inside.html\">Privacy Policy</a></li>\n						<li role=\"separator\" class=\"divider\"></li>\n						<li><a href=\"signin.html\">Logout</a></li>",
+			"<li><a href=\"settings.html\">Settings</a></li>\n<li><a href=\"change-password.html\">Change Password</a></li>\n<li role=\"separator\" class=\"divider\"></li>\n<li><a href=\"help.html\">Help</a></li>\n<li role=\"separator\" class=\"divider\"></li>\n<li><a href=\"about-inside.html\">About</a></li>\n<li><a href=\"terms-inside.html\">Terms of Use</a></li>\n<li><a href=\"privacy-inside.html\">Privacy Policy</a></li>\n<li role=\"separator\" class=\"divider\"></li>\n<li><a href=\"signin.html\">Logout</a></li>",
+			"<button type=\"button\" class=\"btn btn-default submit\">Invite</button>",
+			"<button type=\"button\" class=\"btn btn-default submit\" data-dismiss=\"modal\">Invite</button>",
+			"					<button type=\"button\" class=\"btn btn-default submit\" data-dismiss=\"modal\">Invite</button>",
+			"<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/style.css\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/font-awesome.min.css\">",
+			"#bbbbbb",
+			"#1ECD97",
+			"<div class=\"edit pull-right\"><a href=\"journal-edit.html\"><span class=\"main-sprite cliq12-icn-edit\"></span> Edit</a></div>",
+			">\n		<div class=\"footer-lists\">\n			<ul>\n				<li><a href=\"about.html\">About</a></li>\n				<li><a href=\"terms.html\">Terms of Service</a></li>\n				<li><a href=\"privacy.html\">Privacy Policy</a></li>\n				<li><a href=\"forum.html\">Forum</a></li>\n				<li><a href=\"contact.html\">Contact Us</a></li>\n			</ul>\n			<p class=\"copyright\">&copy; 2014 Cliq12</p>\n		</div>",
+			">\n",
+			"		<div class=\"footer-lists\">\n			<ul>\n				<li><a href=\"about.html\">About</a></li>\n				<li><a href=\"terms.html\">Terms of Service</a></li>\n				<li><a href=\"privacy.html\">Privacy Policy</a></li>\n				<li><a href=\"forum.html\">Forum</a></li>\n				<li><a href=\"contact.html\">Contact Us</a></li>\n			</ul>\n			<p class=\"copyright\">&copy; 2014 Cliq12</p>\n		</div>",
+			"inline-block",
+			"table",
+			"</code>",
+			"<code>",
+			"http://staging.getaka.com/issico",
+			"ragrc.dollisen.com/ragrcu",
+			"\nragrc.dollisen.com/ragrcu",
+			"http://ragrc.dollisen.com/ragrcu",
+			"http://staging.getaka.com/issico/",
+			"http://staging.getaka.com/issico",
+			"http://staging.getaka.com/issico/",
+			"http://staging.getaka.com/issico"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/1.	Date – created a new staff today but it does no",
+					"settings":
+					{
+						"buffer_size": 811,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								811,
+								811
+							]
+						],
+						"settings":
+						{
+							"auto_name": "1.	Date – created a new staff today but it does no",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.unsaved_changes":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"boots",
+				"scripts/bootstrap.js"
+			],
+			[
+				"",
+				"untitled"
+			],
+			[
+				"style",
+				"styles/effects.css"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 246.0,
+	"status_bar_visible": true
+}

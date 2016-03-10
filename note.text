@@ -1,0 +1,66 @@
+//Edit File
+	
+	config/constant.php - Line (21)
+
+	ajax/createjob.php  - Line (66)
+	ajax/setdeliver.php - Line (20)
+	ajax/setwaiting.php - Line (38)
+	ajax/updatetech_parts.php - Line (40)
+	ajax/approvejob.php - Line (33)
+	ajax/setdisapprove.php - Line (48)
+	ajax/setongoing.php - Line (28)
+	ajax/setdonerepair.php - Line (30)
+	ajax/setdatedone.php - Line (20)
+	ajax/readyforclaiming.php - Line (18)
+	ajax/claimed.php - Line (29)
+	ajax/editjob.php - Line (39)
+	ajax/deletejoborder.php - Line (14)
+	ajax/cantrepairremarks.php - Line (38)
+
+	ajax/generateexcelbranch.php - Line (5)
+	ajax/generateexcel.php - Line (5)
+
+	branch/joborders.php - Line (356)
+	branch/soa.php - Line (437)
+	branch/customers.php - Line (335)
+
+	head_office/joborders.php - Line (700)
+	head_office/soa.php - Line (849)
+	head_office/customers.php - Line (335)
+	head_office/technicians.php - Line (325)
+	head_office/parts.php - Line (372)
+
+	ui_main.php - Line (474)
+	ui_branch.php - Line (476)
+
+//Add File
+
+	ajax/viewjobhistory.php
+	ajax/generateexcelhistory.php
+	head_office/history.php
+	branch/history.php
+
+//Insert History
+	/* Insert History */
+    $getBranchId = "SELECT branchid FROM jb_joborder WHERE jobid = ".$jobID;
+    $resultBranchId = $db->ReadData($getBranchId);
+
+    $description = explode(",",ACT_NOTIF);
+    $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
+    $insertHistory = "INSERT INTO `jb_history`(description, branch, name, branchid, isbranch, jobnumber)". " VALUES ('".$description[0]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobID ."')";
+    $query = $db->InsertData($insertHistory);
+    /* End of Insert History */
+
+
+  'username' => string 'staff1' (length=6)
+  'email' => string 'pauline.milan@gmail.com' (length=23)
+  'name' => string 'Staff' (length=5)
+  'nicknake' => string 'asdfasd' (length=7)
+  'position' => string '3' (length=1)
+  'job_title' => string 'Supervisor' (length=10)
+  'Branchid' => string '15' (length=2)
+  'created_at' => string 'November 27, 2015' (length=17)
+  'password' => string '356a192b7913b04c54574d18c28d46e6395428ab' (length=40)
+  'Branchname' => string 'SM Fairview' (length=11)
+  'jobcount' => int 2
+

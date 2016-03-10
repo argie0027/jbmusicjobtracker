@@ -1,0 +1,80 @@
+WARRANTY
+
+Head Office
+Settings Page
+	- Parts Tab
+		- For Window
+			- Tab name change to "Main Category"
+			- Input field
+				- Name of main category
+				- Add sub category
+				- Parts free 
+					- Add how many day or days
+				- Diagnostic free
+					- Add how many day or days
+		- For Lists View
+			- Id
+			- Main Category
+			- Sub Category Lists
+			- Parts Free ( Days )
+			- Diagnostic ( Days )
+
+
+Branch
+Joborders Page
+	- For Window 
+		- Existing Customer and New Customer
+			- Create Job Order
+				- Under Warranty ?
+					- Change to select Main Category
+				- Warranty Date
+					- Change to "Purchase Date"
+				- Warranty Type
+					- Change to info card
+				- Service Fee (HOLD)
+					- Default 0
+-----Hold
+Head office Generate SAO
+Joborders Page
+	- For Window
+		- Is Under Warranty
+			- Change to main category
+		- Add Purchase Date
+		- Info Card
+		- Second Modal
+			- Adding parts categorized by sub category of main category
+
+
+PARTS AND INVENTORY
+
+Head Office
+Settings Page
+	- Add Tab
+		- Model
+			- Input Field
+				- Model Name
+				- Description
+			- Drop Down
+				- Brand Name
+				- Main Category
+				- Sub Category
+		- Brands
+			- Input Field
+				- Brand Name
+
+Parts Page
+	- For Window
+		- Add Part Type Selection
+			- Remove Existing
+			- New Part
+				- Title changes to "Add Stocks"
+				- Input Field
+					- Stock #
+					- Part Name
+					- Price
+					- Quantity
+				Drop Down
+					- Model Name
+						- When model name selected display all infos
+		- Part View
+			- Part

@@ -1,0 +1,11 @@
+1.	Date – created a new staff today but it does not appear as  “Today” but “Yesterday” - (Hold ko muna to kasi iba ung timezone ni server. Delay sya ng 1 day and 2hrs.)
+2.	After filtering done, add a [Remove Filter] button that will reset the changes to show full list - ( San part to?.)
+3.	Permissions -  Can we hide sa side menu yung mga features na-unchecked. Ex: unchecked yung statement of account, is it possible na wala na yung statement of account sa side para wala siyang idea na may statement of account module pla? - (DONE)
+4.	Settings>Staff Lists> Export to Excel - (DONE)
+	a.	Columns in the excel should contain:	
+5.	Settings> Staff Lists> View - (DONE)
+	a.	Should include Status before Date Added
+6.	Settings> Brands> Add - (DONE)
+	a.	Format font to ALL Caps kahit ano pa ang pagka type ng user
+
+

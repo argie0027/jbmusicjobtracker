@@ -18,7 +18,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
             $branchtype = "0";
             $branchid = "-1";
         }
-        $addemail = "UPDATE `jb_email` SET `feedback`='".$feedback."',`admin`='".$adminemail."' WHERE branchid = '".$branchid."'";
+        $addemail = "UPDATE `jb_email` SET `feedback`='".$feedback."',`admin`='".$adminemail."', `updated_at` = '".dateToday()."' WHERE branchid = '".$branchid."'";
         $addemailquery = $db->ExecuteQuery($addemail);
         
         if($addemailquery){
@@ -35,7 +35,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
             $branchid = "-1";
         }
           $addemail = "INSERT INTO `jb_email`(`feedback`, `admin`, `branchid`, `isbranch`,`created_at`) ".
-        " VALUES ('".$feedback."','".$adminemail."','".$branchid."','".$branchtype."',NOW())";
+        " VALUES ('".$feedback."','".$adminemail."','".$branchid."','".$branchtype."','".dateToday()."')";
         $addemailquery = $db->InsertData($addemail);
         if($addemailquery){
             echo "success";

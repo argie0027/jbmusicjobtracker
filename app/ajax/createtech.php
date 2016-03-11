@@ -10,7 +10,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $nickname = trim(ucwords(strtolower(filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
 
     $insertbranch = "INSERT INTO `jb_technicians`(`name`, `email`, `address`, `number`, `nickname`, `status`,`created_at`) ".
-                    " VALUES ('".$techname."','".$email."','".$address."','".$number."','".$nickname."', '0',NOW())";
+                    " VALUES ('".$techname."','".$email."','".$address."','".$number."','".$nickname."', '0','".dateToday()."')";
     $query = $db->InsertData($insertbranch);
     $lastbranchid = $db->GetLastInsertedID();
 	if($query){

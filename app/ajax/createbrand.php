@@ -9,7 +9,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $checkerQuery = $db->ReadData($checker);
 
     if( !$checkerQuery ) {
-	    $insertbrand = "INSERT INTO `jb_brands`(`brandname`, `created_at`) VALUES ('".$brand."', NOW())";
+	    $insertbrand = "INSERT INTO `jb_brands`(`brandname`, `created_at`) VALUES ('".$brand."', '".dateToday()."')";
 	    $query = $db->InsertData($insertbrand);
 		if($query){
 	        echo "success";

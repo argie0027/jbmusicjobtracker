@@ -13,7 +13,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	if($typetoedit == "diagnosis"){
     		$selectedItem = trim(filter_input(INPUT_POST, 'selectedItem', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-	    	$udpatemainjod = "UPDATE `subjoborder` SET `subdiagnosis` = '".$selectedItem."' WHERE `subjobid` = '" . $dataid . "'";
+	    	$udpatemainjod = "UPDATE `subjoborder` SET `subdiagnosis` = '".$selectedItem."', `updated_at` = '".dateToday()."' WHERE `subjobid` = '" . $dataid . "'";
 	 		// echo $udpatemainjod;
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
@@ -23,7 +23,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	}
     }if($typetoedit == "remove_diagnosis"){
     		$selectedItem = trim(filter_input(INPUT_POST, 'selectedItem', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-	    	$udpatemainjod = "UPDATE `subjoborder` SET `subdiagnosis` = '' WHERE `subjobid` = '" . $dataid . "'";
+	    	$udpatemainjod = "UPDATE `subjoborder` SET `subdiagnosis` = '', `updated_at` = '".dateToday()."' WHERE `subjobid` = '" . $dataid . "'";
 	 		// echo $udpatemainjod;
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
@@ -34,7 +34,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     }else if($typetoedit == "tech"){
     	    $itemvalue = trim(filter_input(INPUT_POST, 'itemvalue2', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 			
-			$udpatemainjod = "UPDATE `subjoborder` SET `subtech` = '".$itemvalue."' WHERE `subjobid` = '" . $dataid . "'";
+			$udpatemainjod = "UPDATE `subjoborder` SET `subtech` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `subjobid` = '" . $dataid . "'";
 	 		// echo $udpatemainjod;
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
@@ -47,7 +47,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     		$itemvalue = trim(filter_input(INPUT_POST, 'itemvalue', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		// echo $dataid;
     		// echo $itemvalue;
-			$udpatemainjod = "UPDATE `subjoborder` SET `subremarks` = '".$itemvalue."' WHERE `subjobid` = '" . $dataid . "'";
+			$udpatemainjod = "UPDATE `subjoborder` SET `subremarks` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `subjobid` = '" . $dataid . "'";
 	 		// echo $udpatemainjod;
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
@@ -58,7 +58,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	}else if($typetoedit == "updateparts"){
     		$partprice = trim(filter_input(INPUT_POST, 'partprice', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$parts = trim(filter_input(INPUT_POST, 'parts', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    		$udpatemainjod = "UPDATE `subjoborder` SET `subparts` = '".$parts."', `subcost` = '".$partprice."' WHERE `subjobid` = '" . $dataid . "'";
+    		$udpatemainjod = "UPDATE `subjoborder` SET `subparts` = '".$parts."', `subcost` = '".$partprice."', `updated_at` = '".dateToday()."' WHERE `subjobid` = '" . $dataid . "'";
 	 		echo $udpatemainjod;
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {

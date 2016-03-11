@@ -14,17 +14,17 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $spliter = split("#", $parts);
 
-        $parts = "UPDATE `jb_soa` SET `status` = '1' WHERE `jobid` = '".$jobid."'";
+        $parts = "UPDATE `jb_soa` SET `status` = '1', `updated_at` = '".dateToday()."' WHERE `jobid` = '".$jobid."'";
         $queryparts = $db->InsertData($parts);
 
-        $repair_status = "UPDATE `jb_joborder` SET repair_status = 'Approved', referenceno = '".$reference."' WHERE `jobid` = '".$jobid."'";
+        $repair_status = "UPDATE `jb_joborder` SET repair_status = 'Approved', referenceno = '".$reference."', `updated_at` = '".dateToday()."' WHERE `jobid` = '".$jobid."'";
         $queryparts = $db->InsertData($repair_status);
 
         $selectsoa = "select * from jb_soa WHERE jobid = '" .$jobid. "'";
         $querysoa =$db->ReadData($selectsoa); 
         // ExecuteQuery
 
-        $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`, `created_at`) VALUES ('".$jobid."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[1]."','0', NOW())";
+        $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`, `created_at`) VALUES ('".$jobid."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[1]."','0', '".dateToday()."')";
         $notifd = $db->InsertData($nofi);
 
         $data['jobid'] = $jobid;
@@ -38,7 +38,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $description = explode(",",ACT_NOTIF);
     $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
-    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`, `created_at`)". " VALUES ('".$description[4]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobid ."', NOW())";
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`, `created_at`)". " VALUES ('".$description[4]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobid ."', '".dateToday()."')";
     $query = $db->InsertData($insertHistory);
     /* End of Insert History */
         
@@ -73,21 +73,21 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                 $parts_free = explode(",",$querygetpart[0]['parts_free']);
                 if( $days <= $parts_free[0] ) {
                     $qf = $selectparts[0]['quantityfree'] + $quantity[1];
-                    $updatequantityfree =  "UPDATE jb_part SET quantityfree ='".$qf."' WHERE `quantity` != 0 AND part_id = '".$partid[0]."' LIMIT 1";
+                    $updatequantityfree =  "UPDATE jb_part SET quantityfree ='".$qf."', `updated_at` = '".dateToday()."' WHERE `quantity` != 0 AND part_id = '".$partid[0]."' LIMIT 1";
                     $db->ExecuteQuery($updatequantityfree);
                 }
                 //End Checker
                 
                 $q = $selectparts[0]['quantity'] - $quantity[1];
                 
-                $updatepartsquantity = "UPDATE jb_part SET quantity ='".$q."' WHERE `quantity` != 0 AND part_id = '".$partid[0]."' LIMIT 1";
+                $updatepartsquantity = "UPDATE jb_part SET quantity ='".$q."', `updated_at` = '".dateToday()."' WHERE `quantity` != 0 AND part_id = '".$partid[0]."' LIMIT 1";
                 $updatepr = $db->ExecuteQuery($updatepartsquantity);
                     
                 if(!$updatepr){
                 echo $db->GetErrorMessage();
                 }
                 
-                $updatecostaccepted = "UPDATE `jb_cost` SET ispaid = '1', `accepted_by` = '".$_SESSION['name']."' WHERE `jb_cost`.`jobid` = '".$jobid."'";
+                $updatecostaccepted = "UPDATE `jb_cost` SET ispaid = '1', `accepted_by` = '".$_SESSION['name']."', `updated_at` = '".dateToday()."' WHERE `jb_cost`.`jobid` = '".$jobid."'";
                 $updatecostaccepted2 = $db->ExecuteQuery($updatecostaccepted);
                 if(!$updatecostaccepted2){
                 echo $db->GetErrorMessage();

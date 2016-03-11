@@ -11,7 +11,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $checker = "SELECT * FROM `jb_diagnosis` WHERE id = '".$id."'";
     $checkerQuery = $db->ReadData($checker);
 
-    $sql = "UPDATE `jb_diagnosis` SET `diagnosis` = '".$diagnosis."' WHERE `id` = '".$id."'";
+    $sql = "UPDATE `jb_diagnosis` SET `diagnosis` = '".$diagnosis."', `updated_at` = '".dateToday()."' WHERE `id` = '".$id."'";
 
     if( $checkerQuery[0]['diagnosis'] == $diagnosis ) {
     	$query = $db->ExecuteQuery($sql);

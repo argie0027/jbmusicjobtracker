@@ -10,7 +10,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $categoryid = $_POST['categoryid'];
     $subcategoryid = $_POST['subcategoryid'];
 
-    $insertCategory = "INSERT INTO `jb_models` (`modelname`, `description`, `brandid`, `cat_id`, `sub_catid`,`created_at`) VALUES ('".$modelname."', '".$modeldescription."', '".$brandid."', '".$categoryid."', '".$subcategoryid."',NOW())";
+    $insertCategory = "INSERT INTO `jb_models` (`modelname`, `description`, `brandid`, `cat_id`, `sub_catid`,`created_at`) VALUES ('".$modelname."', '".$modeldescription."', '".$brandid."', '".$categoryid."', '".$subcategoryid."','".dateToday()."')";
     $query = $db->InsertData($insertCategory);
 
 	if($query){

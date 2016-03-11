@@ -16,7 +16,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $customertype = trim(filter_input(INPUT_POST, 'customertype', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
 
-    $sql = "UPDATE jb_customer SET customer_type_id='". $customertype ."', name='". $name ."',email='". $email ."',address='". $address ."',number='". $number ."' WHERE customerid = '". $customerID ."'";
+    $sql = "UPDATE jb_customer SET customer_type_id='". $customertype ."', name='". $name ."',email='". $email ."',address='". $address ."',number='". $number ."', `updated_at` = '".dateToday()."' WHERE customerid = '". $customerID ."'";
     $query = $db->InsertData($sql);
     if($query) {
         echo "success";

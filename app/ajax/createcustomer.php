@@ -15,7 +15,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $customertype = trim(filter_input(INPUT_POST, 'customertype', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     $sql = "INSERT INTO jb_customer(`branchid`,`customer_type_id`,`name`, `email`, `address`, `number`,`created_at`) " . 
-                    "VALUES ('".$branchid."','".$customertype."','".$name."','".$email."','".$address."','".$number."', NOW())";
+                    "VALUES ('".$branchid."','".$customertype."','".$name."','".$email."','".$address."','".$number."', '".dateToday()."')";
     $query = $db->InsertData($sql);
     if($query) {
         echo "success";

@@ -7,10 +7,10 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $jobid = trim(filter_input(INPUT_POST, 'jobid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $reference = trim(filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-    $query = "UPDATE jb_joborder SET repair_status = 'Approved', referenceno = '".$reference."' WHERE jobid = '".$jobid."'";
+    $query = "UPDATE jb_joborder SET repair_status = 'Approved', referenceno = '".$reference."', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
     $updatejob = $db->ExecuteQuery($query); 
     if($updatejob){
-        $query1 = "UPDATE jb_cost SET ispaid = '1' WHERE jobid = '".$jobid."'";
+        $query1 = "UPDATE jb_cost SET ispaid = '1', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
         $updatecost = $db->ExecuteQuery($query1);
         if($updatecost){
             echo "success";

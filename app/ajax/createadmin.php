@@ -45,7 +45,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         if( !$validfirstname && !$validmidname && !$validlastname && !$validnickname && !$emailQuery ) {
 
             $sql = "INSERT INTO `jb_user`(`username`, `password`, `email`, `name`, `firstname`, `lastname`, `midname`, `nicknake`, `address`, `contact_number`, `position`, `level`, `job_title`, `branch_id`, `status`, `created_at`) " . 
-                "VALUES ('".$username."','".$password."','".$email."','".$fullname."','".$firstname."','".$lastname."','".$midname."','".$nickname."','".$address."','".$contact."','0','1','".$jobtitle."','".$branchid."', 'inactive', NOW())";
+                "VALUES ('".$username."','".$password."','".$email."','".$fullname."','".$firstname."','".$lastname."','".$midname."','".$nickname."','".$address."','".$contact."','0','1','".$jobtitle."','".$branchid."', 'inactive', '".dateToday()."')";
             $query = $db->InsertData($sql);
 
             if($query) {

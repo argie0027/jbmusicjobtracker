@@ -10,7 +10,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     if( !$checkerQuery ) {
 
-        $insert = "INSERT INTO `jb_diagnosis`(`diagnosis`,`created_at`) VALUES ('".$diagnosis."',NOW())";
+        $insert = "INSERT INTO `jb_diagnosis`(`diagnosis`,`created_at`) VALUES ('".$diagnosis."','".dateToday()."')";
         $query = $db->InsertData($insert);
 
         $lastbranchid = $db->GetLastInsertedID();

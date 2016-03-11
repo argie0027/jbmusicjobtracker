@@ -48,14 +48,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         if( !$validfirstname && !$validmidname && !$validlastname && !$validnickname && !$validbranchname && !$emailQuery ) {
 
             $insertbranch = "INSERT INTO `jb_branch`(`branch_name`, `contactperson`, `email`, `address`, `number`, `customer_type`, `created_at`) " .
-               " VALUES ('".$branchname."','".$fullname."','".$branchemail."','".$branchaddress."','".$number."','0', NOW())";
+               " VALUES ('".$branchname."','".$fullname."','".$branchemail."','".$branchaddress."','".$number."','0', '".dateToday()."')";
             $query = $db->InsertData($insertbranch);
             $lastbranchid = $db->GetLastInsertedID();
 
             if($query){
                 $inseruser = "INSERT INTO `jb_user`(`username`, `password`, `email`, `name`, `firstname`, `lastname`, `midname`, `nicknake`, `address`, `contact_number`,".
                                     " `position`, `level`, `job_title`, `branch_id`, `customer_type_id`, `status`, `created_at`) ". 
-                    " VALUES ('".$username."', '".$password."' ,'".$email."','".$fullname."','".$firstname."','".$lastname."','".$midname."','".$nickname."','".$address."','".$contact."','2','1','".$jobtitle."','".$lastbranchid."','0', 'active', NOW())";
+                    " VALUES ('".$username."', '".$password."' ,'".$email."','".$fullname."','".$firstname."','".$lastname."','".$midname."','".$nickname."','".$address."','".$contact."','2','1','".$jobtitle."','".$lastbranchid."','0', 'active', '".dateToday()."')";
 
                 
 

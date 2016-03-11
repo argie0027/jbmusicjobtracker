@@ -9,7 +9,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $useraccount = trim(filter_input(INPUT_POST, 'useraccount', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $typenotif = trim(filter_input(INPUT_POST, 'typenotif', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-     $sql = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$jobid."','".$branchid."','".$useraccount."','".$typenotif."','0',NOW())";
+     $sql = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$jobid."','".$branchid."','".$useraccount."','".$typenotif."','0','".dateToday()."')";
 
     $query = $db->InsertData($sql);
     if($query) {

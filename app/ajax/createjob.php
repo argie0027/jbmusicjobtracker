@@ -38,7 +38,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         $query = true;
     }else{
         $sql = "INSERT INTO jb_customer(`branchid`,`customer_type_id`,`name`, `email`, `address`, `number`, `created_at`) " . 
-                        "VALUES ('".$branchid."','".$customertype."','".$name."','".$email."','".$address."','".$number."', NOW())";
+                        "VALUES ('".$branchid."','".$customertype."','".$name."','".$email."','".$address."','".$number."', '".dateToday()."')";
         $query = $db->InsertData($sql);
     }
      
@@ -48,15 +48,15 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     if($query) {
         if($isExisting == 1) {
             $insertjob = "INSERT INTO `jb_joborder`(`jobid`,`soaid`, `customerid`, `branchid`, `partsid`, `technicianid`, `item`, `diagnosis`, `remarks`, `status_id`, `estimated_finish_date`, `repair_status`, `referenceno`, `servicefee`, `catid`, `isunder_warranty`,`created_at`)". 
-                " VALUES ('". $jobID ."','','".$idSelectedCustomer."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1','".$date."', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."',NOW())";
+                " VALUES ('". $jobID ."','','".$idSelectedCustomer."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1','".$date."', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."','".dateToday()."')";
          }else{
             $insertjob = "INSERT INTO `jb_joborder`(`jobid`,`soaid`, `customerid`, `branchid`, `partsid`, `technicianid`,`item`, `diagnosis`, `remarks`, `status_id`, `estimated_finish_date`, `repair_status`, `referenceno`, `servicefee`, `catid`, `isunder_warranty`,`created_at`)". 
-                " VALUES ('". $jobID ."','','".$db->GetLastInsertedID()."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1','".$date."', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."',NOW())";
+                " VALUES ('". $jobID ."','','".$db->GetLastInsertedID()."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1','".$date."', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."','".dateToday()."')";
          }
 
         
         $query = $db->InsertData($insertjob);
-        $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$jobID."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[0]."','0',NOW())";
+        $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$jobID."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[0]."','0','".dateToday()."')";
         $notifd = $db->InsertData($nofi);
 
     $data['name'] = $_SESSION['Branchname'];
@@ -69,7 +69,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $description = explode(",",ACT_NOTIF);
     $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
-    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description[0]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobID ."',NOW())";
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description[0]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobID ."','".dateToday()."')";
     $query = $db->InsertData($insertHistory);
     /* End of Insert History */
     
@@ -77,7 +77,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     
     	if($query){
             if($isunder_warranty == 1) { 
-                $warranty_query = "INSERT INTO `jb_warranty`(`jobid`, `warranty_date`,`created_at`) VALUES ('".$jobID."','".$warranty_date."',NOW())";
+                $warranty_query = "INSERT INTO `jb_warranty`(`jobid`, `warranty_date`,`created_at`) VALUES ('".$jobID."','".$warranty_date."','".dateToday()."')";
                  $warranty_in = $db->InsertData($warranty_query);
                  
                  if($warranty_in){
@@ -87,7 +87,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                         $date = date('Y-m-d H:i:s');
                         $generated = $utility->random_string("abcdefghijklmnopqrstvuwxyzABCEFGHIJKLMNOPQRSTUVWXYZ",60);
                         $linkgen = sha1($date . $generated);
-                        $insertclient = "INSERT INTO `tb_client`(`linkgen`,`customer_id`,`created_at`) VALUES ('".$linkgen."','".$getlastid."',NOW())";
+                        $insertclient = "INSERT INTO `tb_client`(`linkgen`,`customer_id`,`created_at`) VALUES ('".$linkgen."','".$getlastid."','".dateToday()."')";
                         $queryinserclient = $db->InsertData($insertclient); 
                         if($queryinserclient) {
                             $subject = 'JB MUSIC & SPORTS';
@@ -225,7 +225,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                         $generated = $utility->random_string("abcdefghijklmnopqrstvuwxyzABCEFGHIJKLMNOPQRSTUVWXYZ",60);
                         $linkgen = sha1($date . $generated);
                         var_dump($linkgen);
-                        $insertclient = "INSERT INTO `tb_client`(`linkgen`,`customer_id`,`created_at`) VALUES ('".$linkgen."', '".$getlastid."',NOW())";
+                        $insertclient = "INSERT INTO `tb_client`(`linkgen`,`customer_id`,`created_at`) VALUES ('".$linkgen."', '".$getlastid."','".dateToday()."')";
                         $queryinserclient = $db->InsertData($insertclient); 
                         if($queryinserclient) {
                             $subject = 'JB MUSIC & SPORTS';

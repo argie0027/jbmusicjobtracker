@@ -9,7 +9,7 @@
     $permission = "SELECT t.name, p.add_status, p.edit_status, p.delete_status, p.view_status FROM jb_user u, jb_permission p, jb_permission_type t WHERE u.id = p.user_id AND p.permission_type_id = t.id AND u.id='".$_SESSION['id']."'";
     $permission = $db->ReadData($permission);
 
-    if($_SESSION['position'] != -1) {
+    if($_SESSION['position'] != 2) {
         foreach ($permission as $key => $value) {
             if($value['name'] == 'customers') {
                 $customers = true;

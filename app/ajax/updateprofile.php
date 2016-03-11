@@ -31,7 +31,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
        $sql =  $sql .  "`password`='".$newpassword."',";
     }
 
-    $sql =  $sql .  "`name`='".$fullname."',`firstname`='".$firstname."',`lastname`='".$lastname."',`midname`='".$midname."',`nicknake`='".$nickname."',`address`='".$address."',`email`='".$email."',`contact_number`='".$contact."',`image`='".$image."' WHERE id = '".$id."'";
+    $sql =  $sql .  "`name`='".$fullname."',`firstname`='".$firstname."',`lastname`='".$lastname."',`midname`='".$midname."',`nicknake`='".$nickname."',`address`='".$address."',`email`='".$email."',`contact_number`='".$contact."',`image`='".$image."', `updated_at` = '".dateToday()."' WHERE id = '".$id."'";
 
     // Email notify
 

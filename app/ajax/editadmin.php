@@ -33,7 +33,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
            $sql =  $sql .  "`password`='".$newpassword."',";
         }
 
-        $sql = $sql ." `job_title`='".$jobtitle."',`firstname`='".$firstname."',`lastname`='".$lastname."',`midname`='".$midname."',`name`='".$fullname."',`nicknake`='".$nickname."',`email`='".$email."',`contact_number`='".$contact."',`address`='".$address."' WHERE id='".$id."'";
+        $sql = $sql ." `job_title`='".$jobtitle."',`firstname`='".$firstname."',`lastname`='".$lastname."',`midname`='".$midname."',`name`='".$fullname."',`nicknake`='".$nickname."',`email`='".$email."',`contact_number`='".$contact."',`address`='".$address."', `updated_at` = '".dateToday()."' WHERE id='".$id."'";
         
         // Email Address Checker
         if( $email ) {

@@ -9,12 +9,12 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $partfree = $_POST['subcategoryPartFree'];
     $diagnosticfree = $_POST['subcategoryDiagnosticFree'];
 
-    $insertCategory = "INSERT INTO `jb_partscat`(`category`,`created_at`) VALUES ('".$category."',NOW())";
+    $insertCategory = "INSERT INTO `jb_partscat`(`category`,`created_at`) VALUES ('".$category."','".dateToday()."')";
     $query = $db->InsertData($insertCategory);
     $lastcategoryid = $db->GetLastInsertedID();
 
     foreach ( $subcategory as $key => $value ) {
-        $insertSubcategory = "INSERT INTO `jb_partssubcat`(`subcategory`, `cat_id`, `parts_free`, `diagnostic_free`,`created_at`) VALUES ('".trim(ucwords(strtolower($value)))."', '".$lastcategoryid."', '".$partfree[$key]."', '".$diagnosticfree[$key]."', NOW())";
+        $insertSubcategory = "INSERT INTO `jb_partssubcat`(`subcategory`, `cat_id`, `parts_free`, `diagnostic_free`,`created_at`) VALUES ('".trim(ucwords(strtolower($value)))."', '".$lastcategoryid."', '".$partfree[$key]."', '".$diagnosticfree[$key]."', '".dateToday()."')";
         $db->InsertData($insertSubcategory);
     }
 

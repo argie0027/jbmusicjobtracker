@@ -34,7 +34,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
            $sql =  $sql .  "`password`='".$password."',";
         }
 
-        $sql =  $sql .  "`email`='".$email."',`name`='".$fullname."',`firstname`='".$firstname."',`lastname`='".$lastname."',`midname`='".$midname."',`nicknake`='".$nickname."',`address`='".$address."',`contact_number`='".$contact."',`job_title`='".$jobtitle."' WHERE id = '".$id."'";
+        $sql =  $sql .  "`email`='".$email."',`name`='".$fullname."',`firstname`='".$firstname."',`lastname`='".$lastname."',`midname`='".$midname."',`nicknake`='".$nickname."',`address`='".$address."',`contact_number`='".$contact."',`job_title`='".$jobtitle."', `updated_at` = '".dateToday()."' WHERE id = '".$id."'";
 
         // Email Address Checker
         if( $email ) {

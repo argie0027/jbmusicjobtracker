@@ -14,7 +14,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	if($typetoedit == "diagnosis"){
     		$selectedItem = trim(filter_input(INPUT_POST, 'selectedItem', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-	    	$udpatemainjod = "UPDATE `jb_joborder` SET `diagnosis` = '".$selectedItem."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+	    	$udpatemainjod = "UPDATE `jb_joborder` SET `diagnosis` = '".$selectedItem."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
 	 			echo "success";
@@ -26,7 +26,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     		$itemvalue = trim(filter_input(INPUT_POST, 'itemvalue', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		// echo $dataid;
     		// echo $itemvalue;
-			$udpatemainjod = "UPDATE `jb_joborder` SET `item` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+			$udpatemainjod = "UPDATE `jb_joborder` SET `item` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
 	 			echo "success";
@@ -38,7 +38,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     		$itemvalue = trim(filter_input(INPUT_POST, 'itemvalue', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		// echo $dataid;
     		// echo $itemvalue;
-			$udpatemainjod = "UPDATE `jb_joborder` SET `remarks` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+			$udpatemainjod = "UPDATE `jb_joborder` SET `remarks` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
 	 			echo "success";
@@ -55,16 +55,16 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     		$jobsqlQuery = $db->ReadData($jobsql);
 
     		// upadte previous tech status
-    		$udpateprevtech = "UPDATE `jb_technicians` SET `status` = '0' WHERE `tech_id` = '" . $jobsqlQuery[0]['technicianid'] . "'";
+    		$udpateprevtech = "UPDATE `jb_technicians` SET `status` = '0', `updated_at` = '".dateToday()."' WHERE `tech_id` = '" . $jobsqlQuery[0]['technicianid'] . "'";
 	 		$update = $db->ExecuteQuery($udpateprevtech);
 
 	 		if($update) {
 	 			// upadte previous tech status
-	    		$updatenewtech = "UPDATE `jb_technicians` SET `status` = '1' WHERE `tech_id` = '" . $itemvalue . "'";
+	    		$updatenewtech = "UPDATE `jb_technicians` SET `status` = '1', `updated_at` = '".dateToday()."' WHERE `tech_id` = '" . $itemvalue . "'";
 		 		$updatetech = $db->ExecuteQuery($updatenewtech);
 
 		 		if( $updatetech ) {
-					$udpatemainjod = "UPDATE `jb_joborder` SET `technicianid` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+					$udpatemainjod = "UPDATE `jb_joborder` SET `technicianid` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 			 		$query = $db->ExecuteQuery($udpatemainjod);
 			 		if($query) {
 			 			echo "success";
@@ -81,7 +81,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     	}else if($typetoedit == "totalcharges"){
     		$itemvalue = trim(filter_input(INPUT_POST, 'itemvalue', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-			$udpatemainjod = "UPDATE `jb_cost` SET `total_charges` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+			$udpatemainjod = "UPDATE `jb_cost` SET `total_charges` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
 	 			echo "success";
@@ -90,7 +90,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 	 		}
     	}else if($typetoedit == "lessdeposit"){
     		$itemvalue = trim(filter_input(INPUT_POST, 'itemvalue', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-			$udpatemainjod = "UPDATE `jb_cost` SET `less_deposit` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+			$udpatemainjod = "UPDATE `jb_cost` SET `less_deposit` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
 	 			echo "success";
@@ -99,7 +99,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 	 		}
     	}else if($typetoedit == "lessdiscount"){
     		$itemvalue = trim(filter_input(INPUT_POST, 'itemvalue', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-			$udpatemainjod = "UPDATE `jb_cost` SET `less_discount` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+			$udpatemainjod = "UPDATE `jb_cost` SET `less_discount` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
 	 			echo "success";
@@ -118,10 +118,10 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 			$reme = substr($reme, 0, -1);
 			echo substr($reme, 1);
 
-    		$udpatemainjod = "UPDATE `jb_joborder` SET `partsid` = '".substr($reme, 1)."', `parts` = '".$itemvalue."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+    		$udpatemainjod = "UPDATE `jb_joborder` SET `partsid` = '".substr($reme, 1)."', `parts` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 	 		$query = $db->ExecuteQuery($udpatemainjod);
 	 		if($query) {
-	 			$udpatemainjod = "UPDATE `jb_cost` SET totalpartscost ='".$partprince."', `balance` = '".$balance."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
+	 			$udpatemainjod = "UPDATE `jb_cost` SET totalpartscost ='".$partprince."', `balance` = '".$balance."', `updated_at` = '".dateToday()."' WHERE `jobid` = '" . $spliderdataid[1] . "'";
 		 		$query = $db->ExecuteQuery($udpatemainjod);
 		 		if($query) {
 		 			echo "success";

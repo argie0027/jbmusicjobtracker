@@ -9,7 +9,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $checker = "SELECT * FROM `jb_brands` WHERE brandid = '".$brandid."'";
     $checkerQuery = $db->ReadData($checker);
 
-    $sql = "UPDATE `jb_brands` SET `brandname` = '".$brandname."' WHERE `brandid` = '".$brandid."'";
+    $sql = "UPDATE `jb_brands` SET `brandname` = '".$brandname."', `updated_at` = '".dateToday()."' WHERE `brandid` = '".$brandid."'";
 
  	if( $checkerQuery[0]['brandname'] == $brandname ) {
     	$query = $db->ExecuteQuery($sql);

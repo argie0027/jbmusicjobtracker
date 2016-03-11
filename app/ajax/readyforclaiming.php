@@ -12,7 +12,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $itemname = trim(filter_input(INPUT_POST, 'item', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     $email = trim(filter_input(INPUT_POST, 'jobid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    $sql = "UPDATE jb_joborder SET repair_status = 'Ready for Claiming', done_date_delivery = '0000-00-00' WHERE jobid = '".$id."'";
+    $sql = "UPDATE jb_joborder SET repair_status = 'Ready for Claiming', done_date_delivery = '0000-00-00', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
 
     $query = $db->InsertData($sql);
 
@@ -22,7 +22,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $description = explode(",",ACT_NOTIF);
     $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
-    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description[6]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$id ."',NOW())";
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description[6]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$id ."','".dateToday()."')";
     $query = $db->InsertData($insertHistory);
     /* End of Insert History */
     

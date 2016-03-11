@@ -24,11 +24,11 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $lessdiscount = trim(filter_input(INPUT_POST, 'lessdiscount', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $balancecharge = trim(filter_input(INPUT_POST, 'balancecharge', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-    $parts = "UPDATE `jb_joborder` SET `partsid` = '".$dd."', parts = '".$parts."', repair_status = 'Waiting for SOA Approval' WHERE jobid = '".$jobid."'";
+    $parts = "UPDATE `jb_joborder` SET `partsid` = '".$dd."', parts = '".$parts."', repair_status = 'Waiting for SOA Approval', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
     $queryparts = $db->InsertData($parts);
 
     $notif = split(',', NOTIF);
-    $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$jobid."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[2]."','0',NOW())";
+    $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$jobid."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[2]."','0','".dateToday()."')";
     $notifd = $db->InsertData($nofi);
 
     $data['jobid'] = $jobid;
@@ -43,7 +43,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $description = explode(",",ACT_NOTIF);
     $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
-    $insertHistory = "INSERT INTO `jb_history`(description, branch, name, branchid, isbranch, jobnumber,`created_at`)". " VALUES ('".$description[9]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobid ."',NOW())";
+    $insertHistory = "INSERT INTO `jb_history`(description, branch, name, branchid, isbranch, jobnumber,`created_at`)". " VALUES ('".$description[9]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$jobid ."','".dateToday()."')";
     $query = $db->InsertData($insertHistory);
     /* End of Insert History */
 
@@ -51,7 +51,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     if($queryparts) {
 
-        $tech = "UPDATE `jb_joborder` SET `technicianid` = '".$techid."' WHERE jobid = '".$jobid."'";
+        $tech = "UPDATE `jb_joborder` SET `technicianid` = '".$techid."', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
         $querytech = $db->InsertData($tech);
 
         // $updsatetechstatus = "UPDATE `jb_technicians` SET `status` = '1' WHERE `jb_technicians`.`tech_id` = '".$techid."'";
@@ -70,7 +70,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                     $ifhavecostalready = $db->ReadData($check);
 
                     if($ifhavecostalready) {
-                        $updatecost = "UPDATE `jb_cost` SET `totalpartscost`='".$partcost."',`service_charges`='".$servicescharge."',`total_charges`='".$chargetotal."',`less_deposit`='".$lessdeposit."',`less_discount`='".$lessdiscount."',`balance`='".$balancecharge."',`computed_by`='".$_SESSION['name']."' WHERE jobid = '".$jobid."'";
+                        $updatecost = "UPDATE `jb_cost` SET `totalpartscost`='".$partcost."',`service_charges`='".$servicescharge."',`total_charges`='".$chargetotal."',`less_deposit`='".$lessdeposit."',`less_discount`='".$lessdiscount."',`balance`='".$balancecharge."',`computed_by`='".$_SESSION['name']."', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
                         $updatecosts = $db->InsertData($updatecost);
 
                         if($updatecosts){
@@ -199,13 +199,13 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                         }
                     }else{
                         $cost = "INSERT INTO `jb_cost`(`jobid`,`totalpartscost`, `service_charges`, `total_charges`, `less_deposit`,`less_discount`, `balance`, `computed_by`, `accepted_by`,`created_at`) ".
-                            "VALUES ('".$jobid."','".$partcost."','".$servicescharge."','".$chargetotal."','".$lessdeposit."','".$lessdiscount."','".$balancecharge."','".$_SESSION['name']."','',NOW())";
+                            "VALUES ('".$jobid."','".$partcost."','".$servicescharge."','".$chargetotal."','".$lessdeposit."','".$lessdiscount."','".$balancecharge."','".$_SESSION['name']."','','".dateToday()."')";
                         $insertcost = $db->InsertData($cost);
                         $idcost = $db->GetLastInsertedID();
 
                         if($insertcost){
                             $soa = "INSERT INTO `jb_soa`(`soa_id`, `jobid`, `customerid`, `branchid`, `technicianid`, `cost_id`, `status`, `conforme`,`created_at`) " .
-                                "VALUES ('SOA-".$soaid."','".$jobid."','".$value['customerid']."','".$value['branchid']."','".$techid."','".$idcost."','0','0',NOW())";
+                                "VALUES ('SOA-".$soaid."','".$jobid."','".$value['customerid']."','".$value['branchid']."','".$techid."','".$idcost."','0','0','".dateToday()."')";
                             $addtosoa = $db->InsertData($soa);
                             if($addtosoa){
                                 $subject = 'JB SPORTS & MUSIC SOA Approval';

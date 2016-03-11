@@ -10,7 +10,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $modelid = trim(filter_input(INPUT_POST, 'modelid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $cost = trim(filter_input(INPUT_POST, 'cost', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-    $insertbranch = "UPDATE `jb_part` SET `stocknumber`='".$stocknumber."', `name`='".$partname."',`modelid`='".$modelid."',`cost`='".$cost."' WHERE part_id = '".$partid."'";
+    $insertbranch = "UPDATE `jb_part` SET `stocknumber`='".$stocknumber."', `name`='".$partname."',`modelid`='".$modelid."',`cost`='".$cost."', `updated_at` = '".dateToday()."' WHERE part_id = '".$partid."'";
     $query = $db->ExecuteQuery($insertbranch);
     $lastbranchid = $db->GetLastInsertedID();
 

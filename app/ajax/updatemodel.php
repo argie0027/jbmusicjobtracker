@@ -10,7 +10,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $categoryid = $_POST['categoryid'];
     $subcategoryid = $_POST['subcategoryid'];
     
-    $checker = "UPDATE `jb_models` SET `modelname` = '".$modelname."', `description` = '".$modeldescription."', `brandid` = '".$brandid."', `cat_id` = '".$categoryid."', `sub_catid` = '".$subcategoryid."' WHERE `modelid` = '".$modelid."'";
+    $checker = "UPDATE `jb_models` SET `modelname` = '".$modelname."', `description` = '".$modeldescription."', `brandid` = '".$brandid."', `cat_id` = '".$categoryid."', `sub_catid` = '".$subcategoryid."', `updated_at` = '".dateToday()."' WHERE `modelid` = '".$modelid."'";
  	$query = $db->ExecuteQuery($checker);
     if($query) {
     	echo "success";

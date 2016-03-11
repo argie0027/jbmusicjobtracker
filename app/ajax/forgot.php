@@ -12,7 +12,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $checkerQuery = $db->ReadData($checker);
 
     if ( $checkerQuery ) {
-		$sql = "UPDATE `jb_user` SET `forgot_code`='".$forgot_code."' WHERE id='".$checkerQuery[0]['id']."'";
+		$sql = "UPDATE `jb_user` SET `forgot_code`='".$forgot_code."', `updated_at` = '".dateToday()."' WHERE id='".$checkerQuery[0]['id']."'";
 		$query = $db->InsertData($sql);
 
 		$response = array();

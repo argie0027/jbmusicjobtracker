@@ -14,7 +14,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         $selecttet = "SELECT * FROM `jb_part` WHERE part_id = '".$idpart."'";
         $querys  = $db->ReadData($selecttet);
         $insertbranch = "INSERT INTO `jb_part`(`stocknumber`, `name`,`part_id`,`modelid`, `quantity`, `cost`,`date`,`bacth_quantity`,`created_at`) ".
-                        " VALUES ('".$querys[0]['stocknumber']."', '".$querys[0]['name']."','".$idpart."','".$querys[0]['modelid']."','".$quantity."','".$querys[0]['cost']."','".$now->format('Y-m-d')."','".$quantity."',NOW())";    
+                        " VALUES ('".$querys[0]['stocknumber']."', '".$querys[0]['name']."','".$idpart."','".$querys[0]['modelid']."','".$quantity."','".$querys[0]['cost']."','".$now->format('Y-m-d')."','".$quantity."','".dateToday()."')";    
 
         $query = $db->InsertData($insertbranch);
         $lastbranchid = $db->GetLastInsertedID();
@@ -38,7 +38,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         $now = new DateTime();
 
         $insertbranch = "INSERT INTO `jb_part`(`stocknumber`, `name`,`part_id`,`modelid`, `quantity`, `cost`,`date`,`bacth_quantity`,`created_at`) ".
-                        " VALUES ('".$stocknumber."', '".$partname."','".$partid."','".$modelid."','".$quantity."','".$cost."','".$now->format('Y-m-d')."','".$quantity."',NOW())"; 
+                        " VALUES ('".$stocknumber."', '".$partname."','".$partid."','".$modelid."','".$quantity."','".$cost."','".$now->format('Y-m-d')."','".$quantity."','".dateToday()."')"; 
         $query = $db->InsertData($insertbranch);
         $lastbranchid = $db->GetLastInsertedID();
         if($query){

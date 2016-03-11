@@ -14,7 +14,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
 	if ( $checkerQuery ) {
 		if ( sha1($checkerQuery[0]['email']) ==	$member ) { 
-			$sql = "UPDATE `jb_user` SET `password`='".$password."',`forgot_code`='' WHERE forgot_code='".$reset."'";
+			$sql = "UPDATE `jb_user` SET `password`='".$password."',`forgot_code`='', `updated_at` = '".dateToday()."' WHERE forgot_code='".$reset."'";
 			$query = $db->InsertData($sql);
 
 			$response = array();

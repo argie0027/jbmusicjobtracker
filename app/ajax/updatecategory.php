@@ -12,7 +12,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $partfree = $_POST['subcategoryPartFree'];
     $diagnosticfree = $_POST['subcategoryDiagnosticFree'];
 
-    $checker = "UPDATE `jb_partscat` SET `category` = '".$categoryName."' WHERE `cat_id` = '".$id."'";
+    $checker = "UPDATE `jb_partscat` SET `category` = '".$categoryName."', `updated_at` = '".dateToday()."' WHERE `cat_id` = '".$id."'";
  	$query = $db->ExecuteQuery($checker);
 
     /* EXCLUDE */
@@ -25,7 +25,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     /* INCLUDE */
     foreach ( $subcategory as $key => $value ) {
-        $insertSubcategory = "INSERT INTO `jb_partssubcat`(`subcategory`, `cat_id`, `parts_free`, `diagnostic_free`,`created_at`) VALUES ('".trim(ucwords(strtolower($value)))."', '".$id."', '".$partfree[$key]."', '".$diagnosticfree[$key]."',NOW())";
+        $insertSubcategory = "INSERT INTO `jb_partssubcat`(`subcategory`, `cat_id`, `parts_free`, `diagnostic_free`,`created_at`) VALUES ('".trim(ucwords(strtolower($value)))."', '".$id."', '".$partfree[$key]."', '".$diagnosticfree[$key]."','".dateToday()."')";
         $db->InsertData($insertSubcategory);
     }
 

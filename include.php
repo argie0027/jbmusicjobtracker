@@ -34,3 +34,7 @@ function checkspecialchars($str) {
 		return true;
 	}
 }
+
+function dateToday() {
+	return date("Y-m-d h:i:s");
+}

@@ -30,7 +30,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $warranty_date = trim(filter_input(INPUT_POST, 'warranty_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $maincategory = trim(filter_input(INPUT_POST, 'maincategory', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-    $sql = "UPDATE jb_customer SET customer_type_id='". $customertype ."', name='". $name ."',email='". $email ."',address='". $address ."',number='". $number ."' WHERE customerid = '". $customerID ."'";
+    $sql = "UPDATE jb_customer SET customer_type_id='". $customertype ."', name='". $name ."',email='". $email ."',address='". $address ."',number='". $number ."', `updated_at` = '".dateToday()."' WHERE customerid = '". $customerID ."'";
     $query = $db->InsertData($sql);
 
     /* Insert History */
@@ -39,18 +39,18 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $description = explode(",",ACT_NOTIF);
     $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
-    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description[1]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$joborderid ."',NOW())";
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description[1]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$joborderid ."','".dateToday()."')";
     $query = $db->InsertData($insertHistory);
     /* End of Insert History */
     
     if($query) {
         
-    	$joborder_update = "UPDATE jb_joborder SET item='".$itemname."',diagnosis='".$diagnosis."',remarks='".$remarks."',estimated_finish_date='".$date."', isunder_warranty='".$isunder_warranty."', referenceno='".$referenceno."', servicefee='".$servicefee."', catid='".$maincategory."' WHERE jobid = '".$joborderid."'";
+    	$joborder_update = "UPDATE jb_joborder SET item='".$itemname."',diagnosis='".$diagnosis."',remarks='".$remarks."',estimated_finish_date='".$date."', isunder_warranty='".$isunder_warranty."', referenceno='".$referenceno."', servicefee='".$servicefee."', catid='".$maincategory."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
         $updatejobs = $db->InsertData($joborder_update);
         if($updatejobs){
 
             if($warranty_date) { 
-                $warranty_query = "UPDATE jb_warranty SET warranty_date='".$warranty_date."' WHERE jobid = '".$joborderid."'";
+                $warranty_query = "UPDATE jb_warranty SET warranty_date='".$warranty_date."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
                 // $warranty_query = "INSERT INTO `jb_warranty`(`jobid`, `warranty_type`, `warranty_date`) VALUES ('".$jobID."','".$warranty_type."','".$warranty_date."')";
                  $warranty_in = $db->InsertData($warranty_query);
                  if($warranty_in){

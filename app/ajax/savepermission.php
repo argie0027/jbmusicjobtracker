@@ -10,7 +10,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $module = isset($_POST['modulename']) ? $_POST['modulename'] : false;
 
     # Update User Info
-    $userinfo = "UPDATE `jb_user` SET `status` = '".$status."' WHERE `id` = '".$id."'";
+    $userinfo = "UPDATE `jb_user` SET `status` = '".$status."', `updated_at` = '".dateToday()."' WHERE `id` = '".$id."'";
     # Explode
     $checker = "DELETE FROM `jb_permission` WHERE user_id = '" .$id. "'";
 
@@ -49,7 +49,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                     }
                 }
 
-                $sql = "INSERT INTO `jb_permission`(`user_id`, `permission_type_id`, `add_status`, `edit_status`, `delete_status`, `view_status`, `created_at`) VALUES ('".$id."','".$permissionQuery[0]['id']."','".$add_status."','".$edit_status."','".$delete_status."','".$view_status."',NOW())";
+                $sql = "INSERT INTO `jb_permission`(`user_id`, `permission_type_id`, `add_status`, `edit_status`, `delete_status`, `view_status`, `created_at`) VALUES ('".$id."','".$permissionQuery[0]['id']."','".$add_status."','".$edit_status."','".$delete_status."','".$view_status."','".dateToday()."')";
                 $db->InsertData($sql);
             }
         }

@@ -17,14 +17,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     //$sql = "UPDATE jb_joborder SET repair_status = 'Ready for Claiming', remarks ='".$str."', jobclear = '1' WHERE jobid = '".$id."'";
     
-    $sql = "UPDATE jb_joborder SET repair_status = 'Done-Ready for Delivery', remarks ='".$str."', jobclear = '1' WHERE jobid = '".$id."'";
+    $sql = "UPDATE jb_joborder SET repair_status = 'Done-Ready for Delivery', remarks ='".$str."', jobclear = '1', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
     $query = $db->InsertData($sql);
     
-    $update_tech = "UPDATE jb_technicians SET `status` = '0' WHERE `tech_id` = '". $query2[0]['technicianid']."'";
+    $update_tech = "UPDATE jb_technicians SET `status` = '0', `updated_at` = '".dateToday()."' WHERE `tech_id` = '". $query2[0]['technicianid']."'";
     $update_techstatus = $db->ExecuteQuery($update_tech); 
 
     $notif = split(',', NOTIF);
-    $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`, `created_at`) VALUES ('".$id."','".$_SESSION['Branchid']."','".$_SESSION['name']."','".$notif[7]."','0', NOW())";
+    $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`, `created_at`) VALUES ('".$id."','".$_SESSION['Branchid']."','".$_SESSION['name']."','".$notif[7]."','0', '".dateToday()."')";
     $notif = $db->InsertData($nofi);
 
     if($notif) {
@@ -40,7 +40,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $description = explode(",",ACT_NOTIF);
     $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
-    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`, `created_at`)". " VALUES ('".$description[12]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$id ."', NOW())";
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`, `created_at`)". " VALUES ('".$description[12]."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$resultBranchId[0]['branchid']."', '".$id ."', '".dateToday()."')";
     $query = $db->InsertData($insertHistory);
     /* End of Insert History */
 }

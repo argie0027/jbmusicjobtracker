@@ -112,7 +112,6 @@
                                                     $currenttast = "";
 
                                                     if($query) {
-                                                        // if($query[0]['repair_status'] == 'Done-Ready for Delivery' || $query[0]['repair_status'] == 'Claimed' || $query[0]['repair_status'] == 'Approved' || $query[0]['repair_status'] == 'Ready for Claiming'){
                                                         if($query[0]['repair_status'] != 'Ongoing Repair'){
                                                             $currenttast = "-";
                                                         } else {

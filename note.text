@@ -8,8 +8,8 @@
 6.	Settings> Brands> Add - (DONE)
 	a.	Format font to ALL Caps kahit ano pa ang pagka type ng user
 7.	Settings>Models> Add
-a.	Provision to add one or more main category and sub categories.. kse may mga parts daw na generic na may fall to most of the categories.. - ( Pag binago natin to may mga tatamaan na table halos lahat ng nasa settings page )
-8.	Settings>Models>Export to Excel - ( Pag binago natin to may mga tatamaan na table halos lahat ng nasa settings page )
+a.	Provision to add one or more main category and sub categories.. kse may mga parts daw na generic na may fall to most of the categories.. - ( HOLD )
+8.	Settings>Models>Export to Excel - ( HOLD )
 9.	Sales Report> Pie Chart - (DONE)
 	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
 
@@ -41,28 +41,43 @@ a.	Provision to add one or more main category and sub categories.. kse may mga p
 	b.	Please add: Checkbox for Active
 
 14.	Branch> Branch Revenue> Pie Chart - (DONE)
-a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
 
-	Pending – those JO that fall under: Job Order Arriving Today (Main), Waiting List, Waiting for Customer Approval, Approved Job Order, Ready for Pickup
-	Ongoing – those JO that fall under “Ongoing Repair”
-	Done – those JO that fall under Delivered, Unclaimed and Claimed
+		Pending – those JO that fall under: Job Order Arriving Today (Main), Waiting List, Waiting for Customer Approval, Approved Job Order, Ready for Pickup
+		Ongoing – those JO that fall under “Ongoing Repair”
+		Done – those JO that fall under Delivered, Unclaimed and Claimed
+
+		b.	Same goes with the tables: Pending, Ongoing and Done
+		c.	Revenue – will give you feedback on this
+		d.	Same goes when Export to excel
+
+Branch Office
+
+1.	Sales Report> Pie Chart - (DONE)
+	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+
+	Pending – those JO that fall under: Ready for Pickup, Waiting for Customer Approval, Job Order Arriving Today
+	Ongoing – those JO that fall under Ongoing Repair
+	Done – those JO that fall under Unclaimed and Claimed
 
 	b.	Same goes with the tables: Pending, Ongoing and Done
 	c.	Revenue – will give you feedback on this
 	d.	Same goes when Export to excel
 
-Branch Office
+2.	Job Order> Ready for Pick up> View> Set Delivery Date - (HINDI KO MAKITA UNG JS NITO PARA MAKAPAG STRICT AKO SA DATERANGE)
+	a.	Dapat lagi forward date, hindi siya pede mag input ng date in the past
 
-1.	Sales Report> Pie Chart - (DONE)
-a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
 
-Pending – those JO that fall under: Ready for Pickup, Waiting for Customer Approval, Job Order Arriving Today
-Ongoing – those JO that fall under Ongoing Repair
-Done – those JO that fall under Unclaimed and Claimed
+Notes for ALL:
+1. System should be viewable and compatible with Chrome and Firefox - (Hindi ko pa na test ito sa lahat ng browser possible nga na hindi gumana ung ilang plugins ng js. Depende din sa plugin kung ano ung supported nya ng browser version. Or possible din na hindi na updated ung plugin.)
 
-b.	Same goes with the tables: Pending, Ongoing and Done
-c.	Revenue – will give you feedback on this
-d.	Same goes when Export to excel
+Additional:
+1. Any adjustments sa SOA alert client/customer by email. Also viewable sa Client Portal (DONE)
+
+
+Design Testing
+1.	Change Logo – Please find attached Logo - (LOGO CHANGED DONE)
+
 
 
 

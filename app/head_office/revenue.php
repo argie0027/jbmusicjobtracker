@@ -84,20 +84,20 @@
                                                 $query =$db->ReadData($sql); 
                                                  foreach ($query as $key => $value) {
 
-                                                     $qu = "SELECT a.jobid, a.soaid, a.customerid, a.branchid, a.partsid, a.technicianid, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at,a.isdeleted, a.repair_status, b.customerid, b.name, c.branch_id, c.branch_name, d.tech_id, d.name as technam FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d WHERE a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND a.branchid = '".$value['branch_id']."' AND a.isdeleted = '0'  ORDER BY created_at DESC";
+                                                    $qu = "SELECT a.jobid, a.soaid, a.customerid, a.branchid, a.partsid, a.technicianid, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at,a.isdeleted, a.repair_status, b.customerid, b.name, c.branch_id, c.branch_name, d.tech_id, d.name as technam FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d WHERE a.jobclear = 0 AND a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND a.branchid = '".$value['branch_id']."' AND a.isdeleted = '0'  ORDER BY created_at DESC";
                                                     $getcountjob = $db->ReadData($qu);
                                                     $jobcount = $db->GetNumberOfRows();
 
-                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid = '".$value['branch_id']."'";;
+                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid = '".$value['branch_id']."'";;
                                                     $totald =$db->ReadData($selecttechvalue);
 
 
                                                     ?>
-                                                        <tr id="<?php echo $value['branch_id']; ?>" class="clickable">
+                                                        <tr id="<?php echo $value['branch_id']; ?>" data-name = "<?php echo $value['branch_name']; ?>" class="clickable">
                                                             <td><?php echo $value['branch_id']; ?></td>
                                                             <td><?php echo $value['branch_name']; ?></td>
                                                             <td><?php echo $jobcount; ?></td>
-                                                            <td><strong>P</strong> <?php echo number_format($totald[0]['total'],2);?></td>
+                                                            <td><?php echo "<b>P </b>" . number_format($totald[0]['total'],2);?></td>
                                                         </tr>
                                                     <?php 
                                                 }

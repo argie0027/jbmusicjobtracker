@@ -17,7 +17,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         }else{
             $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '".$techid."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved'";
         }
-    	$query3  = $db->ReadData($queryjobs);
+    	$query3 = $db->ReadData($queryjobs);
 
 
     	// $querycurrenttasks = "SELECT jobid FROM `jb_joborder` WHERE technicianid = '".$techid."'";
@@ -25,14 +25,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	// $query2  = $db->ReadData($querycurrenttasks);
 
         $querycurrenttasks = "SELECT * FROM `jb_joborder` WHERE technicianid = '".$techid."' ORDER BY created_at DESC";
-        $query2  = $db->ReadData($querycurrenttasks);
+        $query2 = $db->ReadData($querycurrenttasks);
         $currenttast = "";
 
-        if($query3) {
-            if($query3[0]['repair_status'] == 'Done-Ready for Delivery' || $query3[0]['repair_status'] == 'Claimed' || $query3[0]['repair_status'] == 'Waiting for SOA Approval'){
+        if($query2) {
+            if($query2[0]['repair_status'] != 'Ongoing Repair'){
                 $currenttast['jobid'] = "-";
             } else {
-                $currenttast['jobid'] = $query3[0]['jobid'] . " (".$query3[0]['item'] . ")"; 
+                $currenttast['jobid'] = $query2[0]['jobid'] . " (".$query2[0]['item'] . ")";
             }
         } else {
             $currenttast['jobid'] = "-";

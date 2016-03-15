@@ -1,5 +1,5 @@
 1.	Date – created a new staff today but it does not appear as  “Today” but “Yesterday” - (DONE)
-2.	After filtering done, add a [Remove Filter] button that will reset the changes to show full list - ( San part to?.)
+2.	After filtering done, add a [Remove Filter] button that will reset the changes to show full list - ( REMOVE )
 3.	Permissions -  Can we hide sa side menu yung mga features na-unchecked. Ex: unchecked yung statement of account, is it possible na wala na yung statement of account sa side para wala siyang idea na may statement of account module pla? - (DONE)
 4.	Settings>Staff Lists> Export to Excel - (DONE)
 	a.	Columns in the excel should contain:	
@@ -10,4 +10,62 @@
 7.	Settings>Models> Add
 a.	Provision to add one or more main category and sub categories.. kse may mga parts daw na generic na may fall to most of the categories.. - ( Pag binago natin to may mga tatamaan na table halos lahat ng nasa settings page )
 8.	Settings>Models>Export to Excel - ( Pag binago natin to may mga tatamaan na table halos lahat ng nasa settings page )
+9.	Sales Report> Pie Chart - (DONE)
+	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+
+	Pending – those JO that fall under: Job Order Arriving Today (Main), Waiting List, Waiting for Customer Approval, Approved Job Order, Ready for Pickup
+	Ongoing – those JO that fall under “Ongoing Repair”
+	Done – those JO that fall under Delivered, Unclaimed and Claimed
+
+	b.	Same goes with the tables: Pending, Ongoing and Done
+	c.	Revenue – will give you feedback on this
+	d.	Same goes when Export to excel
+10.	Technicians>View - (DONE) 
+	Job Order ID   -  is the unique JO #
+	Item – Name of the item for repair
+	Start Repair – refers to the date kung kelan niya kinclick yung “Start Repairing” Button
+	Done Repair – refers to the date kung kelan niya kinclick yung “Done Repairing” Button
+	Cost – JO Cost
+	Cant Repair  - a checkmark will appear on this column if the JO’s Cant repair button is clicked
+	Status – is the Dashboard status of the JO
+	b.	Please add: Date Hired after Nickname.
+
+11.	Technician>View>Generate Excel - (DONE and CLEANED)
+
+12.	Technician>Add - (DONE)
+	a.	Please add:  Date Hired
+	b.	Please add: Checkbox for Active
+
+13.	Technician> Edit - (DONE)
+	a.	Please add:  Date Hired
+	b.	Please add: Checkbox for Active
+
+14.	Branch> Branch Revenue> Pie Chart - (DONE)
+a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+
+	Pending – those JO that fall under: Job Order Arriving Today (Main), Waiting List, Waiting for Customer Approval, Approved Job Order, Ready for Pickup
+	Ongoing – those JO that fall under “Ongoing Repair”
+	Done – those JO that fall under Delivered, Unclaimed and Claimed
+
+	b.	Same goes with the tables: Pending, Ongoing and Done
+	c.	Revenue – will give you feedback on this
+	d.	Same goes when Export to excel
+
+Branch Office
+
+1.	Sales Report> Pie Chart - (DONE)
+a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+
+Pending – those JO that fall under: Ready for Pickup, Waiting for Customer Approval, Job Order Arriving Today
+Ongoing – those JO that fall under Ongoing Repair
+Done – those JO that fall under Unclaimed and Claimed
+
+b.	Same goes with the tables: Pending, Ongoing and Done
+c.	Revenue – will give you feedback on this
+d.	Same goes when Export to excel
+
+
+
+
+
 

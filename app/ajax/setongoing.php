@@ -18,6 +18,9 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         $update_techstatus = $db->ExecuteQuery($update_tech); 
     }
 
+    $tech_stats = "INSERT INTO `tech_statistic`(`techid`, `jobid`, `date_start`, `created_at`) VALUES ('".$getTechIdQuery[0]['technicianid']."','".$id."','".dateToday()."','".dateToday()."')";
+    $inserttectstas = $db->InsertData($tech_stats);
+
     $sql = "UPDATE jb_joborder SET repair_status = 'Ongoing Repair', date_delivery = '0000-00-00', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
     $query = $db->InsertData($sql);
     $notif = split(',', NOTIF);

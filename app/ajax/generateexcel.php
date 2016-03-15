@@ -331,7 +331,7 @@ else if($type == "joborder"){
             $currenttast = "";
 
             if($query) {
-                if($query[0]['repair_status'] == 'Done-Ready for Delivery' || $query[0]['repair_status'] == 'Claimed'){
+                if($query[0]['repair_status'] != 'Ongoing Repair'){
                     $currenttast = "-";
                 } else {
                     $currenttast =  $query[0]['jobid'] . " (". $query[0]['item'] . ")"; 
@@ -340,15 +340,14 @@ else if($type == "joborder"){
                 $currenttast = "-";
             }
 
-            $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."'";
+            $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
             $totald =$db->ReadData($selecttechvalue);
             ?>
                 <tr id="<?php echo $value['tech_id']; ?>" class="clickable">
                     <td><?php echo $value['tech_id']; ?></td>
                     <td><?php echo $value['name']; ?></td>
                     <td><?php echo $currenttast; ?> </td>
-                    <td><?php 
-                     echo "<b>P </b>" . number_format($totald[0]['total'],2);?></td>
+                    <td><?php echo "<b>P </b>" . number_format($totald[0]['total'],2);?></td>
                     <td>
                         <?php
                             if($value['status'] == 1) {
@@ -383,16 +382,30 @@ else if($type == "joborder"){
             foreach ($selectparts as $key => $value) {
                 $techid = $value['tech_id'];
                 $query  ="SELECT item, jobid FROM jb_joborder WHERE technicianid = '".$value['tech_id']."'";
-                                                    $query =$db->ReadData($query); 
-                             $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."'";;
-                                                    $totald =$db->ReadData($selecttechvalue);                       
+                $query = $db->ReadData($query); 
+                $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
+                $totald =$db->ReadData($selecttechvalue);
+
+                $queryStatTech  ="SELECT * FROM jb_joborder WHERE technicianid = '".$value['tech_id']."' ORDER BY created_at DESC";
+                $queryStatTech =$db->ReadData($queryStatTech);
+
+                $currenttast = "";
+
+                if($queryStatTech) {
+                    if($queryStatTech[0]['repair_status'] != 'Ongoing Repair'){
+                        $currenttast = "-";
+                    } else {
+                        $currenttast =  $queryStatTech[0]['jobid'] . " (". $queryStatTech[0]['item'] . ")"; 
+                    }
+                } else {
+                    $currenttast = "-";
+                }                    
                 ?>
                 <tr>
                     <td><?php echo $value['tech_id']; ?></td>
                     <td><?php echo $value['name']; ?></td>
-                    <td><?php if(isset($query[0]['jobid'])) { echo $query[0]['jobid']; } ?> : <?php if(isset($query[0]['item'])) { echo $query[0]['item']; } ?> </td>
-                    <td><?php 
-                    echo $totald[0]['total'];?></td>
+                    <td><?php echo $currenttast; ?> </td>
+                    <td><b>P </b><?php echo number_format($totald[0]['total'], 2);?></td>
                     <td>
                         <?php
                             if($value['status'] == 1) {
@@ -409,13 +422,16 @@ else if($type == "joborder"){
             }
         ?>
 </table>
-<h3 class="box-title">Job Order Done History</h3>
+<h3 class="box-title">Job Order History</h3>
 <table border="1">
     <tbody>
         <tr>
             <th style="width: 60px">Job ID</th>
             <th>Item</th>
+            <th>Start Repair</th>
+            <th>Done Repair</th>
             <th>Cost</th>
+            <th style="width: 90px">Cant Repair</th>
             <th style="width: 40px">Status</th>
         </tr>
         <?php
@@ -423,20 +439,25 @@ else if($type == "joborder"){
             $checkifstat = "SELECT * FROM tech_statistic where techid = '".$techid."'";
             $tcheck  = $db->ReadData($checkifstat);
             if($tcheck){
-                $queryjobs = "SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status FROM tech_statistic a, jb_cost b, jb_joborder c WHERE c.jobclear = 0 AND a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '".$techid."'";
+                $queryjobs = "SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear, DATE_FORMAT(a.date_start, '%d %b %Y') as date_start , DATE_FORMAT(a.date_done, '%d %b %Y') as date_done FROM tech_statistic a, jb_cost b, jb_joborder c WHERE a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '".$techid."'";
             }else{
-               $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status FROM jb_cost b, jb_joborder c WHERE c.jobclear = 0 AND b.jobid = c.jobid AND c.technicianid = '".$techid."'";
+                $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '".$techid."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved'";
             }
             $query3  = $db->ReadData($queryjobs);
             ?>
-        <tr>
+
             <?php foreach ($query3 AS $value): ?>
-            <td><?php echo $value['jobid']; ?></td>
-            <td><?php echo $value['item']; ?></td>
-            <td><b>P </b><?php echo $value['totalpartscost'] + $value['service_charges']; ?></td>
-            <td><span class="badge bg-green"><?php echo $value['repair_status']; ?></span></td>
-        <?php endforeach; ?>
-        </tr>
+            <?php $cantre = ($value['jobclear'] == 0 ) ? 'No' : 'Yes'; ?>
+            <tr>
+                <td><?php echo $value['jobid']; ?></td>
+                <td><?php echo $value['item']; ?></td>
+                <td><?php echo $value['date_start']; ?></td>
+                <td><?php echo $value['date_done']; ?></td>
+                <td><b>P </b><?php echo number_format($value['totalpartscost'] + $value['service_charges'], 2); ?></td>
+                <td><?php echo $cantre;?></td>
+                <td><span class="badge bg-green"><?php echo $value['repair_status']; ?></span></td>
+            </tr>
+            <?php endforeach; ?>
     </tbody>
 </table>
 <?php
@@ -454,27 +475,20 @@ else if($type == "joborder"){
     $getalljobforbranch  = $db->ReadData($getalljobforbranch2);
     $jobcounter = $db->GetNumberOfRows();
 
-    $ongoing = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
 
+    $ongoing = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $ongoingquery  = $db->ReadData($ongoing);
     $ongoingre = $db->GetNumberOfRows();
 
-    $pending = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status <> 'Claimed'  AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $pending = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status <> 'Claimed'  AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobfosdfrbranch  = $db->ReadData($pending);
     $pendingre = $db->GetNumberOfRows();
 
-    $unclaim = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ready for Claiming' AND YEAR(created_at) = '".$currtYear."'".$range2."";
-    $getalljobforsdfbranch  = $db->ReadData($unclaim);
-    $unclaimre = $db->GetNumberOfRows();
 
-    $pendingitem = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Waiting List' AND YEAR(created_at) = '".$currtYear."'".$range2."";
-    $pendingitem  = $db->ReadData($pendingitem);
-    $pendingitem = $db->GetNumberOfRows();
-
-
-    $claimed = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Claimed' AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $claimed = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getallsdfjobforbranch  = $db->ReadData($claimed);
     $claimedre = $db->GetNumberOfRows();
+
 
 	 $jan = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $jan  = $db->ReadData($jan);
@@ -522,10 +536,9 @@ else if($type == "joborder"){
         <tr>
             <th>Total Job Order</th>
             <th>Revenue</th>
-            <th>Pending Items</th>
-            <th>Ongoing Job Order</th>
-            <th>Unclaimed Items</th>
-            <th>Claimed Items</th>
+            <th>Pending Job Orders</th>
+            <th>Ongoing Job Orders</th>
+            <th>Done Job Orders</th>
         </tr>
         <tr>
             <td><?php echo $jobcounter;?></td>
@@ -538,9 +551,8 @@ else if($type == "joborder"){
                 echo "<b>P</b> ". number_format($totald[0]['total'],2);
               ?>
             </td>
-            <td><?php echo $pendingitem;?></td>
+            <td><?php echo $pendingre;?></td>
             <td><?php echo $ongoingre;?></td>
-            <td><?php echo $unclaimre;?></td>
             <td> <?php echo $claimedre;?></td>
         </tr>
         
@@ -939,23 +951,16 @@ else if($type == "joborder"){
     $getalljobforbranch  = $db->ReadData($getalljobforbranch2);
     $jobcounter = $db->GetNumberOfRows();
 
-    $ongoing = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
 
+    $ongoing = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $ongoingquery  = $db->ReadData($ongoing);
     $ongoingre = $db->GetNumberOfRows();
 
-    $pending = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status <> 'Claimed'  AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $pending = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobfosdfrbranch  = $db->ReadData($pending);
     $pendingre = $db->GetNumberOfRows();
 
-    $unclaim = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status = 'Ready for Claiming' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-    $getalljobforsdfbranch  = $db->ReadData($unclaim);
-    $unclaimre = $db->GetNumberOfRows();
-    $pendingitem = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-    $pendingitem  = $db->ReadData($pendingitem);
-    $pendingitem = $db->GetNumberOfRows();
-
-    $claimed = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status = 'Claimed' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $claimed = "SELECT *  from jb_joborder WHERE jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getallsdfjobforbranch  = $db->ReadData($claimed);
     $claimedre = $db->GetNumberOfRows();
 
@@ -1008,9 +1013,8 @@ else if($type == "joborder"){
             <th>Total Job Order</th>
             <th>Revenue</th>
             <th>Pending Job Orders</th>
-            <th>Ongoing Job Order</th>
-            <th>Unclaimed Items</th>
-            <th>Claimed Items</th>
+            <th>Ongoing Job Orders</th>
+            <th>Done Job Orders</th>
         </tr>
         <tr>
             <td><?php echo $jobcounter;?></td>
@@ -1023,9 +1027,8 @@ else if($type == "joborder"){
 
                 ?>
             </td>
-            <td><?php echo $pendingitem;?></td>
+            <td><?php echo $pendingre;?></td>
             <td><?php echo $ongoingre;?></td>
-            <td><?php echo $unclaimre;?></td>
             <td> <?php echo $claimedre;?></td>
         </tr>
     </table>

@@ -98,9 +98,9 @@
                                             <?php 
                                                 if(isset($_GET['daterange'])){
                                                     $bydate = split ("to", $_GET['daterange']);
-                                                    $sql = "SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' AND tech_id <> 1 AND isdeleted <> 1";
+                                                    $sql = "SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' AND isdeleted <> 1";
                                                 }else{
-                                                    $sql = "SELECT * FROM `jb_technicians` WHERE tech_id <> 1 AND isdeleted <> 1";
+                                                    $sql = "SELECT * FROM `jb_technicians` WHERE isdeleted <> 1";
                                                 }
                                                 $queryforexcel = $sql;
                                                 $query =$db->ReadData($sql); 
@@ -122,15 +122,14 @@
                                                         $currenttast = "-";
                                                     }
 
-                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."'";
+                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
                                                     $totald =$db->ReadData($selecttechvalue);
                                                     ?>
                                                         <tr id="<?php echo $value['tech_id']; ?>" class="clickable">
                                                             <td><?php echo $value['tech_id']; ?></td>
                                                             <td><?php echo $value['name']; ?></td>
                                                             <td><?php echo $currenttast; ?> </td>
-                                                            <td><?php 
-                                                             echo "<b>P </b>" . number_format($totald[0]['total'],2);?></td>
+                                                            <td><?php echo "<b>P </b>" . number_format($totald[0]['total'],2);?></td>
                                                             <td>
                                                                 <?php
                                                                     if($value['status'] == 1) {
@@ -183,6 +182,18 @@
                 <label>Nickname:</label>
                 <input type="text" name="nickname" class="form-control" placeholder="Nickname ">
             </div>
+            <div class="form-group col-xs-6">
+                <label>Date Hired:</label>
+                <input type="date" name="datehired" class="form-control" placeholder="Date Hired">
+            </div>
+            <div class="form-group col-xs-6">
+                <label>Technician Status:</label>
+                <select class="form-control" name="techstatus">
+                    <option></option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
                 <div class="clear"></div>
            <div class="modal-footer clearfix">
                 <button type="button" class="btn btnmc " data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
@@ -223,6 +234,18 @@
             <div class="form-group col-xs-6">
                 <label>Nickname:</label>
                 <input type="text" name="enickname" class="form-control" placeholder="Nickname ">
+            </div>
+            <div class="form-group col-xs-6">
+                <label>Date Hired:</label>
+                <input type="date" name="edatehired" class="form-control" placeholder="Date Hired">
+            </div>
+            <div class="form-group col-xs-6">
+                <label>Technician Status:</label>
+                <select class="form-control" name="etechstatus">
+                    <option></option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
             </div>
                 <div class="clear"></div>
            <div class="modal-footer clearfix">
@@ -274,6 +297,7 @@
                                 <strong>Email Address: </strong><span class="eemail"></span><br>
                                 <strong>Address: </strong><span class="eaddress"></span><br>
                                 <strong>Nickname: </strong><span class="enick"></span><br>
+                                <strong>Date Hired: </strong><span class="edatehired"></span><br>
                             </address>
                         </div><!-- /.col -->
                         <div class="col-sm-4 invoice-col">
@@ -289,7 +313,7 @@
                 <section>
                      <div class="col-xs-12">
                                 <div class="box-header">
-                                    <h3 class="box-title">Job Order Done History</h3>
+                                    <h3 class="box-title">Job Order History</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
                                     <table class="table table-bordered tasklist">
@@ -367,7 +391,7 @@
                         var filter = $('#example1_filter label input').val();
 
                         if ( filter.length ) {
-                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' AND tech_id <> 1 AND isdeleted <> 1";
+                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' AND isdeleted <> 1";
                         } else {
                             var query = "<?php echo $queryforexcel; ?>";
                         }
@@ -380,7 +404,7 @@
                         var filter = $('#example1_filter label input').val();
                         
                         if ( filter.length ) {
-                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND tech_id <> 1 AND isdeleted <> 1";
+                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND isdeleted <> 1";
                         } else {
                             var query = "<?php echo $queryforexcel; ?>";
                         }
@@ -463,7 +487,7 @@
 
                     if(ID) {
                         
-                        $('.tasklist').html('<tr><th style="width: 60px">Job ID</th><th>Item</th><th>Cost</th><th style="width: 40px">Status</th></tr>');
+                        $('.tasklist').html('<tr><th style="width: 60px">Job ID</th><th>Item</th><th>Start Repair</th><th>Done Repair</th><th>Cost</th><th style="width: 90px">Cant Repair</th><th style="width: 40px">Status</th></tr>');
                          $.ajax({
                         type: 'POST',
                         url: '../ajax/viewtechfull.php',
@@ -480,6 +504,7 @@
                             $('.eemail').html(" " + obj.response[0].email);
                             $('.eaddress').html(" " + obj.response[0].address);
                             $('.enick').html(" " + obj.response[0].nickname);
+                            $('.edatehired').html(" " + obj.response[0].date_hired);
                             if(obj.response[0].status == '1'){
                                 $('.estatus').html('<small class="badge col-centered bg-yellow">Not Available</small>');
                             }else{
@@ -490,10 +515,15 @@
                              
                             for (var i = 0; i < obj.response3.length; i++) {
                                 var total = parseFloat(obj.response3[i].totalpartscost) + parseFloat(obj.response3[i].service_charges) + parseFloat(obj.response3[i].total_charges);
-                                totalearnings = totalearnings +  total; 
-                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td><b>P </b><span class="number">'+ total +'</span></td><td><span class="badge bg-green">'+obj.response3[i].repair_status+'</span></td></tr>');
+                                totalearnings = (obj.response3[i].jobclear == 0) ? totalearnings + total : totalearnings; 
+
+                                var cantRep = (obj.response3[i].jobclear == 0) ? '<i class="fa fa-times"></i>' : '<i class="fa fa-check"></i>';
+                                var dateStart = (obj.response3[i].date_start != null) ? obj.response3[i].date_start : '-';
+                                var dateDone = (obj.response3[i].date_done != null) ? obj.response3[i].date_done : '-';
+
+                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td>'+dateStart+'</td><td>'+dateDone+'</td><td><b>P </b><span class="number">'+ total +'</span></td><td class="text-center">'+cantRep+'</td><td><span class="badge bg-green">'+obj.response3[i].repair_status+'</span></td></tr>');
                             };
-                             $('.eearnings').html("<b>P </b> "+totalearnings);
+                             $('.eearnings').html("<b>P </b> <span class='number'>"+totalearnings+"</span>");
                              $('.number').number( true, 2 );
                         }
                     });
@@ -521,11 +551,14 @@
                         success: function(e){
                             
                             var obj = jQuery.parseJSON(e);
-                             $("[name=etechname]").val(obj.response[0].name);
+                            $("[name=etechname]").val(obj.response[0].name);
                             $("[name=eemail]").val(obj.response[0].email);
                             $("[name=enumber]").val(obj.response[0].number);
                             $("[name=eaddress]").val(obj.response[0].address);
                             $("[name=enickname]").val(obj.response[0].nickname);
+                            $("[name=edatehired]").val(obj.response[0].date_hired);
+                            $("[name=etechstatus] option[value='"+obj.response[0].tech_status+"']").attr('selected', 'selected');
+                            console.log(obj.response[0].date_hired);
                         }
                     });
                 }else {
@@ -577,6 +610,12 @@
                         },
                         "nickname":{
                         required: true
+                        },
+                        "datehired":{
+                        required: true
+                        },
+                        "techstatus":{
+                        required: true
                         }
                     },
                     // Specify the validation error messages
@@ -592,10 +631,16 @@
                     minlength: "Your number must be at least 7 interger long."
                     },
                     address:{
-                    required: "Please provide a Address"
+                    required: "Please provide a address"
                     },
                     nickname:{
-                    required: "Please select nickname"
+                    required: "Please provide nickname"
+                    },
+                    datehired:{
+                    required: "Please provide date hired"
+                    },
+                    techstatus:{
+                    required: "Please select technician status"
                     }
                     },
                     submitHandler: function(form) {
@@ -609,7 +654,9 @@
                                 email: $("[name=email]").val(),
                                 number: $("[name=number]").val(),
                                 address: $("[name=address]").val(),
-                                nickname: $("[name=nickname]").val()
+                                nickname: $("[name=nickname]").val(),
+                                datehired: $("[name=datehired]").val(),
+                                techstatus: $("[name=techstatus]").val()
                             },
                             success: function(e){
                                     
@@ -624,7 +671,7 @@
 
 
 
- $("#edittech").validate({
+                $("#edittech").validate({
                     errorElement: 'p',
                     // Specify the validation rules
                     rules: {
@@ -646,6 +693,12 @@
                         },
                         "enickname":{
                         required: true
+                        },
+                        "edatehired":{
+                        required: true
+                        },
+                        "etechstatus":{
+                        required: true
                         }
                     },
                     // Specify the validation error messages
@@ -665,6 +718,12 @@
                     },
                     enickname:{
                     required: "Please select nickname"
+                    },
+                    edatehired:{
+                    required: "Please provide date hired"
+                    },
+                    etechstatus:{
+                    required: "Please select technician status"
                     }
                     },
                     submitHandler: function(form) {
@@ -679,6 +738,8 @@
                                 number: $("[name=enumber]").val(),
                                 address: $("[name=eaddress]").val(),
                                 nickname: $("[name=enickname]").val(),
+                                datehired: $("[name=edatehired]").val(),
+                                techstatus: $("[name=etechstatus]").val(),
                                 id: ID
                             },
                             success: function(e){

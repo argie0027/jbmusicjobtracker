@@ -11,11 +11,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $sql = "UPDATE jb_joborder SET repair_status = 'Done-Ready for Delivery', date_delivery = '0000-00-00', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
     $query = $db->ExecuteQuery($sql);
     if($query) {
-    	$udaptetechstatus = "UPDATE `jb_technicians` SET `status` = '0', `updated_at` = '".dateToday()."' WHERE `jb_technicians`.`tech_id` ='".$techid."'";
+    	$udaptetechstatus = "UPDATE `jb_technicians` SET `status` = '0', `updated_at` = '".dateToday()."' WHERE `tech_id` ='".$techid."'";
     	$updatetechstat = $db->ExecuteQuery($udaptetechstatus);
 
-    	$tech_stats = "INSERT INTO `tech_statistic`(`techid`, `jobid`,`created_at`) VALUES ('".$techid."','".$id."','".dateToday()."')";
-    	$inserttectstas = $db->InsertData($tech_stats);
+    	// $tech_stats = "INSERT INTO `tech_statistic`(`techid`, `jobid`,`created_at`) VALUES ('".$techid."','".$id."','".dateToday()."')";
+    	// $inserttectstas = $db->InsertData($tech_stats);
+
+        $tech_stats = "UPDATE `tech_statistic` SET `date_done` = '".dateToday()."', `updated_at` = '".dateToday()."' WHERE `jobid` = '".$id."'";
+        $inserttectstas = $db->ExecuteQuery($tech_stats); 
 
         $notif = split(',', NOTIF);
         $nofi = "INSERT INTO `notitemp`(`jobid`, `branch_id`, `user`, `status_type`, `isViewed`,`created_at`) VALUES ('".$id."','".$_SESSION['Branchid']."','".$_SESSION['Branchname']."','".$notif[5]."','0','".dateToday()."')";

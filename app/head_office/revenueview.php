@@ -133,32 +133,21 @@
                                 $range = " AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'";
                             }
 
+
                             $getalljobforbranch2 = "SELECT * FROM `jb_joborder` WHERE  jobclear = 0 AND branchid = '".$id."' AND YEAR(created_at) = '".$currtYear."' ".$range."";
                             $getalljobforbranch  = $db->ReadData($getalljobforbranch2);
                             $jobcounter = $db->GetNumberOfRows();
 
                             $ongoing = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range."";
-
                             $ongoingquery  = $db->ReadData($ongoing);
                             $ongoingre = $db->GetNumberOfRows();
 
                             $pending = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status <> 'Claimed'  AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range."";
-      
                             $getalljobfosdfrbranch  = $db->ReadData($pending);
                             $pendingre = $db->GetNumberOfRows();
 
-                            $unclaim = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ready for Claiming' AND YEAR(created_at) = '".$currtYear."' ".$range = '';
 
-                            $getalljobforsdfbranch  = $db->ReadData($unclaim);
-                            $unclaimre = $db->GetNumberOfRows();
-
-                            $pendingitem = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Waiting List' AND YEAR(created_at) = '".$currtYear."' ".$range."";
-                            $pendingitem  = $db->ReadData($pendingitem);
-                            $pendingitem = $db->GetNumberOfRows();
-
-
-                            $claimed = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Claimed' AND YEAR(created_at) = '".$currtYear."' ".$range."";
-
+                            $claimed = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range."";
                             $getallsdfjobforbranch  = $db->ReadData($claimed);
                             $claimedre = $db->GetNumberOfRows();
 
@@ -411,11 +400,6 @@
                                 highlight: "#5AD3D1",
                                 label: "Claimed"
                             }, {
-                                value: <?php echo $unclaimre;?>,
-                                color: "#FDB45C",
-                                highlight: "#FFC870",
-                                label: "Unclaim"
-                            }, {
                                 value: <?php echo $ongoingre;?>,
                                 color: "#949FB1",
                                 highlight: "#A8B3C5",
@@ -447,10 +431,9 @@
                                         <tr>
                                             <th>Total Job Order</th>
                                             <th>Revenue</th>
-                                            <th>Pending Items</th>
-                                            <th>Ongoing Job Order</th>
-                                            <th>Unclaimed Items</th>
-                                            <th>Claimed Items</th>
+                                            <th>Pending Job Orders</th>
+                                            <th>Ongoing Job Orders</th>
+                                            <th>Done Job Orders</th>
                                         </tr>
                                         <tr>
                                             <td><?php echo $jobcounter;?></td>
@@ -467,9 +450,8 @@
                                                 echo "<b>P</b> ". number_format($totald[0]['total'],2);
                                               ?>
                                             </td>
-                                            <td><?php echo $pendingitem;?></td>
+                                            <td><?php echo $pendingre;?></td>
                                             <td><?php echo $ongoingre;?></td>
-                                            <td><?php echo $unclaimre;?></td>
                                             <td> <?php echo $claimedre;?></td>
                                         </tr>
                                         

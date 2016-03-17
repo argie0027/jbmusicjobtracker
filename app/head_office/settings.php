@@ -603,23 +603,23 @@
                         </div>
                         <div class="form-group col-xs-12">
                             <label>Brand Name:</label>
-                            <?php $brands = "SELECT * FROM jb_brands ORDER BY created_at DESC";
+                            <?php $brands = "SELECT * FROM jb_brands ORDER BY created_at ASC";
                                   $brandsquery = $db->ReadData($brands); ?>
                             <select class="form-control" name="modelbrand">
                                 <option></option>
                                 <?php foreach ($brandsquery as $key => $brand) : ?>
-                                <option value="<?=$brand['brandid']?>"><?=$brand['brandname']?></option>
+                                <option value="<?=$brand['brandid']?>"><?=$brand['brandname'];?></option>
                                 <? endforeach; ?>
                             </select>
                         </div>
                         <div class="form-group col-xs-6">
                             <label>Main Category:</label>
-                            <?php $category = "SELECT * FROM jb_partscat ORDER BY created_at DESC";
+                            <?php $category = "SELECT * FROM jb_partscat ORDER BY created_at ASC";
                                   $categoryquery = $db->ReadData($category); ?>
                             <select class="form-control" name="modelcategory">
                                 <option></option>
                                 <?php foreach ($categoryquery as $key => $category) : ?>
-                                <option value="<?=$category['cat_id']?>"><?=$category['category']?></option>
+                                <option value="<?=$category['cat_id']?>"><?=$category['category'];?> <?php if($category['generic'] == 'yes') :?>( Generic )<?php endif;?></option>
                                 <? endforeach; ?>
                             </select>
                         </div>
@@ -787,6 +787,14 @@
                                 <label>Main Category:</label>
                                 <input type="text" name="category" data-customer-id="" class="form-control" placeholder="Main Category">
                             </div>
+                            <div class="form-group col-xs-12">
+                                <label>Generic:</label>
+                                <select class="generic" name="generic">
+                                    <option value=""></option>
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+                            </div>
                             <div class="form-group col-xs-12 form-subcategory">
                                 <label>Sub Category:</label>
                                 <input type="text" name="subcategory" data-customer-id="" class="form-control" placeholder="Sub Category">
@@ -917,6 +925,14 @@
                     <div class="form-group col-xs-12">
                         <label>Main Category:</label>
                         <input type="text" name="ecategory" data-customer-id="" class="form-control" placeholder="Main Category">
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <label>Generic:</label>
+                        <select class="generic" name="egeneric">
+                            <option value=""></option>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
                     </div>
                 </div>
 
@@ -1546,6 +1562,7 @@
                             var obj = jQuery.parseJSON(e);
 
                             $('input[name="ecategory"]').val(obj.response[0].category);
+                            $('select[name="egeneric"] option[value="'+obj.response[0].generic+'"]').prop('selected', true);
 
                             var selectSecPart = $('#createcategory .form-subcategory:last-child').find('.subcategory-partfree').clone();
                             var selecSecDiag = $('#createcategory .form-subcategory:last-child').find('.subcategory-diagnosticfree').clone();
@@ -2874,6 +2891,9 @@
                         required: true,
                         minlength:3
                     },
+                    "generic":{
+                        required: true,
+                    }
                 },
                 submitHandler: function(form) {
                     $('.modald').fadeIn('slow');
@@ -2883,6 +2903,7 @@
                         data: {
                             action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                             category: $("[name=category]").val(),
+                            generic: $("[name=generic]").val(),
                             subcategory: $("[name='subcategory']").map(function(){ return $(this).val(); }).get(),
                             subcategoryPartFree: $("[name='subcategory-partfree']").map(function(){ return $(this).val(); }).get(),
                             subcategoryDiagnosticFree: $("[name='subcategory-diagnosticfree']").map(function(){ return $(this).val(); }).get() 
@@ -2947,6 +2968,9 @@
                         "ecategory":{
                             required: true,
                             minlength:3
+                        },
+                        "egeneric":{
+                            required: true,
                         }
                     },
                     submitHandler: function(form) {
@@ -2958,6 +2982,7 @@
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                                 id: ID,
                                 category: $("#editcategory [name=ecategory]").val(),
+                                generic: $("[name=egeneric]").val(),
                                 subcategory: $("#editcategory [name='subcategory']").map(function(){ return $(this).val(); }).get(),
                                 subcategoryPartFree: $("#editcategory [name='subcategory-partfree']").map(function(){ return $(this).val(); }).get(),
                                 subcategoryDiagnosticFree: $("#editcategory [name='subcategory-diagnosticfree']").map(function(){ return $(this).val(); }).get()  

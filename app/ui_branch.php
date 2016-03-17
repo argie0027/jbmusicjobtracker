@@ -618,7 +618,7 @@ function loginscript(){
 
 function createJobForm($option = false, $diagnosis = false) {
         global $db;
-        $sqlForMainCategory = "SELECT * FROM jb_partscat ORDER BY created_at DESC";
+        $sqlForMainCategory = "SELECT * FROM jb_partscat ORDER BY created_at ASC";
         $queryCategory = $db->ReadData($sqlForMainCategory);
 
         ?>
@@ -723,7 +723,7 @@ function createJobForm($option = false, $diagnosis = false) {
                     <select class="form-control" name="maincategory" id="maincategory">
                     <option></option>
                     <? foreach ($queryCategory as $key => $value) :?>
-                        <option value="<?php echo $value['cat_id'];?>"><?php echo $value['category']; ?></option>
+                        <option value="<?php echo $value['cat_id'];?>"><?php echo $value['category']; ?> <?php if($value['generic'] == 'yes') :?>( Generic )<?php endif;?></option>
                     <? endforeach ;?>
                     </select>
                 </div>

@@ -8,11 +8,12 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $id = trim(filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $categoryName = trim(ucwords(strtolower(filter_input(INPUT_POST, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
+    $generic = trim(filter_input(INPUT_POST, 'generic', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $subcategory = $_POST['subcategory'];
     $partfree = $_POST['subcategoryPartFree'];
     $diagnosticfree = $_POST['subcategoryDiagnosticFree'];
 
-    $checker = "UPDATE `jb_partscat` SET `category` = '".$categoryName."', `updated_at` = '".dateToday()."' WHERE `cat_id` = '".$id."'";
+    $checker = "UPDATE `jb_partscat` SET `category` = '".$categoryName."', `generic` = '".$generic."', `updated_at` = '".dateToday()."' WHERE `cat_id` = '".$id."'";
  	$query = $db->ExecuteQuery($checker);
 
     /* EXCLUDE */

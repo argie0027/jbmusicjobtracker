@@ -5,11 +5,12 @@ $request = filter_input(INPUT_POST, 'action');
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
 
     $category = trim(ucwords(strtolower(filter_input(INPUT_POST, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
+    $generic = trim(filter_input(INPUT_POST, 'generic', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $subcategory = $_POST['subcategory'];
     $partfree = $_POST['subcategoryPartFree'];
     $diagnosticfree = $_POST['subcategoryDiagnosticFree'];
 
-    $insertCategory = "INSERT INTO `jb_partscat`(`category`,`created_at`) VALUES ('".$category."','".dateToday()."')";
+    $insertCategory = "INSERT INTO `jb_partscat`(`category`, `generic`, `created_at`) VALUES ('".$category."','".$generic."','".dateToday()."')";
     $query = $db->InsertData($insertCategory);
     $lastcategoryid = $db->GetLastInsertedID();
 

@@ -110,9 +110,9 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
 
                             if(isset($_GET['daterange'])){
                                 $bydate = split ("to", $_GET['daterange']);
-                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' group by part_id order by created_at desc";
+                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' group by part_id order by created_at ASC";
                             }else{
-                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 group by part_id order by created_at desc";
+                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 group by part_id order by created_at ASC";
                             }
 
                             $queryforexcel = $sql;
@@ -235,7 +235,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                                 <select class="form-control" name="models">
                                     <option></option>
                                     <?php
-                                    $qu = "SELECT * FROM `jb_models` ORDER BY created_at DESC";
+                                    $qu = "SELECT * FROM `jb_models` ORDER BY created_at ASC";
                                     $query = $db->ReadData($qu);
                                     foreach ($query as $key => $value) {
                                         echo "<option value=\"" . $value['modelid'] . "\">" . $value['modelname'] . "</option> ";

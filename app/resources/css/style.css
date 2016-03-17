@@ -662,7 +662,7 @@ margin-top: -15px;
   border-bottom: 0;
   margin-bottom: 0;
 }
-.form-subcategory select {
+.form-subcategory select, select.generic {
   display: block;
   padding: 5px;
   width: 105px;

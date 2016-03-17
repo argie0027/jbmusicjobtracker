@@ -98,9 +98,9 @@
                                             <?php 
                                                 if(isset($_GET['daterange'])){
                                                     $bydate = split ("to", $_GET['daterange']);
-                                                    $sql = "SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' AND isdeleted <> 1";
+                                                    $sql = "SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' AND tech_id <> 1 AND isdeleted <> 1";
                                                 }else{
-                                                    $sql = "SELECT * FROM `jb_technicians` WHERE isdeleted <> 1";
+                                                    $sql = "SELECT * FROM `jb_technicians` WHERE tech_id <> 1 AND isdeleted <> 1";
                                                 }
                                                 $queryforexcel = $sql;
                                                 $query =$db->ReadData($sql); 
@@ -386,38 +386,34 @@
              $('#createexcel').on('click', function(){
 
                 <?php if(isset($_GET['daterange'])) { ?>
-                        var daterange = getUrlParameter('daterange').split('to');
-                        var filter = $('#example1_filter label input').val();
+                    var daterange = getUrlParameter('daterange').split('to');
+                    var filter = $('#example1_filter label input').val();
 
-                        if ( filter.length ) {
-                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' AND isdeleted <> 1";
-                        } else {
-                            var query = "<?php echo $queryforexcel; ?>";
-                        }
-     
-                        query = query.replace(/%/g,"percentage");
-                        var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
-                        window.location = page;// you can use window.open also
+                    if ( filter.length ) {
+                        var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' AND tech_id <> 1 AND isdeleted <> 1";
+                    } else {
+                        var query = "<?php echo $queryforexcel; ?>";
+                    }
+ 
+                    query = query.replace(/%/g,"percentage");
+                    var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
+                    window.location = page;// you can use window.open also
 
-                    <?php } else { ?>
-                        var filter = $('#example1_filter label input').val();
-                        
-                        if ( filter.length ) {
-                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND isdeleted <> 1";
-                        } else {
-                            var query = "<?php echo $queryforexcel; ?>";
-                        }
+                <?php } else { ?>
+                    var filter = $('#example1_filter label input').val();
+                    
+                    if ( filter.length ) {
+                        var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND tech_id <> 1 AND isdeleted <> 1";
+                    } else {
+                        var query = "<?php echo $queryforexcel; ?>";
+                    }
 
-                        query = query.replace(/%/g,"percentage");
-                        var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
-                        window.location = page;// you can use window.open also
+                    query = query.replace(/%/g,"percentage");
+                    var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
+                    window.location = page;// you can use window.open also
 
-                    <?php } ?>
+                <?php } ?>
 
-                // console.log("<?php echo $queryforexcel; ?>");
-                // var query = "<?php echo $queryforexcel; ?>";
-                // var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=techexcel";
-                // window.location = page;// you can use window.open also
             });
 
 

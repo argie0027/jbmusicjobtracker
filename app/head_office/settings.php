@@ -1733,6 +1733,10 @@
 
             <?php if($_SESSION['position'] == -1): ?>
             $('.permission').on('click',function(){
+
+                $('#permission [type="checkbox"]').parent().removeClass('checked');
+                $('#permission [type="checkbox"]').removeAttr('checked');
+
                 if(ID) {
                     $("#permission").modal("show");
                     $.ajax({

@@ -19,8 +19,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $diagnosis = trim(filter_input(INPUT_POST, 'diagnosis', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $remarks = trim(ucwords(strtolower(filter_input(INPUT_POST, 'remarks', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
     $status = trim(filter_input(INPUT_POST, 'status', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    $date = trim(filter_input(INPUT_POST, 'date', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
 
     $referenceno = trim(filter_input(INPUT_POST, 'referenceno', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $servicefee = trim(filter_input(INPUT_POST, 'servicefee', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -45,7 +43,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     
     if($query) {
         
-    	$joborder_update = "UPDATE jb_joborder SET item='".$itemname."',diagnosis='".$diagnosis."',remarks='".$remarks."',estimated_finish_date='".$date."', isunder_warranty='".$isunder_warranty."', referenceno='".$referenceno."', servicefee='".$servicefee."', catid='".$maincategory."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
+    	$joborder_update = "UPDATE jb_joborder SET item='".$itemname."',diagnosis='".$diagnosis."',remarks='".$remarks."', isunder_warranty='".$isunder_warranty."', referenceno='".$referenceno."', servicefee='".$servicefee."', catid='".$maincategory."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
         $updatejobs = $db->InsertData($joborder_update);
         if($updatejobs){
 

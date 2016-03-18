@@ -492,7 +492,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -523,7 +523,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -554,22 +554,22 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
                         <td> <?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
                         <td> <?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Claimed' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Claimed' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -585,7 +585,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -615,7 +615,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -647,7 +647,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -677,7 +677,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -707,7 +707,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -737,7 +737,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -767,7 +767,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -797,7 +797,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>
@@ -827,7 +827,7 @@
                             ?>
                         </td>
                         <td><?php 
-                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                            $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                             $ongoingquery  = $db->ReadData($ongoing);
                             echo $db->GetNumberOfRows();
                             ?></td>

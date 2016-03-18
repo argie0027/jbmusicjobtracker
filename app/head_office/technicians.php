@@ -183,7 +183,7 @@
             </div>
             <div class="form-group col-xs-6">
                 <label>Date Hired:</label>
-                <input type="date" name="datehired" class="form-control" placeholder="Date Hired">
+                <input type="text" name="datehired" class="form-control sandboxdate" placeholder="Date Hired">
             </div>
             <div class="form-group col-xs-6">
                 <label>Technician Status:</label>
@@ -236,7 +236,7 @@
             </div>
             <div class="form-group col-xs-6">
                 <label>Date Hired:</label>
-                <input type="date" name="edatehired" class="form-control" placeholder="Date Hired">
+                <input type="text" name="edatehired" class="form-control sandboxdate" placeholder="Date Hired">
             </div>
             <div class="form-group col-xs-6">
                 <label>Technician Status:</label>

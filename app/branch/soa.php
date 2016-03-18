@@ -139,6 +139,7 @@
                                                 $queryforexcel = $sql;
                                                 $queryforexcel = str_replace("+", "~~", $queryforexcel);
                                                 $query =$db->ReadData($sql); 
+
                                                 foreach ($query as $key => $value) {
                                                     ?>
                                                         <tr id="<?php echo $value['jobid']; ?>" class="clickable">
@@ -291,7 +292,7 @@
                                 <div class="ongoingrepairhideshow2">
                                  <br>
                                         <label>Delivery Date:</label>
-                                        <input type="date" name="datedelivery" class="form-control" placeholder="Estimated Finish Date">
+                                        <input type="text" name="datedelivery" class="form-control" placeholder="Estimated Finish Date">
                                         <button id="save_donedate" class=" approvedview2 btn bg-green margin"><i class="fa fa-check"> </i> Save Delivery Date</button>
                                 </div>
 

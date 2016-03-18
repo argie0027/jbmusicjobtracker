@@ -25,7 +25,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $diagnosis = trim(filter_input(INPUT_POST, 'diagnosis', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $remarks = trim(ucwords(strtolower(filter_input(INPUT_POST, 'remarks', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
     $status = trim(filter_input(INPUT_POST, 'status', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    $date = trim(filter_input(INPUT_POST, 'date', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     $referenceno = trim(filter_input(INPUT_POST, 'referenceno', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $servicefee = trim(filter_input(INPUT_POST, 'servicefee', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -47,11 +46,11 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     if($query) {
         if($isExisting == 1) {
-            $insertjob = "INSERT INTO `jb_joborder`(`jobid`,`soaid`, `customerid`, `branchid`, `partsid`, `technicianid`, `item`, `diagnosis`, `remarks`, `status_id`, `estimated_finish_date`, `repair_status`, `referenceno`, `servicefee`, `catid`, `isunder_warranty`,`created_at`)". 
-                " VALUES ('". $jobID ."','','".$idSelectedCustomer."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1','".$date."', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."','".dateToday()."')";
+            $insertjob = "INSERT INTO `jb_joborder`(`jobid`,`soaid`, `customerid`, `branchid`, `partsid`, `technicianid`, `item`, `diagnosis`, `remarks`, `status_id`, `repair_status`, `referenceno`, `servicefee`, `catid`, `isunder_warranty`,`created_at`)". 
+                " VALUES ('". $jobID ."','','".$idSelectedCustomer."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."','".dateToday()."')";
          }else{
-            $insertjob = "INSERT INTO `jb_joborder`(`jobid`,`soaid`, `customerid`, `branchid`, `partsid`, `technicianid`,`item`, `diagnosis`, `remarks`, `status_id`, `estimated_finish_date`, `repair_status`, `referenceno`, `servicefee`, `catid`, `isunder_warranty`,`created_at`)". 
-                " VALUES ('". $jobID ."','','".$db->GetLastInsertedID()."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1','".$date."', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."','".dateToday()."')";
+            $insertjob = "INSERT INTO `jb_joborder`(`jobid`,`soaid`, `customerid`, `branchid`, `partsid`, `technicianid`,`item`, `diagnosis`, `remarks`, `status_id`, `repair_status`, `referenceno`, `servicefee`, `catid`, `isunder_warranty`,`created_at`)". 
+                " VALUES ('". $jobID ."','','".$db->GetLastInsertedID()."','".$_SESSION['Branchid']."','--','1','".$itemname."','".$diagnosis."','".$remarks."','1', 'Ready for Delivery', '".$referenceno."', '".$servicefee."', '".$maincategory."', '".$isunder_warranty."','".dateToday()."')";
          }
 
         

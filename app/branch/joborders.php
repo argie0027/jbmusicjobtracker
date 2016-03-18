@@ -187,6 +187,7 @@ $queryforexcel = "";
             </thead>
 <tbody>
     <?php
+
     foreach ($query as $key => $value) {
         $return = "<tr id='".$value['jobid']."' class='clickable'>
             <td>".$value['jobid']."</td>
@@ -1076,8 +1077,6 @@ $queryforexcel = "";
                             $('input[name="eitemname"]').val(obj.response[0].item);
                             $('#eremarks').val(obj.response[0].remarks);
                             $('select[name="ediagnosis"]').val(obj.response[0].diagnosis);
-                            var dat2 = obj.response[0].estimated_finish_date.split("-");
-                            $('input[name="edate"]').val(dat2[0] + "-" + dat2[1] + "-"+ dat2[2]);
 
                             $('.branchnamehere').html(obj.response[0].branch_name);
                             $('.branchaddresshere').html(obj.response[0].branch_address);
@@ -1254,17 +1253,10 @@ $queryforexcel = "";
             required: true,
             minlength:2
             },
-            "edate":{
-            required: true
-            },
             "ediagnosis":{
             required: true,
             minlength:1
             },
-            // "ewarranty_date":{
-            // required: true,
-            // minlength:1
-            // },
             "emaincategory":{
             required: true,
             minlength:1
@@ -1310,15 +1302,9 @@ $queryforexcel = "";
             eitemname:{
             required: "Please provide a Item Name"
             },
-            edate:{
-            required: "Please provide a Date"
-            },
             ediagnosis:{
             required: "Please provide a Diagnosis"
             },
-            // ewarranty_date:{
-            // required: "Please select Purchase Date."
-            // },
             emaincategory:{
             required: "Please select Main Category."
             },
@@ -1350,7 +1336,6 @@ $queryforexcel = "";
                         itemname: $("[name=eitemname]").val(),
                         diagnosis: $("[name=ediagnosis]").val(),
                         remarks: $("[name=eremarks]").val(),
-                        date: $("[name=edate]").val(),
                         referenceno: $("[name=ereferenceno]").val(),
                         servicefee: $("[name=eservicefee]").val(),
                         customerID: customerID,
@@ -1400,16 +1385,10 @@ $queryforexcel = "";
             required: true,
             minlength:2
             },
-            "date":{
-            required: true
-            },
             "diagnosis":{
             required: true,
             minlength:1
             },
-            // "warranty_date":{
-            //     required: true
-            // },
             "maincategory":{
             required: true,
             minlength:1
@@ -1457,9 +1436,6 @@ $queryforexcel = "";
             required: "Please provide a Item Name",
             minlength: "Your item name must be at least 2 characters long"
             },
-            date:{
-            required: "Please provide a Date",
-            },
             diagnosis:{
             required: "Please provide a Diagnosis",
             minlength: "Your diagnosis must be at least 1 characters long"
@@ -1499,7 +1475,6 @@ $queryforexcel = "";
                         itemname: $("[name=itemname]").val(),
                         diagnosis: $("[name=diagnosis]").val(),
                         remarks: $("[name=remarks]").val(),
-                        date: $("[name=date]").val(),
                         referenceno: $("[name=referenceno]").val(),
                         servicefee: $("[name=servicefee]").val(),
                         isExisting: $('#existingc').val(),

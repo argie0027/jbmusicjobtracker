@@ -404,7 +404,7 @@
                             <form id="setdeliverydateformmain" class="change_to_edit" name="createjob" method="post" role="form">
                                 <div class="form-group ">
                                     <label>Set Delivery Date:</label>
-                                <input type="date" name="datedeliverymain" placeholder="Date Delivery.." class="form-control datedelivery">
+                                <input type="text" name="datedeliverymain" placeholder="Date Delivery.." class="form-control datedelivery">
 
                                 <br>
                                 <button type="submit" id="savejob" class="btn btn-success pull-left savesetdatemain "><i class="fa fa-plus"></i>  Save Delivery Date </button>

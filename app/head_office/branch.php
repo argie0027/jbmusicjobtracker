@@ -571,7 +571,7 @@
                             $('.modald').fadeOut('fast');
                             var obj = jQuery.parseJSON(e);
                             $("[name=ebranchname]").val(obj.response2[0].branch_name);
-                            $("[name=ebranchaddress]").val(obj.response[0].address);
+                            $("[name=ebranchaddress]").val(obj.response2[0].address);
                             $("[name=enumber]").val(obj.response2[0].number);
                             $("[name=eemail]").val(obj.response2[0].email);
                             $("[name=efirstname]").val(obj.response[0].firstname);

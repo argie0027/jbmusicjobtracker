@@ -792,6 +792,10 @@
 
             <?php if($_SESSION['position'] == 2): ?>
             $('.permission').on('click',function(){
+                
+                $('#permission [type="checkbox"]').parent().removeClass('checked');
+                $('#permission [type="checkbox"]').removeAttr('checked');
+
                 if(ID) {
                     $("#permission").modal("show");
                     $.ajax({

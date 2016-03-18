@@ -55,6 +55,7 @@ function htmlHeader($dashboard = false)
         <?php } ?>
 
         <link href="<?php echo SITE_CSS_DIR ?>AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo SITE_CSS_DIR ?>bootstrap-datepicker.css" rel="stylesheet" type="text/css" data-noprefix/>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -127,6 +128,7 @@ function htmlHeader($dashboard = false)
             }
           </script>
         <script src="<?php echo SITE_JS_DIR ?>AdminLTE/Chart.min.js" type="text/javascript"></script>
+        
     </head>
     <body class="<?php echo  $dashboard; ?> skin-blue pace-done fixed">
     <div class="notification">
@@ -201,11 +203,12 @@ function htmlFooter($dashboard = false)
         <script src="<?php echo SITE_JS_DIR ?>plugins/colorpicker/bootstrap-colorpicker.min.js" type="text/javascript"></script>
         <!-- bootstrap time picker -->
         <script src="<?php echo SITE_JS_DIR ?>plugins/timepicker/bootstrap-timepicker.min.js" type="text/javascript"></script>
+        <script src="<?php echo SITE_JS_DIR ?>bootstrap-datepicker.js"></script>
 
         <!-- page script -->
         <script type="text/javascript">
              $(function() {
-                //$("#tablecategory").dataTable();
+
                 $('#example1, #tablediagnosis, #tablebrands, #tablemodels, #tablecategory').dataTable({
                     "bPaginate": true,
                     "bLengthChange": true,
@@ -215,6 +218,15 @@ function htmlFooter($dashboard = false)
                     "order": false,
                     "aaSorting":[],
                     "bAutoWidth": false
+                });
+
+                $('input[name="datedeliverymain"], input[name="datedelivery"]').datepicker({
+                    format: 'yyyy-mm-dd',
+                    startDate: new Date()
+                });
+
+                $('.sandboxdate').datepicker({
+                    format: 'yyyy-mm-dd'
                 });
 
                 // $("body").on("contextmenu",function(e){
@@ -896,7 +908,7 @@ function createJobForsadm(){
             </div>
             <div class="form-group col-xs-6">
                  <div class="form-group">
-                    <label>Date:</label> <input type="date" name="date" class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
+                    <label>Date:</label> <input type="text" name="date" class="form-control sandboxdate" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
                 </div><!-- /.form group -->
             </div>
             <div class="form-group col-xs-6">
@@ -1070,7 +1082,7 @@ function createJobForm($option = false, $diagnosis = false){
                 <div class="form-group col-xs-6">
                     <div class="form-group">
                         <label>Warranty Date</label>
-                         <input type="date" name="warranty_date" class="form-control" placeholder="Estimated Finish Date ">
+                         <input type="text" name="warranty_date" class="form-control sandboxdate" placeholder="Estimated Finish Date ">
                     </div>
                 </div>
 
@@ -1112,7 +1124,7 @@ function createJobForm($option = false, $diagnosis = false){
             </div>
             <div class="form-group col-xs-6">
                     <label>Estimated Finish Date:</label>
-                <input type="date" name="date" class="form-control" placeholder="Estimated Finish Date ">
+                <input type="text" name="date" class="form-control sandboxdate" placeholder="Estimated Finish Date ">
             </div>
             <div class="form-group col-xs-12">
                 <label>Remarks:</label>
@@ -1200,7 +1212,7 @@ function editjoborderform($option = false, $diagnosis = false){
                 <div class="form-group col-xs-6">
                     <div class="form-group">
                         <label>Warranty Date</label>
-                         <input type="date" name="ewarranty_date" class="form-control" placeholder="Estimated Finish Date ">
+                         <input type="text" name="ewarranty_date" class="form-control sandboxdate" placeholder="Estimated Finish Date ">
                     </div>
                 </div>
 
@@ -1240,7 +1252,7 @@ function editjoborderform($option = false, $diagnosis = false){
             </div>
             <div class="form-group col-xs-6">
                     <label>Estimated Finish Date:</label>
-                <input type="date" name="edate" class="form-control" placeholder="Estimated Finish Date ">
+                <input type="text" name="edate" class="form-control sandboxdate" placeholder="Estimated Finish Date ">
             </div>
             <div class="form-group col-xs-12">
                 <label>Remarks:</label>

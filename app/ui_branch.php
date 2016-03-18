@@ -218,6 +218,11 @@ function htmlFooter($dashboard = false)
                     startDate: new Date()
                 });
 
+                $('input[name="warranty_date"], input[name="ewarranty_date"]').datepicker({
+                    format: 'yyyy-mm-dd',
+                    endDate: new Date()
+                });
+
                 $('.sandboxdate').datepicker({
                     format: 'yyyy-mm-dd'
                 });
@@ -742,7 +747,7 @@ function createJobForm($option = false, $diagnosis = false) {
                 <div class="form-group col-xs-6">
                     <div class="form-group">
                         <label>Purchase Date</label>
-                        <input type="text" name="warranty_date" class="form-control sandboxdate">
+                        <input type="text" name="warranty_date" class="form-control">
                     </div>
                 </div>
             </div>
@@ -885,7 +890,7 @@ function editjoborderform($option = false, $diagnosis = false){
                 <div class="form-group col-xs-6">
                     <div class="form-group">
                         <label>Purchase Date</label>
-                        <input type="text" name="ewarranty_date" class="form-control sandboxdate">
+                        <input type="text" name="ewarranty_date" class="form-control">
                     </div>
                 </div>
             </div>

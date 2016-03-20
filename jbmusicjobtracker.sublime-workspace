@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"con",
+				"conforme"
+			],
+			[
+				"editpart",
+				"editpartbatch"
+			],
+			[
+				"batch",
+				"batchquantity"
+			],
+			[
+				"warr",
+				"warranty"
+			],
+			[
+				"ew",
+				"ewarranty_date"
+			],
+			[
+				"remove",
+				"removeAttr"
+			],
+			[
+				"jb_",
+				"jb_partscat"
+			],
+			[
+				"DE",
+				"DESC"
+			],
+			[
 				"job",
 				"job_orders"
 			],
@@ -152,10 +184,6 @@
 				"removeAttr"
 			],
 			[
-				"con",
-				"console"
-			],
-			[
 				"new",
 				"newEmailQuery"
 			],
@@ -264,10 +292,6 @@
 				"jb_partscat"
 			],
 			[
-				"jb_",
-				"jb_partssubcat"
-			],
-			[
 				"end",
 				"endforeach"
 			],
@@ -286,10 +310,6 @@
 			[
 				"jbpa",
 				"jb_partssubcat"
-			],
-			[
-				"warr",
-				"warranty_date"
 			],
 			[
 				"wa",
@@ -494,46 +514,41 @@
 			[
 				"le",
 				"length"
-			],
-			[
-				"spl",
-				"split"
-			],
-			[
-				"parse",
-				"parseInt"
-			],
-			[
-				"sp",
-				"split"
-			],
-			[
-				"pars",
-				"parseInt"
-			],
-			[
-				"fu",
-				"function"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"contents": "QA 8\n1.	Profile Page - (DONE)\n	a.	Email address does not update. Kahit na unique naman. - (HOLD)\n2.	We will change the logo. I asked JB na to email us a high-res logo - (PENDING)\n3.	Email goes to Spam - (HOLD)\n4.	Settings> Staff Settings> Edit Staff Information - (HOLD)\n5.	Settings> Main Category> Delete -(DONE)\n6.	Sales Summary - ( DONE )\n7.	Please change all View icons of Mac to this: - ( HOlD )\n8.	Please change all notif to this: - (DONE)\n9.	Technicians> View - (DONE)\n	-[close] button should be at the right side, white font color\n	-make the text [Cancel] na lang like this:\n10.	Technicians>View - (DONE)\n	a.	Dapat may generate excel din ditto sa loob ng view kse need nila ito for reporting\n11.	Technicians>Search Bar - (Datatable plugin na ung may problem dito)\n	a.	Not Responding on  first letter na tinype mo, mag ffilter lang siya on the third letter\n12.	Technician> Add and Edit - (DONE)\n	-form validation  \n13.	Customer> View - (DONE)\na.	Cancel button should be right aligned\n14.	Statement of Accounts> Title - (DONE)\n	-should be “Statements of Account”\n15.	 Client Portal not working - HOLD\n16.	 The JO is under warranty, thus service charge is free; email message is wrong - HOLD\n17.	Yung technician magiging unavailable lang siya kapag nagstart repairing  na.. hindi yung pag ka assign sa kanya unavailable kagad. - (DONE)\n18.	Nagaadd ako ng parts. Nakasmall letter yung first: - (Weird okay naman sken)\n19.	 Diapprove SOA tumalon kagad sa Unclaimed, dapat sa Ready for pickup muna - ( Tama naman na nasa Ready to pickup pag nasa main office. Pero pag dating sa branch unclaimed sya kasi hindi pa dumadating ung item from main office to branch office )\n20.	Cant repair item tumalon kagad sa Unclaimed, dapat sa ready for pickup muna - ( Tama naman na nasa Ready to pickup pag nasa main office. Pero pag dating sa branch unclaimed sya kasi hindi pa dumadating ung item from main office to branch office )\n21.	 Set delivery date ay nakaraan na, dapat mag alert na invalid delivery date - HOLD\n22.	 Change spelling of Remarks - (DONE)\n24.	May branch revenue kahit na disapproved at cant repair ang mga items nag add siya as sales - (DONE)\n25. Super User - (HOLE)\n\n\nQA 9\n1.	Profile Page - (UPDATED)\n	a.	Upon save, \n2.	We will change the logo. I asked JB na to email us a high-res logo - (PENDING)\n3.	Email goes to Spam - (Kuha nalang siguro kayo na pwedeng mag setup ng mail server para hindi na mapunta sa spam ung mga mails natin)\n4.	Settings> Staff Settings> Edit Staff Information - (Ibabase ko na to sa super user)\n5.	Sales Summary - (DONE)\n	-Hindi ko alam kung nasa new na ito. Pero yung gawa kse ni mac, dapat kung ano yung selected mo na date range, pag generate ng excel kung ano yung data nung date range yun din ang maeexport.\n	-Should be the same look as the Branch>View\n	Header info – this is the main office info (remove username)\n	Pie chart\n	Sales Summary\n	Monthly Summary\n6.	Please change all View icons of Mac to this: - (DONE)\n7.	Please change all notif to this: - (DONE)\n8.	Technicians>Search Bar - (By default ng plugin sencod letters ung min bago sya mag filter.)\n	a.	Not Responding on  first letter na tinype mo, mag ffilter lang siya on the third letter\n9.	Technician> Add and Edit\n	-form validation  at Contact Number\n10.	Client Portal not working - (Setup ko later ung subdomain para sa client portal)\n11.	 The JO is under warranty, thus service charge is free; email message is wrong - (DONE)\n12.	Diapprove SOA tumalon kagad sa Unclaimed, dapat sa Ready for pickup muna - (PENDING)\n13.	Cant repair item tumalon kagad sa Unclaimed, dapat sa ready for pickup muna - (PENDING)\n14.	Set delivery date ay nakaraan na, dapat mag alert na invalid delivery date - (DONE)\n15.	May branch revenue kahit na disapproved at cant repair ang mga items nag add siya as sales - *parang dapat magkasama tayo kse iba yung computation na nakukuha ko  - (DONE)\n16. PERMISSION SETTINGS- THE ADMIN (SUPERUSER) OF THE SYSTEM CAN ASSIGN MODULES AND MODULES FUNCTIONALITY TO EACH STAFF. - (PENDING)\n\n\n\nQA 10\n1.	We will change the logo. I asked JB na to email us a high-res logo\n2.	Email goes to Spam – Looking for someone to fix this\n3.	Settings> Staff Settings> Edit Staff Information – Superuser function will take care of this \n-Talagang may update new password kagad ng other staff dito? What if sa individual profile pages na lang sila magedit ng password. Kse kung ako yung super user na magaadd ng staff under ko, hindi naman ako mag create din or mag iba ng passwords nila.. hehe.. Sorry di ko ito nalinaw dati.  dati kse wala pa tayong Profile page e.\n4.	JO wrong computation - (DONE)\n5.	Branch List Revenue wrong amount - ( Tama naman ung amount. Pa test nalang ulit )\n6.	Sales Summary – change message to: “Please make a selection within the same year.” - (DONE)\n7.	Sales Summary- arrangement of data - (DONE)\n	Should be: Pie then sales summary then monthly summary like this:\n8.	Technicians>Search Bar  - will ask someone to help us with this\n	a.	Not Responding on  first letter na tinype mo, mag ffilter lang siya on the third letter\n9.	Client Portal not working\n10.	Diapprove SOA tumalon kagad sa Unclaimed, dapat sa Ready for pickup muna - (DONE)\n11.	Cant repair item tumalon kagad sa Unclaimed, dapat sa ready for pickup muna (please see above) - (DONE)\n12.	 Set delivery date ay nakaraan na, dapat mag alert na invalid delivery date - (DONE)\n13.	Job Order > Create (branch) - ( Hindi ko gets paanong laging future? )\n-can input past date for Estimated finish date. Dapat lagging future ito.\n\n\n\n\n",
+			"file": "note.text",
 			"settings":
 			{
-				"buffer_size": 5526,
-				"line_ending": "Windows",
-				"name": "QA 8"
+				"buffer_size": 3349,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "app/ajax/editbranch.php",
+			"file": "app/head_office/soa.php",
 			"settings":
 			{
-				"buffer_size": 4564,
-				"line_ending": "Unix"
+				"buffer_size": 146818,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/branch/soa.php",
+			"settings":
+			{
+				"buffer_size": 88107,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\n<small  class=\"waitingview badge pull-left mrorange\"> <i class=\"fa fa-check\"> </i>  Waiting for Approval </small>\n<small  class=\"ongoindview badge pull-left bg-teal\"> <i class=\"fa fa-check\"> </i>  Ongoing Repair </small>\n<small  class=\"approvedview badge pull-left approvedme\"> <i class=\"fa fa-check\"> </i> Approved  </small>\n<small  class=\"doneview badge pull-left mdone\"> <i class=\"fa fa-check\"> </i> Ready for Claiming </small>\n<small  class=\"donepickupview badge pull-left mredilive\"> <i class=\"fa fa-check\"> </i> Ready for Pickup </small>\n<small  class=\"claimedview badge pull-left bg-green\"> <i class=\"fa fa-check\"> </i> Claimed </small>\n<small  class=\"unclaimedview badge pull-left mred\"> <i class=\"fa fa-check\"> </i> Unclaimed  </small>\n\n$(\".waitingview\").css('display','none');\n$(\".ongoindview\").css('display','none');\n$(\".approvedview\").css('display','none');\n$(\".donepickupview\").css('display', 'none');\n$(\".doneview\").css('display','none');\n$(\".claimedview\").css('display','none');\n$(\".unclaimedview \").css('display','none');\n\nif(obj.response[0].repair_status == \"Ongoing Repair\"){\n    $('.ongoingrepairhideshow').slideDown('fast');\n    $('.approvedview2').slideDown('fast');\n    $(\".ongoindview\").css('display','inline');\n} \nif(obj.response[0].repair_status == \"Approved\") {\n    $('#setStartrepairing').slideDown('fast');\n    $(\".approvedview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Ready for Claiming\"){\n    $(\".doneview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Claimed\"){\n    $(\".claimedview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Waiting for SOA Approval\"){\n    $(\".waitingview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Done-Ready for Delivery\"){\n    $('.ongoingrepairhideshow2').slideDown('fast');\n    $(\".donepickupview\").css('display', 'inline');\n}\n\n\n<div class=\"col-sm-4 invoice-col\">\n<strong>Computed By: </strong><span class=\"computedby\"></span><br>\n    <strong>Accepted By : </strong><span class=\"acceptedby\"></span><br>\n    <strong class=\" pull-left \">Conforme: </strong>\n    <small  id=\"disapprove\"  class=\"waitingview2 badge pull-left bg-green\"> <i class=\"fa fa-check\"> </i> Approved  </small>\n    <button id=\"approvejob\" class=\" approvedview2 btn bg-green  margin\"> <i class=\"fa fa-check\"> </i>  Approve </button>\n    <button id=\"cantapprove\" class=\" approvedview2 btn bg-red  margin\"> <i class=\"fa fa-check\"> </i>  Disapprove </button>\n    \n    <div class=\"ongoingrepairhideshow2\">\n        <br>\n        <label>Delivery Date:</label>\n        <input type=\"text\" name=\"datedelivery\" class=\"form-control\" placeholder=\"Estimated Finish Date\">\n        <button id=\"save_donedate\" class=\" approvedview2 btn bg-green margin\"><i class=\"fa fa-check\"> </i> Save Delivery Date</button>\n    </div>\n\n    <button id=\"claimedjoborder\" class=\" approvedview3 btn bg-green  margin\" style=\"display: inline;\"> <i class=\"fa fa-check\"> </i>  Item Claimed </button>\n    \n    <div class=\"form-group datelivery2\">\n    <br>\n    <br>\n    <br>\n        <b>Delivery Date:</b><br>\n            <div class=\"table-responsive\">\n                <b>Date:</b> <span class=\"setdatedelivery\"></span>\n            </div>\n            <br>\n            <div class=\"table-responsive\">\n               <button id=\"setReadyForClaiming\" class=\"btn approvedview2 btn-success\"><i class=\"fa fa-check\"></i> Job Order Arrived( Main )</button>\n            </div>\n        </div>\n</div><!-- /.row -->\n\n\n<small  class=\"waitingview badge pull-left mrorange\"> <i class=\"fa fa-check\"> </i>  Waiting for Approval </small>\n                <small  class=\"approvedview badge pull-left approvedme\"> <i class=\"fa fa-check\"> </i> Approved  </small>\n                <small  class=\"disapprovedview badge pull-left mred\"> <i class=\"fa fa-times\"> </i> Disapproved </small>\n                <small  class=\"cantrepairview badge pull-left bg-grey\"> <i class=\"fa fa-times\"> </i> Cant Repair </small>\n\n                    $(\".waitingview\").css('display','none');\n$(\".approvedview\").css('display','none');\n$(\".disapprovedview\").css('display','none');\n$(\".cantrepairview\").css('display','none');\n\n$('#setStartrepairing').slideUp('fast');\n$('.ongoingrepairhideshow').slideUp('fast');\n$('.approvedview2').slideUp('fast');\n\nif(obj.response[0].repair_status == \"Ongoing Repair\"){\n    $('.ongoingrepairhideshow').slideDown('fast');\n    $('.approvedview2').slideDown('fast');\n} \nif(obj.response[0].repair_status == \"Approved\") {\n    $('#setStartrepairing').slideDown('fast');\n}\nif(obj.response[0].repair_status == \"Done-Ready for Delivery\"){\n    $('.ongoingrepairhideshow2').slideDown('fast');\n}\n\nif(obj.response[0].conforme == 'Waiting for Approval') {\n    $(\".waitingview\").css('display','inline');\n}\nif(obj.response[0].conforme == 'Approved') {\n    $(\".approvedview\").css('display','inline');\n}\nif(obj.response[0].conforme == 'Disapproved') {\n    $(\".disapprovedview\").css('display','inline');\n}\nif(obj.response[0].conforme == 'Cant Repair') {\n    $(\".cantrepairview\").css('display','inline');\n        }\n",
+			"settings":
+			{
+				"buffer_size": 5049,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -595,40 +610,91 @@
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/AdminLTE",
-		"/C/xampp/htdocs/clientportal",
-		"/C/xampp/htdocs/clientportal/app",
-		"/C/xampp/htdocs/clientportal/app/ajax",
-		"/C/xampp/htdocs/clientportal/app/customer",
-		"/C/xampp/htdocs/clientportal/config"
+		"/C/xampp/htdocs/jbmusicjobtracker/classes"
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/approvejob.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/soa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdisapprove.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/cantrepairremarks.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatetech_parts.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewjoborder.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp2_jbmusicjobtracker.zip/jbmusicjobtracker/app/head_office/soa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoasub.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/joborders.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp2_jbmusicjobtracker.zip/jbmusicjobtracker/app/ui_branch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ui_branch.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/branch/soa.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/head_office/soa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/classes/class.MySQLiDBManager.inc",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcelbranch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenue.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/branch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/soa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/profile.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/parts.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editpartbatch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewpartbatch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewtech.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewpart.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewbrand.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editcustmer.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editpart.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css/font-awesome.css",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/deletestaff.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editjob.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/deletebranch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/dashboard.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ui_main.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/search_part.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/settings.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/settings.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdelivery.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/notifview.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/include.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/dashboard.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/history.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewuserbranch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setwaiting.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/history.php",
+		"/C/xampp/htdocs/jbmusic updated files/20160317/include.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/include.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css/style.css",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatecategory.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createcategory.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewcategory.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewinfocard.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/search_tech.php",
+		"/C/xampp/htdocs/jbmusic updated files/20160306/jbguitar.sql",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/.env",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/head_office/technicians.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/ajax/search_tech.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewtechfull.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/plugins/flot/jquery.flot.time.js",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/plugins/fullcalendar/fullcalendar.js",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/plugins/colorpicker/bootstrap-colorpicker.js",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editbranch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/config/config.php",
 		"/C/Users/Argie Navora/Desktop/clientportal/clientportal/config/config.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
 		"/C/Users/Argie Navora/Desktop/clientportal/clientportal/classes/class.MySQLiDBManager.inc",
 		"/C/Users/Argie Navora/Desktop/class.MySQLiDBManager.inc",
 		"/C/Users/Argie Navora/Desktop/jbmusicjobtracker/jbmusicjobtracker/config/config.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css/font-awesome.css",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/customers.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ui_main.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/profile.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/profile.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editadmin.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editstaff.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updateprofile.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewtechfull.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ui_branch.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/joborders.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
 		"/C/xampp/htdocs/clientportal/app/index.php",
 		"/C/xampp/htdocs/clientportal/app/customer/index.php",
 		"/C/xampp/htdocs/clientportal/app/ajax/createaccount.php",
@@ -639,102 +705,45 @@
 		"/C/xampp/htdocs/jbmusicjobtracker/config/constant.php",
 		"/C/xampp/htdocs/clientportal/config/config.php",
 		"/C/xampp/htdocs/clientportal/index.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/savepermission.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatecategory.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createsubjob.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createcategory.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/deletediagnosis.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/include.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewstaff.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/AdminLTE/app.js",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/login.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/dashboard.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/customers.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/soa.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/soa.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/history.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/notifview.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/parts.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenue.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/reset.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/forgot.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createbranch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createstaff.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/claimed.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewtech.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/PHPMailer-master/class.phpmailer.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/PHPMailer-master/PHPMailerAutoload.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/template.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/testmail.php",
 		"/C/Users/Argie Navora/Desktop/config.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewjoborder.php",
 		"/C/xampp/htdocs/clientportal/app/ajax/viewjoborder.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/classes/class.MySQLiDBManager.inc",
 		"/C/xampp/htdocs/clientportal/.env",
 		"/C/xampp/htdocs/jbmusicjobtracker/.env",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setongoing.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/readyforclaiming.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/cantrepairremarks.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdatedone.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdelivery.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdisapprove.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/dashboard.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setwaiting.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css/AdminLTE.css",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/PHPMailer-master/test/phpmailerTest.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/PHPMailer-master/test/phpmailerLangTest.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/PHPMailer-master/test/bootstrap.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatetech_parts.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css/font-awesome.min.css",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcelhistory.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/approvejob.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdonerepair.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/include.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcelbranch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/salesreport.bak.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/history.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenueview.bak.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/salesreport.bak.php",
 		"/C/xampp/htdocs/jbmusic updated files/20160228/jbmusicjobtracker/jbmusicjobtracker/app/ajax/forgot.php",
 		"/C/xampp/htdocs/plugins/bootstrap-datetimepicker-master/bootstrap-datetimepicker-master/test/screen-capture/base.html",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/plugins/daterangepicker/daterangepicker.js",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/notifview.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/search_tech.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createpart.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/edittech.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/index.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/forgot.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/reset.php",
-		"/C/xampp/htdocs/plugins/PHPMailer-master/PHPMailer-master/docs/extending.html",
-		"/C/xampp/htdocs/plugins/PHPMailer-master/PHPMailer-master/examples/index.html",
-		"/C/xampp/htdocs/plugins/mfupload/upload.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoa.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoasub.php",
-		"/C/xampp/htdocs/jbmusic updated files/20160226/jbguitar.sql",
-		"/C/xampp/htdocs/plugins/mfupload/index.html",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/upload.php",
-		"/C/xampp/htdocs/plugins/mfupload/mfupload.js",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/mfupload.js",
-		"/C/xampp/htdocs/jbmusic updated files/20160226/jbmusicjobtracker-20160226v2/jbmusicjobtracker/app/ajax/generateexcel.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/creatediagnosis.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosis.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editjob.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/emailencrypt.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/testencrypt.php",
-		"/C/xampp/htdocs/jbmusic updated files/20160226/config.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/deletejoborder.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createtech.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createnotif.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createmodel.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createemail.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createcustomer.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createbrand.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatebrand.php"
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/edittech.php"
 	],
 	"find":
 	{
@@ -770,134 +779,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"editbranch",
-			"staff list",
-			"staff",
-			"staff lists",
-			"id=\"per",
-			"breadcrumps",
-			"bread",
-			"crums",
-			"bread",
-			"bre",
-			"bread",
-			"location",
-			"editstaff",
-			"currentpassword",
-			"currentpassword'",
-			"editstaff",
-			" Edit Staff Information",
-			"editstaff",
-			"createbranch",
-			"createstaff",
-			"$headertitle",
-			"ready for",
-			"ecurrenttasks",
-			"breadcrumps(",
-			"bread",
-			"bre",
-			"editstaff",
-			"createstaff",
-			"repeat",
-			"customerprofile",
-			"logo2.png",
-			"logo2.pnh",
-			"createstaff",
-			"create staff",
-			"bread",
-			"sales summary",
-			"sales of",
-			"id=\"per",
-			"delete",
-			".permission",
-			"id=\"per",
-			"staff list",
-			"$queryforexcelstafflists",
-			"staff list",
-			"delete-modal",
-			"delete",
-			"id=\"per",
-			".permi",
-			"id=\"per",
-			"explode",
-			"id=\"per",
-			"id=\"",
-			"checkall",
-			"id=\"per",
-			"id=\"",
-			".permi",
-			"id=\"per",
-			"main category",
-			"statements of account",
-			"id=\"per",
-			".get()",
-			"id=\"per",
-			"viewstaff.php",
-			"modalId",
-			"modalid",
-			".permission",
-			".permission\\",
-			"staff list",
-			"id=\"permission",
-			".permission",
-			"id=\"permission",
-			".permission",
-			"id=\"permission",
-			".permission",
-			"id=\"permission",
-			"id\"permission",
-			".permission",
-			"id=\"permission",
-			".permission",
-			"id=\"permission",
-			"joborder",
-			".permission",
-			"id=\"permission",
-			".permission",
-			"id=\"permission",
-			"icheckbox_minimal",
-			".permission",
-			"id=\"permission",
-			".permission",
-			"id=\"permission",
-			".permission",
-			"bread",
-			"Permission fo",
-			"permission",
-			"id=\"permission",
-			"permission",
-			".permission",
-			"id=\"permission",
-			"permission",
-			".permission",
-			"view-staff",
-			"delete",
-			"$queryforexcelstafflists",
-			"stafflists",
-			"$queryforexcelstafflists",
-			"staff list",
-			"Customers",
-			"Statements of Accounts",
-			"Job Order",
-			"statement",
-			"statements of accounts",
-			"breadcrumps(",
-			"bread",
-			"breadcrum",
-			"contextual_menu2",
-			"contextual_menu",
-			"editstaff",
-			"Edit Staff Information",
-			"queryjobs",
-			"tech",
-			"tech_statistic",
-			"setClaimedjob",
-			"claimedjoborder",
+			".view",
+			"viewsoa",
+			"cantrepairremarks",
+			"approvejobid",
+			".view",
+			"cantrepairview",
+			"disapproves",
+			"cantapprove",
+			"applychanges",
+			"cantrepair",
+			"approvejobid",
+			"approvejob",
+			".view",
+			"id=\"viewsoa",
+			"viewsoa",
+			".view",
+			"id=\"view",
+			".view",
+			"applychanges",
+			"type",
+			"cantrepair",
+			"id=\"editsoa",
+			"id=\"viewsoa",
+			"viewsoa",
+			".view",
+			"view.",
+			"id=\"viewsoa",
+			"id=\"editsoa",
+			"id=\"viewsoa",
+			"viewsoa",
+			".edit",
+			".view",
+			"waitingview",
+			".view",
+			"waitingview",
+			".view",
+			"waitingview2",
+			"morange",
+			"view-modal2",
+			"view-modal",
+			"#viewsoa",
+			"id=\"viewsoa",
+			"viewsoa",
+			"#approvejob",
+			"id=\"cantapprove",
+			"id=\"approvejob",
+			"approvejob",
 			"setReadyForClaiming",
-			"$header",
-			"mailPassthru",
-			"header",
-			"view"
+			".view",
+			"approvedview2",
+			".view",
+			".edit",
+			"approvedview2",
+			"#approvejob",
+			".edit",
+			"Approved",
+			"Set Delivery Date:",
+			"saveseteddate",
+			"datedelivery",
+			"setdeliverydate",
+			"datedelivery",
+			".edit",
+			".view",
+			".edit",
+			".view",
+			".edit",
+			".view",
+			".edit",
+			"editsoa",
+			".view",
+			"id=\"viewsoa",
+			"viewsoa",
+			".view",
+			".edit",
+			".edir",
+			".view",
+			"viewsoa",
+			".edit",
+			"editsoa",
+			".edit",
+			"editsoa",
+			".edit",
+			"editsoa",
+			".edit",
+			"editsoa",
+			".edit",
+			"editsoa",
+			".edit",
+			"editsoa",
+			"updatediagnosissoa.php",
+			"p_DBConnection",
+			"$this->p_lastid",
+			"GetLastInsertedID",
+			"$this->p_lastid",
+			"GetLastInsertedID()",
+			"$db->GetLastInsertedID()",
+			"assignedtech",
+			"sales",
+			"revenue",
+			"claimed",
+			"applychanges",
+			"editpartbatch",
+			"editbatch",
+			"view-modal",
+			"modal-footer",
+			"view-modal",
+			"editpartbatch",
+			"createpart",
+			"editpartbatch",
+			"batchquantity",
+			".view",
+			"create part",
+			"batchquantity",
+			".view",
+			"viewDiagnosis",
+			".fa-sp",
+			".fa-spro",
+			".fa-s",
+			".view",
+			"view-modal",
+			".view",
+			"view-modal",
+			"Discard",
+			"discard",
+			"dis",
+			"discard",
+			"btn  cancel-delet",
+			"updatediagnosissoa"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -905,6 +914,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"btn btnmc cancel-delet",
+			"AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair'",
+			"<th style=\"width: 10px\">Month</th>",
 			"Statements of Account",
 			"Job Orders",
 			"Please make a selection within the same year.",
@@ -997,52 +1009,53 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "note.text",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5526,
+						"buffer_size": 3349,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5089,
-								5089
+								1296,
+								1296
 							]
 						],
 						"settings":
 						{
-							"auto_name": "QA 8",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 467.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "app/ajax/editbranch.php",
+					"file": "app/head_office/soa.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4564,
+						"buffer_size": 146818,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2485,
-								2485
+								101688,
+								100283
 							]
 						],
 						"settings":
@@ -1052,7 +1065,66 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 357.0,
+						"translation.y": 29106.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/branch/soa.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 88107,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5049,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3950,
+								3604
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1157.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1063,7 +1135,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 25.0
+		"height": 26.0
 	},
 	"input":
 	{
@@ -1100,7 +1172,7 @@
 	"project": "jbmusicjobtracker.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 80.0
 	},
 	"save_all_on_build": true,
 	"select_file":

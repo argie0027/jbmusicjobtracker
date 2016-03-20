@@ -110,7 +110,7 @@
                                                     $bydate = split ("to", $_GET['daterange']);
 
                                                     if(!isset($_GET['type'])){
-                                                        $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.*, d.diagnosis as diagnosisitem, ((REPLACE(e.totalpartscost,',','') +  REPLACE(e.total_charges,',','')) - (REPLACE(e.less_deposit,',','') + REPLACE(e.less_discount,',',''))) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.repair_status <> 'Waiting for SOA Approval' AND b.isdeleted != 1 AND a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' ORDER BY a.created_at DESC";
+                                                        $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.*, d.diagnosis as diagnosisitem, ((REPLACE(e.totalpartscost,',','') +  REPLACE(e.total_charges,',','')) - (REPLACE(e.less_deposit,',','') + REPLACE(e.less_discount,',',''))) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.isdeleted != 1 AND a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' ORDER BY a.created_at DESC";
                                                     }else{
                                                     $type = $_GET['type'];
                                                         if($type == "waiting_for_soa_approval") {
@@ -133,7 +133,7 @@
                                                     }
                                                 }else {
                                                     if(!isset($_GET['type'])){
-                                                        $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.*, d.diagnosis as diagnosisitem, ((REPLACE(e.totalpartscost,',','') +  REPLACE(e.total_charges,',','')) - (REPLACE(e.less_deposit,',','') + REPLACE(e.less_discount,',',''))) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.repair_status <> 'Waiting for SOA Approval' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                        $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.*, d.diagnosis as diagnosisitem, ((REPLACE(e.totalpartscost,',','') +  REPLACE(e.total_charges,',','')) - (REPLACE(e.less_deposit,',','') + REPLACE(e.less_discount,',',''))) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                     }else{
                                                     $type = $_GET['type'];
                                                         if($type == "waiting_for_soa_approval") {
@@ -306,15 +306,18 @@
                                 <strong>Total Balance: </strong><span class="balanceff"></span><br>
                             </address>
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-5 invoice-col">
                             <strong>Computed By: </strong><span class="computedby"></span><br>
                                 <strong>Accepted By : </strong><span class="acceptedby"></span><br>
                                 <strong class=" pull-left ">Conforme Status: </strong class="buttonstatus">
-                                <small  id="waitingview"  class="waitingview badge pull-left bg-yellow"> <i class="fa fa-reload"> </i>  Wating for Approval </small>
-                                <small  id="approvedview"  class="approvedview badge pull-left bg-green"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="waitingview badge pull-left mrorange"> <i class="fa fa-check"> </i>  Waiting for Approval </small>
+                                <small  class="approvedview badge pull-left approvedme"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="disapprovedview badge pull-left mred"> <i class="fa fa-times"> </i> Disapproved </small>
+                                <small  class="cantrepairview badge pull-left bg-grey"> <i class="fa fa-times"> </i> Cant Repair </small>
+
                                 <div class="ongoingrepairhideshow">
                                     <button id="ongoingrepair" class=" approvedview2 btn bg-green margin">Done Repair</button>
                                     <button id="cantrepairs" class=" approvedview2 btn bg-red margin">Can't Repair</button>
@@ -329,7 +332,7 @@
                                         <input type="text" name="datedelivery" placeholder="Date Delivery.." class="form-control datedelivery">
 
                                     <br>
-                                 <button type="submit" id="savejob" class="btn btn-success pull-left savesetdate "><i class="fa fa-plus"></i> Save Delivery Date </button>
+                                 <button type="submit" id="savejob" class="btn btn-success savesetdate "><i class="fa fa-plus"></i> Save Delivery Date </button>
                                  </form>
                                 </div>
                         </div><!-- /.row -->
@@ -425,19 +428,22 @@
                                 <strong>Less Deposit: </strong>P <input data-id="" type="number" name="lessdeposit"><br>
                                 <strong>Less Discount: </strong>P <input data-id="" type="number" name="lessdiscount"><br>
                                 <strong>Balance: </strong><span class="t3 balance"></span><br>
-                                <strong>Subjob Total: </strong><span class="balancef"></span><br>
-                                <strong>Total Balance: </strong><span class="balanceff"></span><br>
+                                <!-- <strong>Subjob Total: </strong><span class="balancef"></span><br>
+                                <strong>Total Balance: </strong><span class="balanceff"></span><br> -->
                             </address>
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-5 invoice-col">
                             <strong>Computed By: </strong><span class="computedby"></span><br>
                                 <strong>Accepted By : </strong><span class="acceptedby"></span><br>
                                 <strong class=" pull-left ">Conforme Status: </strong class="buttonstatus">
-                                <small  id="waitingview"  class="waitingview badge pull-left bg-yellow"> <i class="fa fa-reload"> </i>  Wating for Approval </small>
-                                <small  id="approvedview"  class="approvedview badge pull-left bg-green"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="waitingview badge pull-left mrorange"> <i class="fa fa-check"> </i>  Waiting for Approval </small>
+                                <small  class="approvedview badge pull-left approvedme"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="disapprovedview badge pull-left mred"> <i class="fa fa-times"> </i> Disapproved </small>
+                                <small  class="cantrepairview badge pull-left bg-grey"> <i class="fa fa-times"> </i> Cant Repair </small>
+
                                 <!-- <div class="ongoingrepairhideshow">
                                     <button id="ongoingrepair" class=" approvedview2 btn bg-green margin">Done Repair</button>
                                     <button id="cantrepairs" class=" approvedview2 btn bg-red margin">Can't Repair</button>
@@ -451,7 +457,7 @@
                                 </div> -->
                         </div><!-- /.row -->
                 </section><!-- /.content -->
-                        <button id="updatesoa" class="btn btn-primary" data-dismiss="modal" style="margin-left: 18px;"><i class="fa fa-download"></i> Update SOA </button> 
+                        <button id="updatesoa" class="btn btn-primary" data-dismiss="modal" style="margin-left: 18px;"><i class="fa fa-check"></i> Notify Customer </button> 
                         <button type="button" class="btn btnmc  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button> 
                         <!--  <button type="submit" id="savejob" class="btn btn-success pull-left "><i class="fa fa-plus"></i> OK </button> -->
                     </div><!-- /.modal-content --> 
@@ -515,7 +521,7 @@
             </div><!-- /.modal -->
         </div><!-- /.modal -->
 
-            <div class="modal fade" id="viewDiagnosis" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="viewDiagnosis" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -589,7 +595,7 @@
 
                             <div class="clear"></div>
                              <div class="form-group col-xs-12">
-                                 <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                                 <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                                  <button type="submit" id="addparttojoborder" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Submit </button>
                             </div><!-- /.modal-content --> 
                             <div class="clear"></div>
@@ -616,7 +622,7 @@
 
                             <div class="clear"></div>
                              <div class="form-group col-xs-12">
-                                 <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                                 <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                                  <button type="submit" id="assignedtech" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Assign Tech </button>
                             </div><!-- /.modal-content --> 
                             <div class="clear"></div>
@@ -870,6 +876,36 @@ $(function(){
                         }
                     }
                 });
+            });
+
+            $('#updatesoa').click(function(){
+                $.ajax({
+                    type: 'POST',   
+                    url: '../ajax/updatediagnosissoa.php',
+                    data: {
+                        action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
+                        dataid: 'default-123456',
+                        partname: $('[name="span-item"]').val(),
+                        partcost: $('.t1.totalpartcost').text(),
+                        totalcharge: $('[name="totalcharges"]').val(),
+                        lessdeposit: $('[name="lessdeposit"]').val(),
+                        lessdiscount: $('[name="lessdiscount"]').val(),
+                        email: $('.emailhere').text(),
+                        typetoedit:  "notify"
+                    },
+                    success: function(e){
+
+                        $('.modald').fadeIn('slow');
+                        
+                        if(e == "success"){
+                            location.reload();
+                        }else {
+                            alert('Warning: Internal Server Error!');
+                        }
+                    }
+                });
+
+                return false;
             });
 
             //get parameters on url
@@ -1185,7 +1221,7 @@ $(function(){
                         if(obj.status == 101) {
                             if( $.type(obj.date_delivery) != 'undefined' && obj.date_delivery == true ) {
                                 $('input[name="datedelivery"]').parent().find('p.error').remove();
-                                $('input[name="datedelivery"]').parent().append('<p for="datedelivery" generated="true" class="error" style="position: absolute;top: 58px;">Date is already set.</p>');
+                                $('input[name="datedelivery"]').parent().append('<p for="datedelivery" generated="true" class="error">Date is already set.</p>');
                             }
 
                             $(".savesetdate").html('<i class="fa fa-plus"></i>  Save Delivery Date');
@@ -1232,7 +1268,8 @@ $(function(){
                     action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                     id: ID,
                     type: 'ongoing',
-                    otherremarks: $("[name=otheremarks]").val()
+                    otherremarks: $("[name=otheremarks]").val(),
+                    conforme: 'Cant Repair'
                 },
                 success: function(e){
                     
@@ -1411,9 +1448,43 @@ $(function(){
             jobid: ID
         },
         success: function(e){
+            var obj = jQuery.parseJSON(e);
+
+            $(".waitingview").css('display','none');
+            $(".approvedview").css('display','none');
+            $(".disapprovedview").css('display','none');
+            $(".cantrepairview").css('display','none');
+
+            $('#setStartrepairing').slideUp('fast');
+            $('.ongoingrepairhideshow').slideUp('fast');
+            $('.approvedview2').slideUp('fast');
+
+            if(obj.response[0].repair_status == "Ongoing Repair"){
+                $('.ongoingrepairhideshow').slideDown('fast');
+                $('.approvedview2').slideDown('fast');
+            } 
+            if(obj.response[0].repair_status == "Approved") {
+                $('#setStartrepairing').slideDown('fast');
+            }
+            if(obj.response[0].repair_status == "Done-Ready for Delivery"){
+                $('.ongoingrepairhideshow2').slideDown('fast');
+            }
+
+            // Conforme Status
+            if(obj.response[0].conforme == 'Waiting for Approval') {
+                $(".waitingview").css('display','inline');
+            }
+            if(obj.response[0].conforme == 'Approved') {
+                $(".approvedview").css('display','inline');
+            }
+            if(obj.response[0].conforme == 'Disapproved') {
+                $(".disapprovedview").css('display','inline');
+            }
+            if(obj.response[0].conforme == 'Cant Repair') {
+                $(".cantrepairview").css('display','inline');
+            }
             
             $('.modald').fadeOut('fast');
-            var obj = jQuery.parseJSON(e);
             $('.idhere').html(obj.response2[0].soa_id);
             $('.idjobhere').html(obj.response[0].jobid);
             var now = moment(obj.response[0].dateadded);
@@ -1487,25 +1558,7 @@ $(function(){
             var dat = obj.response[0].done_date_delivery.split("-");
 
             $('input[name="datedelivery"]').val(dat[0] + "-" + dat[1] + "-"+ dat[2].substring(0,2));
-            if(obj.response2[0].status == 1) {
-                $("#approvedview").css('display','inline');
-                $("#ongoingrepair").css('display','inline');
-                $("#waitingview").css('display','none');
-            }else{
-                $("#ongoingrepair").css('display','none');
-                $("#approvedview").css('display','none');
-                $("#waitingview").css('display','inline');
-            }
-              if(obj.response[0].repair_status == "Ongoing Repair"){
-                $('.ongoingrepairhideshow').slideDown('fast');
-                $('.approvedview2').slideDown('fast');
-                $('#ongoingrepair').slideDown('fast');
-            }if(obj.response[0].repair_status == "Approved"){
-                $('.waitingview').html("Waiting to repair");
-                $('#setStartrepairing').slideDown('fast');
-            }else if(obj.response[0].repair_status == "Done-Ready for Delivery"){
-                $('.ongoingrepairhideshow2').slideDown('fast');
-            }
+
             myFunction3(obj.response3[0].totalpartscost, obj.response3[0].total_charges, obj.response3[0].less_deposit, obj.response3[0].less_discount);
             $('.balancef').html(subitemtotal);
             $('.balanceff').html(parseFloat($('.t3').text()) + subitemtotal);
@@ -2093,8 +2146,8 @@ $('#addparttojoborder').on('click',function(){
     if(ID){
     $('.modald').fadeIn('fast');
     $("#editsoa").modal("show");
-        $('.ongoingrepairhideshow').slideUp('fast');
-        $('.ongoingrepairhideshow2').slideUp('fast');
+    $('.ongoingrepairhideshow').slideUp('fast');
+    $('.ongoingrepairhideshow2').slideUp('fast');
     $("#idhere").html(ID);
 
     $('.soaappendhere').html("<tr id=\"default-"+ID+"\"><td><input data-id=\"default-"+ID+"\" tpye=\"text\" name=\"span-item\"></td><td><span class=\"span-diagnosis\"></span><small id=\"editdiagnosis\" data-id=\"default-"+ID+"\"  class=\"badge bg-blue\"> <i class=\"fa fa-edit\"> </i></small></td><td><span class=\"span-parts partlistplea\"></span><small data-type=\"main\" data-id=\"default-"+ID+"\" id=\"editpartbtn\" class=\"badge  bg-blue\"> <i class=\"fa fa-edit\"> </i></small></td><td><span id=\"tec\" class=\"span-tech\"></span><small id=\"edittech\" data-id=\"default-"+ID+"\" class=\"badge bg-blue\"> <i class=\"fa fa-edit\"> </i></small></td><td><span class=\"span-cost\"></span></td><td><textarea name=\"span-remarks\" data-id=\"default-"+ID+"\"  rows=\"3\"></textarea></td></tr><tr class=\"buttononli\"><td colspan=\"6\" style=\"text-align: rigth\">+</td></tr>");
@@ -2106,9 +2159,48 @@ $('#addparttojoborder').on('click',function(){
             jobid: ID
         },
         success: function(e){
-            
-            $('.modald').fadeOut('fast');
             var obj = jQuery.parseJSON(e);
+
+            $(".waitingview").css('display','none');
+            $(".approvedview").css('display','none');
+            $(".disapprovedview").css('display','none');
+            $(".cantrepairview").css('display','none');
+
+            $(".waitingview").css('display','none');
+            $(".ongoindview").css('display','none');
+            $(".approvedview").css('display','none');
+            $(".donepickupview").css('display', 'none');
+            $(".doneview").css('display','none');
+            $(".claimedview").css('display','none');
+            $(".unclaimedview ").css('display','none');
+
+            if(obj.response[0].repair_status == "Ongoing Repair"){
+                $('.ongoingrepairhideshow').slideDown('fast');
+                $('.approvedview2').slideDown('fast');
+            } 
+            if(obj.response[0].repair_status == "Approved") {
+                $('#setStartrepairing').slideDown('fast');
+            }
+            if(obj.response[0].repair_status == "Done-Ready for Delivery"){
+                $('.ongoingrepairhideshow2').slideDown('fast');
+                $(".donepickupview").css('display', 'inline');
+            }
+
+            // Conforme Status
+            if(obj.response[0].conforme == 'Waiting for Approval') {
+                $(".waitingview").css('display','inline');
+            }
+            if(obj.response[0].conforme == 'Approved') {
+                $(".approvedview").css('display','inline');
+            }
+            if(obj.response[0].conforme == 'Disapproved') {
+                $(".disapprovedview").css('display','inline');
+            }
+            if(obj.response[0].conforme == 'Cant Repair') {
+                $(".cantrepairview").css('display','inline');
+            }
+
+            $('.modald').fadeOut('fast');
             $('.idhere').html(obj.response2[0].soa_id);
             $('.idjobhere').html(obj.response[0].jobid);
             var now = moment(obj.response[0].dateadded);
@@ -2161,7 +2253,6 @@ $('#addparttojoborder').on('click',function(){
                 $('.soaappendhere').append("<tr data-id=\""+obj.response4[i].subjobid+"\" class=\"zz-"+obj.response4[i].subjobid+"\"><td><span></span></td><td><span class=\"span-subdiagnosis\" >"+obj.response4[i].subdiagnosis+"</span><small id=\"editdiagnosis\" data-type=\"subitem\" data-id=\""+obj.response4[i].subjobid+"\" class=\"badge bg-green\"> <i class=\"fa fa-edit\"> </i></small><small data-id=\""+obj.response4[i].subjobid+"\" class=\"badge bg-grey dremovedianosis\"> <i class=\"fa fa-times\"> </i></small></td><td><span class=\"span-subparts\">"+obj.response4[i].subparts+"</span><small  data-type=\"sub\" data-id=\""+obj.response4[i].subjobid+"\" id=\"editpartbtnsub\" class=\"badge bg-green\"> <i class=\"fa fa-edit\"> </i></small><small id=\"adddiagnosis\" class=\"badge bg-grey\"> <i class=\"fa fa-times\"> </i></small></td><td><span id=\"tec\" class=\"span-subtech\">"+obj.response4[i].subtech+"</span><small id=\"edittech\" data-id=\""+obj.response4[i].subjobid+"\" data-type=\"subitem\"  class=\"badge bg-green\"> <i class=\"fa fa-edit\"></i></small><small id=\"adddiagnosis\" class=\"badge bg-grey\"> <i class=\"fa fa-times\"> </i></small></td><td><span class=\"span-subcost\">"+obj.response4[i].subcost+"</span></td><td><span class=\"span-subremarks\"><textarea name=\"span-remarkssub\" data-id=\""+obj.response4[i].subjobid+"\" data-type=\"subitem\" rows=\"3\">"+obj.response4[i].subremarks+"</textarea></span></td></tr><tr class=\""+obj.response4[i].subjobid+"\"><td  class=\"buttononli2\" data-id=\""+obj.response4[i].subjobid+"\" colspan=\"6\" style=\"text-align: rigth\">-</td></tr>");
                 countersubjob++;
             }
-
             
             $('.span-parts').html(tempremover);
             $('.span-tech').html(obj.response[0].technam);
@@ -2189,29 +2280,7 @@ $('#addparttojoborder').on('click',function(){
             $('.acceptedby').html(obj.response3[0].accepted_by);
 
             var dat = obj.response[0].done_date_delivery.split("-");
-                                $('input[name="datedelivery"]').val(dat[0] + "-" + dat[1] + "-"+ dat[2].substring(0,2));
-                                
-            if(obj.response2[0].status == 1) {
-                $("#approvedview").css('display','inline');
-                $("#ongoingrepair").css('display','inline');
-                $("#waitingview").css('display','none');
-            }else{
-                $("#ongoingrepair").css('display','none');
-                $("#approvedview").css('display','none');
-                $("#waitingview").css('display','inline');
-            }
-
-            if(obj.response[0].repair_status == "Ongoing Repair"){
-                $('.ongoingrepairhideshow').slideDown('fast');
-                $('.approvedview2').slideDown('fast');
-                $('#ongoingrepair').slideDown('fast');
-            }if(obj.response[0].repair_status == "Approved"){
-                $('.waitingview').html("Waiting to repair");
-                $('#setStartrepairing').slideDown('fast');
-            }else if(obj.response[0].repair_status == "Done-Ready for Delivery"){
-                $('.ongoingrepairhideshow2').slideDown('fast');
-            }
-
+            $('input[name="datedelivery"]').val(dat[0] + "-" + dat[1] + "-"+ dat[2].substring(0,2));
 
             $('.balancef').html(subitemtotal);
             $('.balanceff').html(parseInt($('.t3').text()) + subitemtotal);

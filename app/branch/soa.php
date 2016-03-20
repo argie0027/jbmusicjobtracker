@@ -278,14 +278,17 @@
                             </address>
 
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-5 invoice-col">
                             <strong>Computed By: </strong><span class="computedby"></span><br>
                                 <strong>Accepted By : </strong><span class="acceptedby"></span><br>
                                 <strong class=" pull-left ">Conforme: </strong>
-                                <small  id="disapprove"  class="waitingview2 badge pull-left bg-green"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="waitingview badge pull-left mrorange"> <i class="fa fa-check"> </i>  Waiting for Approval </small>
+                                <small  class="approvedview badge pull-left approvedme"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="disapprovedview badge pull-left mred"> <i class="fa fa-times"> </i> Disapproved </small>
+                                <small  class="cantrepairview badge pull-left bg-grey"> <i class="fa fa-times"> </i> Cant Repair </small>
                                 <button id="approvejob" class=" approvedview2 btn bg-green  margin"> <i class="fa fa-check"> </i>  Approve </button>
                                 <button id="cantapprove" class=" approvedview2 btn bg-red  margin"> <i class="fa fa-check"> </i>  Disapprove </button>
                                 
@@ -631,7 +634,8 @@
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                                 jobid: ID,
                                 reference: $("[name=referencenumberfinal]").val(),
-                                parts: $('.span-parts').text()
+                                parts: $('.span-parts').text(),
+                                conforme: 'Approved'
                         },
                         success: function(e){
                             $('.modald').fadeOut('fast');
@@ -733,7 +737,8 @@
                         url: '../ajax/setdisapprove.php',
                         data: {
                             action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
-                            id: ID
+                            id: ID,
+                            conforme: 'Disapproved'
                         },
                         success: function(e){
                             
@@ -823,6 +828,9 @@
                     $('.ongoingrepairhideshow2').slideUp('fast');
                     $('.datelivery2').slideUp('fast');
                     $('#claimedjoborder').slideUp('fast');
+                    $('#approvejob').slideUp('fast');
+                    $('#disapprove').slideUp('fast');
+                    $('#cantapprove').slideUp('fast');
 
                     if(ID){
                         
@@ -878,14 +886,7 @@
 
                             for (var i = 0; i < removebr.length; i++) {
                                 tempremover = tempremover + removebr[i] + "<br>";
-                            };
-                            
-                            if(obj.response[0].done_date_delivery == "0000-00-00"){
-                                $('.setdatedelivery').html("Delivery date is not available.");
-                                $("#setReadyForClaiming").slideUp('fast');
-                            }else{
-                                $('.setdatedelivery').html(obj.response[0].done_date_delivery);
-                            }  
+                            }; 
 
                             var dat = obj.response[0].date_delivery.split("-");
 
@@ -895,58 +896,58 @@
                             $('.span-tech').html(obj.response[0].technam);
                             $('.span-remarks').html(obj.response[0].remarks);
 
-                             if(obj.response[0].repair_status == 'Ready for Delivery'){
-
-                                $('.savesetdate').attr("id", "saveseteddate");
-                                $('.datepickerfordatedelivery').slideDown('fast');
-                                $('.ongoingrepairhideshow2').slideDown('fast');
-                                $('#saveseteddate').html("<i class='fa fa-plus'></i> Set Delivery Date");
-                                $('.span-status').html('<small class="badge col-centered bg-navy">'+obj.response[0].repair_status+'</small>');
-
-                            }else if(obj.response[0].repair_status == 'Waiting for SOA Approval'){
-                                $('.span-status').html('<small class="badge col-centered mrorange">Waiting for Customer Approval</small>');
-                            }else if(obj.response[0].repair_status == 'Ongoing Repair'){
-                                $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
-                            }else if(obj.response[0].repair_status == 'Done-Ready for Delivery'){
-                                $('#disapprove').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
-                                $('.datelivery2').slideDown('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
-                            }else{
-                                $('.span-status').html('<small class="badge col-centered bg-aqua">'+obj.response[0].repair_status+'</small>');
-                            }
                             if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 $('#claimedjoborder').slideDown('fast');
-                                $('#approvejob').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mdone">'+obj.response[0].repair_status+'</small>');
                             }
 
-                            if(obj.response2[0] == undefined ){
-                                $("#approvejob").css('display','none');;
-                                $("#disapprove").css('display','none');
-                            }
-                             if(obj.response2[0].status == 1) {
-                                $("#approvejob").css('display','none');
-                                $("#cantapprove").css('display','none')
-                                $("#disapprove").css('display','inline');
-                            }else{
-                                $("#approvejob").css('display','inline');
-                                $("#disapprove").css('display','none');
-                            }
-
-                            if(obj.response[0].repair_status == 'Ready for Claiming'){
-                                $('#claimedjoborder').slideDown('fast');
-                                $('#approvejob').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
-                            }
                             if(obj.response[0].repair_status == 'Done-Ready for Delivery'){
-                                $('#approvejob').slideUp('fast');
-                                $('#disapprove').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
                                 $('.datelivery2').slideDown('fast');
+                                if(obj.response[0].done_date_delivery == "0000-00-00"){
+                                    $('.setdatedelivery').html("Delivery date is not available.");
+                                    $("#setReadyForClaiming").slideUp('fast');
+                                } else {
+                                    $("#setReadyForClaiming").slideDown('fast');
+                                    $('.setdatedelivery').html(obj.response[0].done_date_delivery);
+                                }
                                 $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            if(obj.response[0].repair_status == 'Waiting for SOA Approval'){
+                                $('.span-status').html('<small class="badge col-centered mrorange">Waiting for Customer Approval</small>');
+                                $('#approvejob').slideDown('fast');
+                                $('#cantapprove').slideDown('fast');
+                            }
+
+                            if(obj.response[0].repair_status == 'Claimed'){
+                                $('.span-status').html('<small class="badge col-centered bg-green">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            if(obj.response[0].repair_status == 'Approved'){
+                                $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            if(obj.response[0].repair_status == 'Ongoing Repair'){
+                                $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            $(".waitingview").css('display','none');
+                            $(".approvedview").css('display','none');
+                            $(".disapprovedview").css('display','none');
+                            $(".cantrepairview").css('display','none');
+
+                            // Conforme Status
+                            if(obj.response[0].conforme == 'Waiting for Approval') {
+                                $(".waitingview").css('display','inline');
+                            }
+                            if(obj.response[0].conforme == 'Approved') {
+                                $(".approvedview").css('display','inline');
+                            }
+                            if(obj.response[0].conforme == 'Disapproved') {
+                                $(".disapprovedview").css('display','inline');
+                            }
+                            if(obj.response[0].conforme == 'Cant Repair') {
+                                $(".cantrepairview").css('display','inline');
                             }
 
                             $('.totalpartcost').html("<b>P </b>"+formatNumber(obj.response3[0].totalpartscost));

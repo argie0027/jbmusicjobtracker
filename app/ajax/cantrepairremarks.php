@@ -7,6 +7,7 @@ $request = filter_input(INPUT_POST, 'action');
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
 
     $id = trim(filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+    $conforme = trim(filter_input(INPUT_POST, 'conforme', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $otherremarks = trim(filter_input(INPUT_POST, 'otherremarks', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $techid = trim(filter_input(INPUT_POST, 'techid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
@@ -17,7 +18,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     //$sql = "UPDATE jb_joborder SET repair_status = 'Ready for Claiming', remarks ='".$str."', jobclear = '1' WHERE jobid = '".$id."'";
     
-    $sql = "UPDATE jb_joborder SET repair_status = 'Done-Ready for Delivery', remarks ='".$str."', jobclear = '1', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
+    $sql = "UPDATE jb_joborder SET repair_status = 'Done-Ready for Delivery', remarks ='".$str."', jobclear = '1', conforme = '".$conforme."', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
     $query = $db->InsertData($sql);
     
     $update_tech = "UPDATE jb_technicians SET `status` = '0', `updated_at` = '".dateToday()."' WHERE `tech_id` = '". $query2[0]['technicianid']."'";

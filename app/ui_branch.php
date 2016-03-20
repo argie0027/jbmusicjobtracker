@@ -1101,7 +1101,7 @@ function modald(){
                                 <input type="text" name="datedelivery" placeholder="Date Delivery.." class="form-control datedelivery">
 
                                 <br>
-                                <button type="submit" id="savejob" class="btn btn-success pull-left savesetdate "><i class="fa fa-plus"></i>  Save Delivery Date </button>
+                                <button type="submit" id="savejob" class="btn btn-success savesetdate "><i class="fa fa-plus"></i>  Save Delivery Date </button>
                              </form>
                             </div>
                           </div>

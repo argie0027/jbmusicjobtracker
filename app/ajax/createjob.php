@@ -77,7 +77,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	if($query){
             if($isunder_warranty == 1) { 
                 $warranty_query = "INSERT INTO `jb_warranty`(`jobid`, `warranty_date`,`created_at`) VALUES ('".$jobID."','".$warranty_date."','".dateToday()."')";
-                 $warranty_in = $db->InsertData($warranty_query);
+                $warranty_in = $db->InsertData($warranty_query);
                  
                  if($warranty_in){
                     if($isExisting == 1) { 

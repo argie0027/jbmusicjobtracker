@@ -449,7 +449,7 @@
                                 </div>
                             <div class="clear"></div>
                              <div class="form-group col-xs-12">
-                                 <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                                 <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                                  <button type="submit" id="assignedtech" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Assign Tech </button>
                             </div><!-- /.modal-content --> 
                             <div class="clear"></div>
@@ -502,7 +502,7 @@
 
                             <div class="clear"></div>
                              <div class="form-group col-xs-12">
-                                 <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                                 <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                                  <button type="submit" id="addparttojoborder" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Add Part </button>
                             </div><!-- /.modal-content --> 
                             <div class="clear"></div>
@@ -549,7 +549,7 @@
                         <h4 class="modal-title text-red" ><i class="fa  fa-times-circle"> </i> Are you sure you want to delete Job order No. <span id="idhere2"></span>?</h4>
                     </div>
                     <div class="modal-body">
-                         <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                         <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                          <button type="submit" id="deleteitem" class="btn btn-success  pull-left "><i class="fa fa-plus"></i> Delete </button>
                     </div><!-- /.modal-content --> 
                     </div><!-- /.modal-dialog -->
@@ -1204,7 +1204,8 @@
                                     lessdeposit: $('.lessdeposit').text(),
                                     lessdiscount: $('.lessdiscount').text(),
                                     balancecharge: $('.balancecharge').text(),
-                                    email: emailaddress
+                                    email: emailaddress,
+                                    conforme: 'Waiting for Approval'
                                 },
                                 success: function(e){
                                     
@@ -1405,7 +1406,8 @@
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                                 id: ID,
                                 type: 'waiting_list',
-                                otherremarks: $("[name=otheremarks]").val()
+                                otherremarks: $("[name=otheremarks]").val(),
+                                conforme: 'Cant Repair'
                             },
                             success: function(e){
                                 
@@ -1545,12 +1547,12 @@
                                 $('.savesetdate').slideUp('fast');
                                 $('#cantrepair').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-red">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mdone">'+obj.response[0].repair_status+'</small>');
                                 }else{
 
                                 $('.savesetdate').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-red">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mdone">'+obj.response[0].repair_status+'</small>');
                                 }
                             }else if(obj.response[0].repair_status == 'Claimed'){
                                 $('.savesetdate').slideUp('fast');
@@ -1560,7 +1562,7 @@
                                 $('#cantrepair').fadeIn('fast');
                                 $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
                             }else{
-                                $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
                             }
 
                             //clear set date field if JO is not disapproved and cant repair

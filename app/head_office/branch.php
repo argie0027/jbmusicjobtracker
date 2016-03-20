@@ -115,7 +115,7 @@
                                                     $getcountjob = $db->ReadData($qu);
                                                     $jobcount = $db->GetNumberOfRows();
 
-                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid = '".$value['branch_id']."'";;
+                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid = '".$value['branch_id']."'";;
                                                     $totald =$db->ReadData($selecttechvalue);
 
 

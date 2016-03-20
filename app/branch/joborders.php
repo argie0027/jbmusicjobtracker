@@ -211,7 +211,7 @@ $queryforexcel = "";
                         }else if($value['repair_status'] == "Ready for Claiming") {
                             $return = $return . "<td><small class=\"badge col-centered mred\">Unclaimed</small></td>";
                         }else{
-                            $return = $return . "<td><small class=\"badge col-centered bg-aqua\">".$value['repair_status']."</small></td>";
+                            $return = $return . "<td><small class=\"badge col-centered approvedme\">".$value['repair_status']."</small></td>";
                         }
         $return = $return . "</tr>";
         echo $return;
@@ -793,13 +793,13 @@ $queryforexcel = "";
                                 $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Waiting List'){
                                 $('.ishaveammount').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-aqua">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 $('.ishaveammount').slideDown('fast');
                                 $('.span-status').html('<small class="badge col-centered mred">Unclaimed</small>');
                             }else{
                                 $('.ishaveammount').slideDown('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-aqua">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
                             }
 
 
@@ -947,7 +947,7 @@ $queryforexcel = "";
                             if(obj.status == 101) {
                                 if( $.type(obj.date_delivery) != 'undefined' && obj.date_delivery == true ) {
                                     $('input[name="datedelivery"]').parent().find('p.error').remove();
-                                    $('input[name="datedelivery"]').parent().append('<p for="datedelivery" generated="true" class="error" style="position: absolute;top: 58px;">Date is already set.</p>');
+                                    $('input[name="datedelivery"]').parent().append('<p for="datedelivery" generated="true" class="error">Date is already set.</p>');
                                 }
 
                                 $("#saveseteddate").html('<i class="fa fa-plus"></i>  Save Delivery Date');

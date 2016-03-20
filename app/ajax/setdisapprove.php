@@ -7,17 +7,15 @@ $request = filter_input(INPUT_POST, 'action');
 
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
 
-
-
     $id = trim(filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
+    $conforme = trim(filter_input(INPUT_POST, 'conforme', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $selectoldremark = "SELECT remarks FROM jb_joborder WHERE jobid = '".$id."'";
 
      $query2  = $db->ReadData($selectoldremark);
 
      $str = $query2[0]['remarks'] . "<br> -- Disapprove<br>";
 
-    $sql = "UPDATE jb_joborder SET repair_status = 'Ready for Claiming', remarks ='".$str."', jobclear = '1', `updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
+    $sql = "UPDATE jb_joborder SET repair_status = 'Ready for Claiming', remarks ='".$str."', jobclear = '1', conforme ='".$conforme."',`updated_at` = '".dateToday()."' WHERE jobid = '".$id."'";
 
     $query = $db->InsertData($sql);
 

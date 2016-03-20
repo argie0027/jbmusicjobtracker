@@ -1,83 +1,58 @@
-1.	Date – created a new staff today but it does not appear as  “Today” but “Yesterday” - (DONE)
-2.	After filtering done, add a [Remove Filter] button that will reset the changes to show full list - ( REMOVE )
-3.	Permissions -  Can we hide sa side menu yung mga features na-unchecked. Ex: unchecked yung statement of account, is it possible na wala na yung statement of account sa side para wala siyang idea na may statement of account module pla? - (DONE)
-4.	Settings>Staff Lists> Export to Excel - (DONE)
-	a.	Columns in the excel should contain:	
-5.	Settings> Staff Lists> View - (DONE)
-	a.	Should include Status before Date Added
-6.	Settings> Brands> Add - (DONE)
-	a.	Format font to ALL Caps kahit ano pa ang pagka type ng user
-7.	Settings>Models> Add
-a.	Provision to add one or more main category and sub categories.. kse may mga parts daw na generic na may fall to most of the categories.. - ( HOLD )
-8.	Settings>Models>Export to Excel - ( HOLD )
-9.	Sales Report> Pie Chart - (DONE)
-	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+1.	Settings>Diagnosis> Export to Excel  not working - (Working naman)
+2.	Settings>Brands> Export to Excel not working - (Working naman)
+3.	Settings>Models> Add (HOLD - GENERIC) - (DONE Generic ung category)
+	a.	Provision to add one or more main category and sub categories.. kse may mga parts daw na generic na may fall to most of the categories.. 
+4.	Settings>Models>Export to Excel (HOLD - GENERIC) - (DONE)
+	a.	Due to # 7, excel info should be something like this:
+5.	Sales Report>Pie Chart>Hover Text should be - (DONE)
+	a.	Pending: <number>
+	b.	Ongoing: <number>
+	c.	Done: <number>
+6.	Sales Report>Data on Pie and Tables
+	a.	It says Sta Rosa has a total of 5 JO, pero sa table 4 lang - ( kung sa table 5 ung joborder possible na isa sa jo is remark as cant repair. Remember hindi na kasama sa sales ung cant repair job and deleted job )
+	b.	Nagcreate ako ng bagong JO, so dapat magfall siya sa Pending, Pending ( Nag create ako ng jo okay naman sya )
+		should have 1 na.
+7.	Sales Report> Monthly Summary - (DONE)
+	a.	Table should be
+	Month (walang s)	Total Job Order	Monthly Revenue	Pending Job Orders	Ongoing Job Orders	Done Job Orders
+	b.	Same table titles din yung sa nagegenerate na excel
+8.	Branch>Edit Branch - (DONE)
+	a.	Profile address appears to be the branch address..
+9.	SOA>Edit 
+		a.	Technician list does not populate - (DONE)
+		c.	Data should be:
+			i.	Total Parts Cost: 3,500 
+			ii.	Total Charges: [          ] editable field ito, minsan kse guto nila mag add ng charges - (Editable Field DONE)
+			iii.	Less Deposit: [          ] editable field ito, minsan kse guto nila mag add ng charges - (Editable Field DONE)
+			iv.	Less Discount: [          ] editable field ito, minsan kse guto nila mag add ng charges - (Editable Field DONE)
+			v.	Balance: [       ] –label ito; formula is total parts cost + total charges – deposit – discount - (DONE)
+			vi.	Remove mo na yung Subjob Total pati Total Balance - (DONE)
 
-	Pending – those JO that fall under: Job Order Arriving Today (Main), Waiting List, Waiting for Customer Approval, Approved Job Order, Ready for Pickup
-	Ongoing – those JO that fall under “Ongoing Repair”
-	Done – those JO that fall under Delivered, Unclaimed and Claimed
-
-	b.	Same goes with the tables: Pending, Ongoing and Done
-	c.	Revenue – will give you feedback on this
-	d.	Same goes when Export to excel
-10.	Technicians>View - (DONE) 
-	Job Order ID   -  is the unique JO #
-	Item – Name of the item for repair
-	Start Repair – refers to the date kung kelan niya kinclick yung “Start Repairing” Button
-	Done Repair – refers to the date kung kelan niya kinclick yung “Done Repairing” Button
-	Cost – JO Cost
-	Cant Repair  - a checkmark will appear on this column if the JO’s Cant repair button is clicked
-	Status – is the Dashboard status of the JO
-	b.	Please add: Date Hired after Nickname.
-
-11.	Technician>View>Generate Excel - (DONE and CLEANED)
-
-12.	Technician>Add - (DONE)
-	a.	Please add:  Date Hired
-	b.	Please add: Checkbox for Active
-
-13.	Technician> Edit - (DONE)
-	a.	Please add:  Date Hired
-	b.	Please add: Checkbox for Active
-
-14.	Branch> Branch Revenue> Pie Chart - (DONE)
-	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
-
-		Pending – those JO that fall under: Job Order Arriving Today (Main), Waiting List, Waiting for Customer Approval, Approved Job Order, Ready for Pickup
-		Ongoing – those JO that fall under “Ongoing Repair”
-		Done – those JO that fall under Delivered, Unclaimed and Claimed
-
-		b.	Same goes with the tables: Pending, Ongoing and Done
-		c.	Revenue – will give you feedback on this
-		d.	Same goes when Export to excel
+		d.	Every edit sa SOA magssend din ng email sa Client na need nila magpay at magconfirm/approve (so babalik yung JO sa Waiting for Client Approval); tapos once approved and paid, dun lang papasok as revenue ito at doon lang siya papasok sa “Approved Job Order” - (TO FOLLOW)
+		e.	Add Part, cancel button font is black, it should be white - (DONE)
+		f.	Add Technician, cancel button font is black, it should be white - (DONE)
 
 Branch Office
 
-1.	Sales Report> Pie Chart - (DONE)
-	a.	Wrong Pie – Pie is divided into (3): Pending, Ongoing, Done
+1.	Sales Report>Pie Chart>Hover Text should be
+	a.	Pending: <number>
+	b.	Ongoing: <number>
+	c.	Done: <number>
+2.	Sales Report>Data on Pie and Tables 
+	a.	It says Sta Rosa has a total of 5 JO, pero sa table 4 lang - ( kung sa table 5 ung joborder possible na isa sa jo is remark as cant repair. Remember hindi na kasama sa sales ung cant repair job and deleted job )
+	b.	Nagcreate ako ng bagong JO, so dapat magfall siya sa Pending, Pending should have 1 na. - ( Nag create ako ng jo okay naman sya )
+3.	Sales Report> Monthly Summary - (DONE)
+	a.	Table should be
 
-	Pending – those JO that fall under: Ready for Pickup, Waiting for Customer Approval, Job Order Arriving Today
-	Ongoing – those JO that fall under Ongoing Repair
-	Done – those JO that fall under Unclaimed and Claimed
-
-	b.	Same goes with the tables: Pending, Ongoing and Done
-	c.	Revenue – will give you feedback on this
-	d.	Same goes when Export to excel
-
-2.	Job Order> Ready for Pick up> View> Set Delivery Date - (HINDI KO MAKITA UNG JS NITO PARA MAKAPAG STRICT AKO SA DATERANGE)
+4.	Job Order> Create> Remove Estimated Finish Date - (DONE)
+5.	Job Order> Ready for Pick up> View> Set Delivery Date - (DONE)
 	a.	Dapat lagi forward date, hindi siya pede mag input ng date in the past
 
-
 Notes for ALL:
-1. System should be viewable and compatible with Chrome and Firefox - (Hindi ko pa na test ito sa lahat ng browser possible nga na hindi gumana ung ilang plugins ng js. Depende din sa plugin kung ano ung supported nya ng browser version. Or possible din na hindi na updated ung plugin.)
+1. System should be viewable and compatible with Chrome and Firefox - (DONE) 
 
 Additional:
-1. Any adjustments sa SOA alert client/customer by email. Also viewable sa Client Portal (DONE)
-
-
-Design Testing
-1.	Change Logo – Please find attached Logo - (LOGO CHANGED DONE)
-
+1. Any adjustments sa SOA alert client/customer by email. Also viewable sa Client Portal - (DONE)
 
 
 

@@ -1529,10 +1529,7 @@
                                 $('.savesetdate').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
                                 $('#cantrepair').slideDown('fast');
-                                // $('.savesetdate').html("<i class='fa fa-check'></i> Done Job Order");
                                 $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
-
-                                // $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Done-Delivered'){
                                 $('.savesetdate').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
@@ -1543,7 +1540,6 @@
                                 $('.span-status').html('<small class="badge col-centered bg-red">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 if(obj.response[0].technam == ""){
-
                                 $('.savesetdate').slideUp('fast');
                                 $('#cantrepair').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
@@ -1561,7 +1557,9 @@
                             }else if(obj.response[0].repair_status == 'Waiting List'){
                                 $('#cantrepair').fadeIn('fast');
                                 $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
-                            }else{
+                            }else if( obj.response[0].repair_status == 'Done-Ready for Delivery'){
+                                $('.span-status').html('<small class="badge col-centered mredilive">'+obj.response[0].repair_status+'</small>');
+                            }else if(obj.response[0].repair_status == 'Approved'){
                                 $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
                             }
 

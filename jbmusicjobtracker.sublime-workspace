@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"re",
+				"repair"
+			],
+			[
+				"less",
+				"lessdiscount"
+			],
+			[
 				"con",
 				"conforme"
 			],
@@ -146,10 +154,6 @@
 			[
 				"ge",
 				"getStatusQuery"
-			],
-			[
-				"re",
-				"retval"
 			],
 			[
 				"check",
@@ -510,20 +514,30 @@
 			[
 				"src",
 				"script"
-			],
-			[
-				"le",
-				"length"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"contents": "QA13\n1.	Settings> Main Category> Export to Excel - (DONE word nga lang nilagay ko [yes or no])\n	a.	Please add column for is Generic, tapos check or X\n2.	Settings>Models>Export to Excel - (DONE word nga lang nilagay ko [yes or no])\n	a.	Please add column for is Generic, tapos check or X\n3.	Sales Report>  Monthly Summary - (DONE)\n4.	Sales Report>Generate Excel should have the same table column names - (DONE)\n5.	Parts>Add Stocks>New Part - (DONE)\n6.	Technician>View>Change Current Tasks(Job ID) to Current Task: - (DONE)\n7.	Technician>View> \n8.	Technician>View>Generate Excel\n9.	Branch>Edit Branch - (DONE)\n	a.	Profile address appears to be the branch address.. dapat yung address pa rin ng profile yun\n",
 			"file": "note.text",
+			"file_size": 3420,
+			"file_write_time": 131028413926225901,
 			"settings":
 			{
-				"buffer_size": 3349,
+				"buffer_size": 703,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\n    include '../../include.php';\n    include '../ui_main.php';\n    htmlHeader('dashboard');\n    global $url;\n\n    # Permission\n    $permission = \"SELECT t.name, p.add_status, p.edit_status, p.delete_status, p.view_status FROM jb_user u, jb_permission p, jb_permission_type t WHERE u.id = p.user_id AND p.permission_type_id = t.id AND u.id='\".$_SESSION['id'].\"'\";\n    $permission = $db->ReadData($permission);\n\n    if($_SESSION['position'] != -1) {\n        foreach ($permission as $key => $value) {\n\n            if($value['name'] == 'technicians') {\n                $tech = true;\n            }\n        }\n\n        if(!isset($tech)) {\n            echo '<script>window.location = \"dashboard.php\";</script>';\n            exit();\n        }\n    }\n    $queryforexcel = \"\";\n?>\n<!-- header logo: style can be found in header.less -->\n        <?php \n            $name = $_SESSION['Branchid'];\n            if($_SESSION['position'] == 0 || $_SESSION['position'] == -1) {\n                $name = \"JB Main Office\";    \n            }else {\n                $sql = \"SELECT branch_name FROM jb_branch WHERE branch_id = '\" .$name. \"'\";\n                \n                 $query = $db->ReadData($sql);\n                 $name =  $query[0]['branch_name'];\n                // $name = $query['branch_name'];\n            }   $sql2 = \"SELECT * FROM notitemp WHERE  branch_id <> '0'  ORDER BY `created_at` DESC\";\n            $query2 = $db->ReadData($sql2);\n            $counterviewed = \"SELECT * FROM notitemp WHERE  branch_id <> '0' AND isViewed <> '1' ORDER BY `created_at` DESC\";\n            $counterviewed = $db->ReadData($counterviewed);\n            headerDashboard($name, $query2, count($counterviewed)); \n        ?>\n\n        <div class=\"modald\">\n            <img src=\"<?php echo SITE_IMAGES_DIR; ?>ajax.gif\">\n        </div>\n\n        <div class=\"wrapper row-offcanvas row-offcanvas-left\">\n            <!-- Left side column. contains the logo and sidebar -->\n            <aside class=\"left-side sidebar-offcanvas\">\n                <!-- sidebar: style can be found in sidebar.less -->\n                <section class=\"sidebar\">\n                    <!-- Sidebar user panel -->\n                    <?php sidebarHeader(); ?>\n                    <!-- /.search form -->\n                    <!-- sidebar menu: : style can be found in sidebar.less -->\n                    <?php sidebarMenu(); ?>\n                </section>\n                <!-- /.sidebar -->\n            </aside>\n\n            <!-- Right side column. Contains the navbar and content of the page -->\n            <aside class=\"right-side\">\n                <!-- Content Header (Page header) -->\n              <?php breadcrumps('Technicians'); ?>\n                <!-- Main content -->\n                <section class=\"content\">\n                                  <div class=\"form-group pull-right exportoexcel\">\n                        <div class=\"input-group\">\n                            <button class=\"btn  btn-default pull-right\" id=\"createexcel\">\n                              <i class=\"fa fa-file-text-o\"></i> Export to Excel\n                            </button>\n                        </div>\n                    </div><!-- /.form group -->\n\n                    <div class=\"form-group daterange-btn\">\n                        <div class=\"input-group\">\n                            <button class=\"btn btn-default pull-right\" id=\"daterange-btn\">\n                                <i class=\"fa fa-calendar\"></i> Select by Date Range\n                                <i class=\"fa fa-caret-down\"></i>\n                            </button>\n                        </div>\n                    </div><!-- /.form group -->\n                    <div class=\"clear\"></div>\n                        <div class=\"box\">\n                                <div class=\"box-body table-responsive\">\n                                    <table id=\"example1\" class=\"table table-bordered table-hover\">\n                                        <thead>\n                                            <tr>\n                                                <th>ID</th>\n                                                <th>Name</th>\n                                                <th>Current Tasks</th>\n                                                <th>Total Earnings</th>\n                                                <th>Status</th>\n                                            </tr>\n                                        </thead>\n                                        <tbody>\n                                            <?php \n                                                if(isset($_GET['daterange'])){\n                                                    $bydate = split (\"to\", $_GET['daterange']);\n                                                    $sql = \"SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '\".$bydate[0].\"' AND '\".$bydate[1].\"' AND tech_id <> 1 AND isdeleted <> 1\";\n                                                }else{\n                                                    $sql = \"SELECT * FROM `jb_technicians` WHERE tech_id <> 1 AND isdeleted <> 1\";\n                                                }\n                                                $queryforexcel = $sql;\n                                                $query =$db->ReadData($sql); \n                                                 foreach ($query as $key => $value) {\n\n                                                    $query  =\"SELECT * FROM jb_joborder WHERE technicianid = '\".$value['tech_id'].\"' ORDER BY created_at DESC\";\n                                                    $query =$db->ReadData($query);\n       \n                                                    $currenttast = \"\";\n\n                                                    if($query) {\n                                                        if($query[0]['repair_status'] != 'Ongoing Repair'){\n                                                            $currenttast = \"-\";\n                                                        } else {\n                                                            $currenttast =  $query[0]['jobid'] . \" (\". $query[0]['item'] . \")\"; \n                                                        }\n                                                    } else {\n                                                        $currenttast = \"-\";\n                                                    }\n\n                                                    $selecttechvalue = \"SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '\".$value['tech_id'].\"' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' \";\n                                                    $totald =$db->ReadData($selecttechvalue);\n                                                    ?>\n                                                        <tr id=\"<?php echo $value['tech_id']; ?>\" class=\"clickable\">\n                                                            <td><?php echo $value['tech_id']; ?></td>\n                                                            <td><?php echo $value['name']; ?></td>\n                                                            <td><?php echo $currenttast; ?> </td>\n                                                            <td><?php echo \"<b>P </b>\" . number_format($totald[0]['total'],2);?></td>\n                                                            <td>\n                                                                <?php\n                                                                    if($value['status'] == 1) {\n                                                                        ?>   <small class=\"badge col-centered bg-yellow\">Not Available</small>\n                                                                        <?php \n                                                                    }else{\n                                                                        ?>  <small class=\"badge col-centered bg-green\">Available</small>\n                                                                        <?php\n                                                                    }\n                                                                ?>\n                                                            </td>\n                                                        </tr>\n                                                    <?php \n                                                }\n                                            ?>\n                                    </table>\n                                </div><!-- /.box-body -->\n                            </div><!-- /.box -->\n                </section><!-- /.content -->\n            </aside><!-- /.right-side -->\n        </div><!-- ./wrapper -->\n\n    <div class=\"modal fade\" id=\"create-branch\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n    <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n        <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n            <h4 class=\"modal-title\"><i class=\"fa  fa-plus-circle\"></i> Create Technician</h4>\n        </div>\n        <div class=\"modal-body\">\n         <form id=\"createtech\" name=\"createtech\" method=\"post\" role=\"form\">\n\n            <div class=\"form-group col-xs-12\">\n                <label>Technician Name:</label>\n                <input type=\"text\" name=\"techname\" class=\"form-control\" placeholder=\"\">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Email Address:</label>\n                <input type=\"text\" name=\"email\" class=\"form-control\" placeholder=\"Email Address \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Contact Number:</label>\n                <input type=\"number\" name=\"number\" class=\"form-control\" placeholder=\"Contact Number \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Address:</label>\n                <input type=\"text\" name=\"address\" class=\"form-control\" placeholder=\"Address \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Nickname:</label>\n                <input type=\"text\" name=\"nickname\" class=\"form-control\" placeholder=\"Nickname \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Date Hired:</label>\n                <input type=\"text\" name=\"datehired\" class=\"form-control sandboxdate\" placeholder=\"Date Hired\">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Technician Status:</label>\n                <select class=\"form-control\" name=\"techstatus\">\n                    <option></option>\n                    <option value=\"active\">Active</option>\n                    <option value=\"inactive\">Inactive</option>\n                </select>\n            </div>\n                <div class=\"clear\"></div>\n           <div class=\"modal-footer clearfix\">\n                <button type=\"button\" class=\"btn btnmc \" data-dismiss=\"modal\"><i class=\"fa fa-times\"></i> Discard</button>\n                <button type=\"submit\" id=\"savejob\" class=\"btn btn-primary\"><i class=\"fa fa-plus\"></i> Submit </button>\n            </div>\n            </form>\n        </div>\n    </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n    </div><!-- /.modal -->\n\n\n<div class=\"modal fade\" id=\"edit-branch\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n    <div class=\"modal-dialog modal-lg\">\n    <div class=\"modal-content\">\n        <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n            <h4 class=\"modal-title\"><i class=\"fa  fa-plus-circle\"></i> Edit Technician</h4>\n        </div>\n        <div class=\"modal-body\">\n         <form id=\"edittech\" name=\"edittech\" method=\"post\" role=\"form\">\n            <div class=\"form-group col-xs-12\">\n                <label>Technician Name:</label>\n                <input type=\"text\" name=\"etechname\" class=\"form-control\" placeholder=\"\">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Email Address:</label>\n                <input type=\"text\" name=\"eemail\" class=\"form-control\" placeholder=\"Email Address \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Contact Number:</label>\n                <input type=\"number\" name=\"enumber\" class=\"form-control\" placeholder=\"Contact Number \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Address:</label>\n                <input type=\"text\" name=\"eaddress\" class=\"form-control\" placeholder=\"Address \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Nickname:</label>\n                <input type=\"text\" name=\"enickname\" class=\"form-control\" placeholder=\"Nickname \">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Date Hired:</label>\n                <input type=\"text\" name=\"edatehired\" class=\"form-control sandboxdate\" placeholder=\"Date Hired\">\n            </div>\n            <div class=\"form-group col-xs-6\">\n                <label>Technician Status:</label>\n                <select class=\"form-control\" name=\"etechstatus\">\n                    <option></option>\n                    <option value=\"active\">Active</option>\n                    <option value=\"inactive\">Inactive</option>\n                </select>\n            </div>\n                <div class=\"clear\"></div>\n           <div class=\"modal-footer clearfix\">\n                <button type=\"button\" class=\"btn btnmc\" data-dismiss=\"modal\"><i class=\"fa fa-times\"></i> Discard</button>\n                <button type=\"submit\" id=\"savejob\" class=\"btn btn-primary\"><i class=\"fa fa-plus\"></i> Submit </button>\n            </div>\n            </form>\n        </div>\n    </div><!-- /.modal-content -->\n    </div><!-- /.modal-dialog -->\n    </div><!-- /.modal -->\n    \n    <div class=\"modal fade\" id=\"delete-modal\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n        <div class=\"modal-dialog \">\n        <div class=\"modal-content\">\n        <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n            <h4 class=\"modal-title\" ><i class=\"fa fa-times-circle\"> </i> Are you sure you want to delete <span id=\"techname\"></span> as Technician?</h4>\n        </div>\n        <div class=\"modal-body text-right\">\n             <button type=\"button\" class=\"btn  btnmc cancel-delet\" data-dismiss=\"modal\"><i class=\"fa fa-times\"></i> Cancel </button>  \n             <button type=\"submit\" id=\"deleteitem\" class=\"btn btn-danger cancel-delet\"><i class=\"fa fa-plus\"></i> Delete </button>\n        </div><!-- /.modal-content --> \n        </div><!-- /.modal-dialog -->\n        </div><!-- /.modal -->\n    </div><!-- /.modal -->\n      \n\n      <div class=\"modal fade\" id=\"view-modal\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n            <div class=\"modal-dialog \">\n                <div class=\"modal-content\">\n                    <div class=\"modal-body\">\n                                   <!-- Main content -->\n                <section class=\"content invoice\">                    \n                    <!-- title row -->\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <h2 class=\"page-header\">\n                                <i class=\"fa fa-globe\"></i> Technician View\n                            </h2>                            \n                        </div><!-- /.col -->\n                    </div>\n\n                     <div class=\"row invoice-info\">\n                        <div class=\"col-sm-4 invoice-col\">\n                            <address>\n                                <strong>Technician Name: </strong><span class=\"etechname\"></span><br>\n                                <strong>Contact number : </strong><span class=\"enumber\"></span><br>\n                                <strong>Email Address: </strong><span class=\"eemail\"></span><br>\n                                <strong>Address: </strong><span class=\"eaddress\"></span><br>\n                                <strong>Nickname: </strong><span class=\"enick\"></span><br>\n                                <strong>Date Hired: </strong><span class=\"edatehired\"></span><br>\n                            </address>\n                        </div><!-- /.col -->\n                        <div class=\"col-sm-4 invoice-col\">\n\n                        </div><!-- /.col -->\n                        <div class=\"col-sm-4 invoice-col\">\n                           <strong>Status: </strong><span class=\"estatus\"></span><br>\n                            <strong>Current Task(Job ID): </strong><span class=\"ecurrenttasks\"></span><br><br>\n                            <!-- <strong>Total Earnings: </strong><span class=\"eearnings\">11,520</span><br> -->\n                            <table>\n                                <tr>\n                                    <th><strong>Summary Total: </strong></th>\n                                    <th></th>\n                                </tr>\n                                Earnings:\n                                Job Orders: \n                                Successfully Repaired: \n                                Can’t Repair \n                            </table>\n                    </div><!-- /.row -->\n\n                </section><!-- /.content -->\n                <section>\n                     <div class=\"col-xs-12\">\n                                <div class=\"box-header\">\n                                    <h3 class=\"box-title\">Job Order History</h3>\n                                </div><!-- /.box-header -->\n                                <div class=\"box-body\">\n                                    <table class=\"table table-bordered tasklist\">\n                                        \n                                    </table>\n                                </div><!-- /.box-body -->\n                                <!-- <div class=\"box-footer clearfix\">\n                                    <ul class=\"pagination pagination-sm no-margin pull-right\">\n                                        <li><a href=\"#\">&laquo;</a></li>\n                                        <li><a href=\"#\">1</a></li>\n                                        <li><a href=\"#\">2</a></li>\n                                        <li><a href=\"#\">3</a></li>\n                                        <li><a href=\"#\">&raquo;</a></li>\n                                    </ul>\n                                </div> -->\n                            </div><!-- /.box -->\n                        \n                </section>\n                        <div class=\"text-right\">\n                         <button type=\"button\" class=\"btn btnmc cancel-delet\" data-dismiss=\"modal\"><i class=\"fa fa-times\"></i> Close </button>\n                         <button id=\"generateExcelTechIndivid\" class=\"btn btn-primary cancel-delet\"><i class=\"fa fa-download\"></i> Generate Excel </button>\n                        </div>\n                    </div><!-- /.modal-content --> \n                    </div><!-- /.modal-dialog -->\n                    </div><!-- /.modal -->\n                </div><!-- /.modal -->\n\n             <div class=\"modal fade\" id=\"selecrecord-modal\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\n            <div class=\"modal-dialog \">\n                <div class=\"modal-content\">\n                    <div class=\"modal-header\">\n                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n                        <h4 class=\"modal-title\"><i class=\"fa  fa-exclamation-triangle\"></i> Please make a selection from the list.</h4>\n                    </div>\n                    <div class=\"modal-body\">\n                         <center><button type=\"submit\" id=\"savejob\" class=\"btn btn-success\"  data-dismiss=\"modal\"><i class=\"fa fa-eraser\"></i> OK </button></center>\n                    <div class=\"clear\"></div>\n                    </div><!-- /.modal-content --> \n                    </div><!-- /.modal-dialog -->\n                    </div><!-- /.modal -->\n                </div><!-- /.modal -->\n\n        <script type=\"text/javascript\">\n            $(function() { \n                var ID = \"\";\n                //WHEN YOU CHOOSE RECORD\n\n            //get parameters on url\n            var getUrlParameter = function getUrlParameter(sParam) {\n                var sPageURL = decodeURIComponent(window.location.search.substring(1)),\n                    sURLVariables = sPageURL.split('&'),\n                    sParameterName,\n                    i;\n\n                for (i = 0; i < sURLVariables.length; i++) {\n                    sParameterName = sURLVariables[i].split('=');\n\n                    if (sParameterName[0] === sParam) {\n                        return sParameterName[1] === undefined ? true : sParameterName[1];\n                    }\n                }\n            };\n\n             $('#generateExcelTechIndivid').click( function(){\n                var query = \"SELECT * FROM `jb_technicians` WHERE tech_id = '\"+ID+\"'\";\n                query = query.replace(/%/g,\"percentage\");\n                var page = '../ajax/generateexcel.php?querytogenerate='+query+\"&&type=techindividual&&filename=tech_excel\";\n                window.location = page;// you can use window.open also\n             });\n\n             $('#createexcel').on('click', function(){\n\n                <?php if(isset($_GET['daterange'])) { ?>\n                    var daterange = getUrlParameter('daterange').split('to');\n                    var filter = $('#example1_filter label input').val();\n\n                    if ( filter.length ) {\n                        var query = \"SELECT * FROM `jb_technicians` WHERE name LIKE '%\"+filter+\"%' AND created_at BETWEEN '\"+daterange[0]+\"' AND '\"+daterange[1]+\"' AND tech_id <> 1 AND isdeleted <> 1\";\n                    } else {\n                        var query = \"<?php echo $queryforexcel; ?>\";\n                    }\n \n                    query = query.replace(/%/g,\"percentage\");\n                    var page = '../ajax/generateexcel.php?querytogenerate='+query+\"&&type=tech&&filename=tech_excel\";\n                    window.location = page;// you can use window.open also\n\n                <?php } else { ?>\n                    var filter = $('#example1_filter label input').val();\n                    \n                    if ( filter.length ) {\n                        var query = \"SELECT * FROM `jb_technicians` WHERE name LIKE '%\"+filter+\"%' AND tech_id <> 1 AND isdeleted <> 1\";\n                    } else {\n                        var query = \"<?php echo $queryforexcel; ?>\";\n                    }\n\n                    query = query.replace(/%/g,\"percentage\");\n                    var page = '../ajax/generateexcel.php?querytogenerate='+query+\"&&type=tech&&filename=tech_excel\";\n                    window.location = page;// you can use window.open also\n\n                <?php } ?>\n\n            });\n\n\n            $('#daterange-btn').daterangepicker(\n            {\n            ranges: {\n                'Today': [moment(), moment()],\n                'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],\n                'Last 7 Days': [moment().subtract('days', 6), moment()],\n                'This Month': [moment().startOf('month'), moment().endOf('month')],\n                'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]\n            },\n            startDate: moment().subtract('days', 29),\n            endDate: moment()\n            },\n            function(start, end) {\n                    // alert(document.URL);\n                    <?php \n                        if(isset($_GET['daterange'])){\n                            ?>\n                                var newurl =  document.URL.split(\"daterange\");\n                                var newu = newurl[0].replace(\"&&\", \"\");\n                                window.location.assign(\"\" + newu + \"&daterange=\" + start.format('YYYY-MM-D 00:00:00') + 'to' + end.format('YYYY-MM-D 23:59:59') );\n                            <?php\n                        }else{\n                            if(isset($_GET['type'])){\n                                ?>\n                                    window.location.assign(\"\" + \"<?php echo SITE_URL;?>head_office/technicians.php?type=<?php echo $_GET['type']; ?>\" + \"&daterange=\" + start.format('YYYY-MM-D 00:00:00') + 'to' + end.format('YYYY-MM-D 23:59:59') );\n                                <?php \n                            }else{\n                                ?>\n                                    window.location.assign(\"\" + \"<?php echo SITE_URL;?>head_office/technicians.php?\" + \"&daterange=\" + start.format('YYYY-MM-D 00:00:00') + 'to' + end.format('YYYY-MM-D 23:59:59'));\n                                <?php\n                            }\n                            ?>\n                            <?php\n                        }\n                    ?>\n            }\n            );\n\n                function formatNumber (num) {\n                    return num.toString().replace(/(\\d)(?=(\\d{3})+(?!\\d))/g, \"$1,\")\n                }\n\n                $(document).on('click', \".clickable\", function() {\n                    $(\".clickable\").removeClass(\"selected\");\n                    $(this).addClass(\"selected\");\n                    ID = $(this).attr(\"id\");\n                    console.log(ID);\n                });\n                $('.add').on('click',function(){\n                    $('#create-branch').modal('show');\n                });\n\n                 $('.delete').on('click',function(){\n                    if(ID) {\n                        $(\"#delete-modal\").modal('show');\n                        $(\"#techname\").html($('#'+ID+' td:nth-child(2)').text());\n                    }else {\n                        $(\"#selecrecord-modal\").modal(\"show\");\n                    }\n                }); \n\n                  $('.view').on('click',function(){\n\n                    if(ID) {\n                        \n                        $('.tasklist').html('<tr><th style=\"width: 60px\">Job ID</th><th>Item</th><th>Start Repair</th><th>Done Repair</th><th>Cost</th><th style=\"width: 90px\">Cant Repair</th><th style=\"width: 40px\">Status</th></tr>');\n                         $.ajax({\n                        type: 'POST',\n                        url: '../ajax/viewtechfull.php',\n                        data: {\n                            action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',\n                            techid: ID\n                        },\n                        success: function(e){\n                            \n                            $('.eearnings').html(\"0\");\n                            var obj = jQuery.parseJSON(e);\n                            $('.etechname').html(\" \" + obj.response[0].name);\n                            $('.enumber').html(\" \" + obj.response[0].number);\n                            $('.eemail').html(\" \" + obj.response[0].email);\n                            $('.eaddress').html(\" \" + obj.response[0].address);\n                            $('.enick').html(\" \" + obj.response[0].nickname);\n                            $('.edatehired').html(\" \" + obj.response[0].date_hired);\n                            if(obj.response[0].status == '1'){\n                                $('.estatus').html('<small class=\"badge col-centered bg-yellow\">Not Available</small>');\n                            }else{\n                                $('.estatus').html('<small class=\"badge col-centered bg-green\">Available</small>');\n                            }\n                            $('.ecurrenttasks').html(\" \" + obj.response2.jobid);\n                            var totalearnings = 0;\n                             \n                            for (var i = 0; i < obj.response3.length; i++) {\n                                var total = parseFloat(obj.response3[i].totalpartscost) + parseFloat(obj.response3[i].service_charges) + parseFloat(obj.response3[i].total_charges);\n                                totalearnings = (obj.response3[i].jobclear == 0) ? totalearnings + total : totalearnings; \n\n                                var cantRep = (obj.response3[i].jobclear == 0) ? '<i class=\"fa fa-times\"></i>' : '<i class=\"fa fa-check\"></i>';\n                                var dateStart = (obj.response3[i].date_start != null) ? obj.response3[i].date_start : '-';\n                                var dateDone = (obj.response3[i].date_done != null) ? obj.response3[i].date_done : '-';\n\n                                var colorcode = '';\n                                var status = '';\n\n                                if(obj.response3[i].repair_status == \"Ongoing Repair\"){\n                                    colorcode = 'bg-teal';\n                                    status = obj.response3[i].repair_status;\n                                } \n                                if(obj.response3[i].repair_status == \"Claimed\") {\n                                    colorcode = 'bg-green';\n                                    status = obj.response3[i].repair_status;\n                                }\n                                if(obj.response3[i].repair_status == \"Done-Ready for Delivery\"){\n                                    colorcode = 'mredilive';\n                                    status = 'Ready for Pickup';\n                                }\n                                if(obj.response3[i].repair_status == \"Ready for Claiming\"){\n                                    colorcode = 'mdone';\n                                    status = obj.response3[i].repair_status;\n                                }\n\n                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td>'+dateStart+'</td><td>'+dateDone+'</td><td><b>P </b><span class=\"number\">'+ total +'</span></td><td class=\"text-center\">'+cantRep+'</td><td><span class=\"badge '+colorcode+'\">'+status+'</span></td></tr>');\n                            };\n                             $('.eearnings').html(\"<b>P </b> <span class='number'>\"+totalearnings+\"</span>\");\n                             $('.number').number( true, 2 );\n                        }\n                    });\n\n                        $(\"#view-modal\").modal(\"show\");\n                    }else {\n                        $(\"#selecrecord-modal\").modal(\"show\");\n                    }\n\n                     $('.eearnings').html(totalearnings);\n                }); \n\n\n\n                $('.edit').on('click',function(){\n                if(ID){\n                    $('#edit-branch').modal('show');\n                    $.ajax({\n                        type: 'POST',\n                        url: '../ajax/viewtech.php',\n                        data: {\n                            action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',\n                            jobid: ID\n                        },\n                        success: function(e){\n                            \n                            var obj = jQuery.parseJSON(e);\n                            $(\"[name=etechname]\").val(obj.response[0].name);\n                            $(\"[name=eemail]\").val(obj.response[0].email);\n                            $(\"[name=enumber]\").val(obj.response[0].number);\n                            $(\"[name=eaddress]\").val(obj.response[0].address);\n                            $(\"[name=enickname]\").val(obj.response[0].nickname);\n                            $(\"[name=edatehired]\").val(obj.response[0].date_hired);\n                            $(\"[name=etechstatus] option[value='\"+obj.response[0].tech_status+\"']\").attr('selected', 'selected');\n                            console.log(obj.response[0].date_hired);\n                        }\n                    });\n                }else {\n                    $(\"#selecrecord-modal\").modal(\"show\");\n                }\n                });\n\n                $(\"#deleteitem\").on('click',function(){\n                $.ajax({\n                    type: 'POST',\n                    url: '../ajax/deletetech.php',\n                    data: {\n                        action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',\n                        id: ID\n                    },\n                        success: function(e){\n                                \n                            if(e == \"success\"){\n                                $(\"#delete-modal\").modal('hide');\n                               $(\"#\" + ID).remove();\n                               ID = \"\";\n                               location.reload();\n                            }else {\n\n                            }\n                        }\n                    });\n                });\n\n                 $(\"#createtech\").validate({\n                    errorElement: 'p',\n                    // Specify the validation rules\n                    rules: {\n                        \"techname\":{\n                        required: true\n                        },\n                        \"email\":{\n                        required: true,\n                        email: true\n                        },\n                        \"number\":{\n                        required: true,\n                        number: true,\n                        minlength:7,\n                        maxlength: 11\n                        },\n                        \"address\":{\n                        required: true\n                        },\n                        \"nickname\":{\n                        required: true\n                        },\n                        \"datehired\":{\n                        required: true\n                        },\n                        \"techstatus\":{\n                        required: true\n                        }\n                    },\n                    // Specify the validation error messages\n                    messages: {\n                    techname:{\n                    required: \"Please provide a technician name\"\n                    },\n                    email:{\n                    required: \"Please provide a email\"\n                    },\n                    number:{\n                    required: \"Please provide a number\",\n                    minlength: \"Your number must be at least 7 interger long.\"\n                    },\n                    address:{\n                    required: \"Please provide a address\"\n                    },\n                    nickname:{\n                    required: \"Please provide nickname\"\n                    },\n                    datehired:{\n                    required: \"Please provide date hired\"\n                    },\n                    techstatus:{\n                    required: \"Please select technician status\"\n                    }\n                    },\n                    submitHandler: function(form) {\n                        $('.modald').fadeIn('slow');\n                        $.ajax({\n                            type: 'POST',\n                            url: '../ajax/createtech.php',\n                            data: {\n                                action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',\n                                techname: $(\"[name=techname]\").val(),\n                                email: $(\"[name=email]\").val(),\n                                number: $(\"[name=number]\").val(),\n                                address: $(\"[name=address]\").val(),\n                                nickname: $(\"[name=nickname]\").val(),\n                                datehired: $(\"[name=datehired]\").val(),\n                                techstatus: $(\"[name=techstatus]\").val()\n                            },\n                            success: function(e){\n                                    \n                                if(e == \"success\"){\n                                    location.reload();\n                                }\n                            }\n                        });\n                        return false;\n                    }\n            });\n\n\n\n                $(\"#edittech\").validate({\n                    errorElement: 'p',\n                    // Specify the validation rules\n                    rules: {\n                        \"etechname\":{\n                        required: true\n                        },\n                        \"eemail\":{\n                        required: true,\n                        email: true\n                        },\n                        \"enumber\":{\n                        required: true,\n                        number: true,\n                        minlength: 7,\n                        maxlength: 11\n                        },\n                        \"eaddress\":{\n                        required: true\n                        },\n                        \"enickname\":{\n                        required: true\n                        },\n                        \"edatehired\":{\n                        required: true\n                        },\n                        \"etechstatus\":{\n                        required: true\n                        }\n                    },\n                    // Specify the validation error messages\n                    messages: {\n                    etechname:{\n                    required: \"Please provide a technician name\"\n                    },\n                    eemail:{\n                    required: \"Please provide a email\"\n                    },\n                    enumber:{\n                    required: \"Please provide a number\",\n                    minlength: \"Your number must be at least 7 interger long.\"\n                    },\n                    eaddress:{\n                    required: \"Please provide a address\"\n                    },\n                    enickname:{\n                    required: \"Please select nickname\"\n                    },\n                    edatehired:{\n                    required: \"Please provide date hired\"\n                    },\n                    etechstatus:{\n                    required: \"Please select technician status\"\n                    }\n                    },\n                    submitHandler: function(form) {\n                        $('.modald').fadeIn('slow');\n                        $.ajax({\n                            type: 'POST',\n                            url: '../ajax/edittech.php',\n                            data: {\n                                action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',\n                                techname: $(\"[name=etechname]\").val(),\n                                email: $(\"[name=eemail]\").val(),\n                                number: $(\"[name=enumber]\").val(),\n                                address: $(\"[name=eaddress]\").val(),\n                                nickname: $(\"[name=enickname]\").val(),\n                                datehired: $(\"[name=edatehired]\").val(),\n                                techstatus: $(\"[name=etechstatus]\").val(),\n                                id: ID\n                            },\n                            success: function(e){\n                                    \n                                if(e == \"success\"){\n                                    location.reload();\n                                }\n                            }\n                        });\n                        return false;\n                    }\n            });\n\n\n\n            });\n            </script>\n<?php\n    htmlFooter('dashboard');\n?>",
+			"file": "app/head_office/technicians.php",
+			"file_size": 40446,
+			"file_write_time": 131031916846359302,
+			"settings":
+			{
+				"buffer_size": 39853,
 				"line_ending": "Windows"
 			}
 		},
@@ -531,23 +545,7 @@
 			"file": "app/head_office/soa.php",
 			"settings":
 			{
-				"buffer_size": 146818,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/branch/soa.php",
-			"settings":
-			{
-				"buffer_size": 88107,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "\n<small  class=\"waitingview badge pull-left mrorange\"> <i class=\"fa fa-check\"> </i>  Waiting for Approval </small>\n<small  class=\"ongoindview badge pull-left bg-teal\"> <i class=\"fa fa-check\"> </i>  Ongoing Repair </small>\n<small  class=\"approvedview badge pull-left approvedme\"> <i class=\"fa fa-check\"> </i> Approved  </small>\n<small  class=\"doneview badge pull-left mdone\"> <i class=\"fa fa-check\"> </i> Ready for Claiming </small>\n<small  class=\"donepickupview badge pull-left mredilive\"> <i class=\"fa fa-check\"> </i> Ready for Pickup </small>\n<small  class=\"claimedview badge pull-left bg-green\"> <i class=\"fa fa-check\"> </i> Claimed </small>\n<small  class=\"unclaimedview badge pull-left mred\"> <i class=\"fa fa-check\"> </i> Unclaimed  </small>\n\n$(\".waitingview\").css('display','none');\n$(\".ongoindview\").css('display','none');\n$(\".approvedview\").css('display','none');\n$(\".donepickupview\").css('display', 'none');\n$(\".doneview\").css('display','none');\n$(\".claimedview\").css('display','none');\n$(\".unclaimedview \").css('display','none');\n\nif(obj.response[0].repair_status == \"Ongoing Repair\"){\n    $('.ongoingrepairhideshow').slideDown('fast');\n    $('.approvedview2').slideDown('fast');\n    $(\".ongoindview\").css('display','inline');\n} \nif(obj.response[0].repair_status == \"Approved\") {\n    $('#setStartrepairing').slideDown('fast');\n    $(\".approvedview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Ready for Claiming\"){\n    $(\".doneview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Claimed\"){\n    $(\".claimedview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Waiting for SOA Approval\"){\n    $(\".waitingview\").css('display','inline');\n}\nif(obj.response[0].repair_status == \"Done-Ready for Delivery\"){\n    $('.ongoingrepairhideshow2').slideDown('fast');\n    $(\".donepickupview\").css('display', 'inline');\n}\n\n\n<div class=\"col-sm-4 invoice-col\">\n<strong>Computed By: </strong><span class=\"computedby\"></span><br>\n    <strong>Accepted By : </strong><span class=\"acceptedby\"></span><br>\n    <strong class=\" pull-left \">Conforme: </strong>\n    <small  id=\"disapprove\"  class=\"waitingview2 badge pull-left bg-green\"> <i class=\"fa fa-check\"> </i> Approved  </small>\n    <button id=\"approvejob\" class=\" approvedview2 btn bg-green  margin\"> <i class=\"fa fa-check\"> </i>  Approve </button>\n    <button id=\"cantapprove\" class=\" approvedview2 btn bg-red  margin\"> <i class=\"fa fa-check\"> </i>  Disapprove </button>\n    \n    <div class=\"ongoingrepairhideshow2\">\n        <br>\n        <label>Delivery Date:</label>\n        <input type=\"text\" name=\"datedelivery\" class=\"form-control\" placeholder=\"Estimated Finish Date\">\n        <button id=\"save_donedate\" class=\" approvedview2 btn bg-green margin\"><i class=\"fa fa-check\"> </i> Save Delivery Date</button>\n    </div>\n\n    <button id=\"claimedjoborder\" class=\" approvedview3 btn bg-green  margin\" style=\"display: inline;\"> <i class=\"fa fa-check\"> </i>  Item Claimed </button>\n    \n    <div class=\"form-group datelivery2\">\n    <br>\n    <br>\n    <br>\n        <b>Delivery Date:</b><br>\n            <div class=\"table-responsive\">\n                <b>Date:</b> <span class=\"setdatedelivery\"></span>\n            </div>\n            <br>\n            <div class=\"table-responsive\">\n               <button id=\"setReadyForClaiming\" class=\"btn approvedview2 btn-success\"><i class=\"fa fa-check\"></i> Job Order Arrived( Main )</button>\n            </div>\n        </div>\n</div><!-- /.row -->\n\n\n<small  class=\"waitingview badge pull-left mrorange\"> <i class=\"fa fa-check\"> </i>  Waiting for Approval </small>\n                <small  class=\"approvedview badge pull-left approvedme\"> <i class=\"fa fa-check\"> </i> Approved  </small>\n                <small  class=\"disapprovedview badge pull-left mred\"> <i class=\"fa fa-times\"> </i> Disapproved </small>\n                <small  class=\"cantrepairview badge pull-left bg-grey\"> <i class=\"fa fa-times\"> </i> Cant Repair </small>\n\n                    $(\".waitingview\").css('display','none');\n$(\".approvedview\").css('display','none');\n$(\".disapprovedview\").css('display','none');\n$(\".cantrepairview\").css('display','none');\n\n$('#setStartrepairing').slideUp('fast');\n$('.ongoingrepairhideshow').slideUp('fast');\n$('.approvedview2').slideUp('fast');\n\nif(obj.response[0].repair_status == \"Ongoing Repair\"){\n    $('.ongoingrepairhideshow').slideDown('fast');\n    $('.approvedview2').slideDown('fast');\n} \nif(obj.response[0].repair_status == \"Approved\") {\n    $('#setStartrepairing').slideDown('fast');\n}\nif(obj.response[0].repair_status == \"Done-Ready for Delivery\"){\n    $('.ongoingrepairhideshow2').slideDown('fast');\n}\n\nif(obj.response[0].conforme == 'Waiting for Approval') {\n    $(\".waitingview\").css('display','inline');\n}\nif(obj.response[0].conforme == 'Approved') {\n    $(\".approvedview\").css('display','inline');\n}\nif(obj.response[0].conforme == 'Disapproved') {\n    $(\".disapprovedview\").css('display','inline');\n}\nif(obj.response[0].conforme == 'Cant Repair') {\n    $(\".cantrepairview\").css('display','inline');\n        }\n",
-			"settings":
-			{
-				"buffer_size": 5049,
+				"buffer_size": 146101,
 				"line_ending": "Windows"
 			}
 		}
@@ -610,44 +608,48 @@
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/css",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js",
 		"/C/xampp/htdocs/jbmusicjobtracker/classes"
 	],
 	"file_history":
 	[
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/approvejob.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/branch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewuserbranch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createbranch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/parts.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/settings.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcelbranch.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/joborders.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewpart.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatetech_parts.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/soa.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/soa.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp2_jbmusicjobtracker.zip/jbmusicjobtracker/app/ajax/viewpart.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setwaiting.php",
+		"/C/Users/Argie Navora/AppData/Local/Temp/Temp2_jbmusicjobtracker.zip/jbmusicjobtracker/app/branch/soa.php",
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/approvejob.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdisapprove.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/cantrepairremarks.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatetech_parts.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewjoborder.php",
 		"/C/Users/Argie Navora/AppData/Local/Temp/Temp2_jbmusicjobtracker.zip/jbmusicjobtracker/app/head_office/soa.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoasub.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoa.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/joborders.php",
 		"/C/Users/Argie Navora/AppData/Local/Temp/Temp2_jbmusicjobtracker.zip/jbmusicjobtracker/app/ui_branch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ui_branch.php",
 		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/branch/soa.php",
 		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/head_office/soa.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/classes/class.MySQLiDBManager.inc",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/generateexcelbranch.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenue.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/branch.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/soa.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/profile.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/parts.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editpartbatch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewpartbatch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewtech.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewpart.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewbrand.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editcustmer.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editpart.php",
@@ -658,15 +660,12 @@
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/dashboard.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ui_main.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/search_part.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/settings.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/settings.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setdelivery.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/notifview.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/include.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/dashboard.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/branch/history.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/viewuserbranch.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/setwaiting.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/history.php",
 		"/C/xampp/htdocs/jbmusic updated files/20160317/include.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/include.php",
@@ -715,7 +714,6 @@
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/notifview.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/reset.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/forgot.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createbranch.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createstaff.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/claimed.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/PHPMailer-master/class.phpmailer.php",
@@ -741,9 +739,7 @@
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/salesreport.bak.php",
 		"/C/xampp/htdocs/jbmusic updated files/20160228/jbmusicjobtracker/jbmusicjobtracker/app/ajax/forgot.php",
 		"/C/xampp/htdocs/plugins/bootstrap-datetimepicker-master/bootstrap-datetimepicker-master/test/screen-capture/base.html",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/plugins/daterangepicker/daterangepicker.js",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createpart.php",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/edittech.php"
+		"/C/xampp/htdocs/jbmusicjobtracker/app/resources/js/plugins/daterangepicker/daterangepicker.js"
 	],
 	"find":
 	{
@@ -779,6 +775,61 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"technician view",
+			"Total Earnings",
+			".view",
+			"tasklist",
+			" Technician View",
+			"createbranch",
+			".view",
+			"edit stock",
+			"edit stocks",
+			"add stocks",
+			"Total Job Order",
+			"\"sales",
+			"=\"sales",
+			"=\"reven",
+			"=\"revenu",
+			"=\"revenue",
+			"repair_status = 'Ready for Claiming'",
+			"repair_status = 'Ongoing Repair'",
+			"$claimedre",
+			"Monthly Summary",
+			"models",
+			"$queryforexcelmodel",
+			"model\"",
+			"$queryforexcelmodel",
+			"$queryforexcelcategory",
+			"category\"",
+			"category",
+			"$queryforexcelcategory",
+			"category_excel",
+			"category",
+			"category list",
+			".view",
+			"ob_start()",
+			"updatesoa",
+			"totalcharges",
+			"updatesoa",
+			"myFunction3",
+			"        myFunction3($('.t1').text(), $(this).val(), $('input[name=\"lessdeposit\"]').val(), $('input[name=\"lessdiscount\"]').val());\ntotalcharges",
+			"totalcharges",
+			"id=\"editsoa",
+			"id=\"viewsoa",
+			"waiting for approval",
+			".view",
+			"id=\"viewsoa",
+			"viewsoa",
+			".view",
+			"id=\"viewsoa",
+			"viewsoa",
+			".view",
+			"editsoa",
+			"viewsoa",
+			".view",
+			".edit",
+			"id=\"edit",
+			"id=\"viewsoa",
 			".view",
 			"viewsoa",
 			"cantrepairremarks",
@@ -851,62 +902,7 @@
 			".view",
 			"id=\"viewsoa",
 			"viewsoa",
-			".view",
-			".edit",
-			".edir",
-			".view",
-			"viewsoa",
-			".edit",
-			"editsoa",
-			".edit",
-			"editsoa",
-			".edit",
-			"editsoa",
-			".edit",
-			"editsoa",
-			".edit",
-			"editsoa",
-			".edit",
-			"editsoa",
-			"updatediagnosissoa.php",
-			"p_DBConnection",
-			"$this->p_lastid",
-			"GetLastInsertedID",
-			"$this->p_lastid",
-			"GetLastInsertedID()",
-			"$db->GetLastInsertedID()",
-			"assignedtech",
-			"sales",
-			"revenue",
-			"claimed",
-			"applychanges",
-			"editpartbatch",
-			"editbatch",
-			"view-modal",
-			"modal-footer",
-			"view-modal",
-			"editpartbatch",
-			"createpart",
-			"editpartbatch",
-			"batchquantity",
-			".view",
-			"create part",
-			"batchquantity",
-			".view",
-			"viewDiagnosis",
-			".fa-sp",
-			".fa-spro",
-			".fa-s",
-			".view",
-			"view-modal",
-			".view",
-			"view-modal",
-			"Discard",
-			"discard",
-			"dis",
-			"discard",
-			"btn  cancel-delet",
-			"updatediagnosissoa"
+			".view"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -914,6 +910,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"Total Job Orders",
+			"(repair_status = 'Claimed' OR repair_status = 'Ready for Claiming')",
 			"btn btnmc cancel-delet",
 			"AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair'",
 			"<th style=\"width: 10px\">Month</th>",
@@ -1009,7 +1007,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -1018,15 +1016,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3349,
+						"buffer_size": 703,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1296,
-								1296
+								703,
+								703
 							]
 						],
 						"settings":
@@ -1038,83 +1036,36 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "app/head_office/soa.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 146818,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								101688,
-								100283
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 29106.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "app/branch/soa.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 88107,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 1,
+					"file": "app/head_office/technicians.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5049,
+						"buffer_size": 39853,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3950,
-								3604
+								17359,
+								17368
+							],
+							[
+								17401,
+								17413
+							],
+							[
+								17446,
+								17469
+							],
+							[
+								17502,
+								17515
 							]
 						],
 						"settings":
@@ -1124,10 +1075,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1157.0,
+						"translation.y": 5267.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/head_office/soa.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 146101,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								101430,
+								100954
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 29369.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -1172,7 +1153,7 @@
 	"project": "jbmusicjobtracker.sublime-project",
 	"replace":
 	{
-		"height": 80.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":

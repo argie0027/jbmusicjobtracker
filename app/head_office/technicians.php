@@ -304,8 +304,30 @@
                         </div><!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                            <strong>Status: </strong><span class="estatus"></span><br>
-                            <strong>Current Tasks(Job ID): </strong><span class="ecurrenttasks"></span><br><br>
-                            <strong>Total Earnings: </strong><span class="eearnings">11,520</span><br>
+                            <strong>Current Task(Job ID): </strong><span class="ecurrenttasks"></span><br><br>
+                            <!-- <strong>Total Earnings: </strong><span class="eearnings">11,520</span><br> -->
+                            <table style="font-size: 12px; width: 100%;">
+                                <tr>
+                                    <th><strong>Summary Total: </strong></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td>Earnings:</td>
+                                    <td class="text-right"><span class="eearnings">11,520</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Job Orders: </td>
+                                    <td class="text-right"><span class="ejoborders">11,520</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Successfully Repaired: </td>
+                                    <td class="text-right"><span class="erepaired">11,520</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Can’t Repair </td>
+                                    <td class="text-right"><span class="ecantrepair">11,520</span></td>
+                                </tr>
+                            </table>
                     </div><!-- /.row -->
 
                 </section><!-- /.content -->
@@ -492,7 +514,8 @@
                         },
                         success: function(e){
                             
-                            $('.eearnings').html("0");
+                            $('.eearnings,.ejoborders,.erepaired,.ecantrepair').html("0");
+
                             var obj = jQuery.parseJSON(e);
                             $('.etechname').html(" " + obj.response[0].name);
                             $('.enumber').html(" " + obj.response[0].number);
@@ -516,10 +539,37 @@
                                 var dateStart = (obj.response3[i].date_start != null) ? obj.response3[i].date_start : '-';
                                 var dateDone = (obj.response3[i].date_done != null) ? obj.response3[i].date_done : '-';
 
-                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td>'+dateStart+'</td><td>'+dateDone+'</td><td><b>P </b><span class="number">'+ total +'</span></td><td class="text-center">'+cantRep+'</td><td><span class="badge bg-green">'+obj.response3[i].repair_status+'</span></td></tr>');
+                                var colorcode = '';
+                                var status = '';
+                                var cantrepair = '';
+                                var repaired = '';
+
+                                if(obj.response3[i].repair_status == "Ongoing Repair"){
+                                    colorcode = 'bg-teal';
+                                    status = obj.response3[i].repair_status;
+                                } 
+                                if(obj.response3[i].repair_status == "Claimed") {
+                                    colorcode = 'bg-green';
+                                    status = obj.response3[i].repair_status;
+                                }
+                                if(obj.response3[i].repair_status == "Done-Ready for Delivery"){
+                                    colorcode = 'mredilive';
+                                    status = 'Ready for Pickup';
+                                }
+                                if(obj.response3[i].repair_status == "Ready for Claiming"){
+                                    colorcode = 'mdone';
+                                    status = obj.response3[i].repair_status;
+                                }
+
+                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td>'+dateStart+'</td><td>'+dateDone+'</td><td><b>P </b><span class="number">'+ total +'</span></td><td class="text-center">'+cantRep+'</td><td><span class="badge '+colorcode+'">'+status+'</span></td></tr>');
                             };
-                             $('.eearnings').html("<b>P </b> <span class='number'>"+totalearnings+"</span>");
-                             $('.number').number( true, 2 );
+
+                            $('.eearnings').html("<b>P </b> <span class='number'>"+totalearnings+"</span>");
+                            $('.number').number( true, 2 );
+
+                            $('.ejoborders').text(obj.response3.length);
+                            $('.erepaired').text(obj.response3[0].repaired);
+                            $('.ecantrepair').text(obj.response3[0].cantrepair);
                         }
                     });
 

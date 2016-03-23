@@ -487,9 +487,9 @@
 
                                                                 if(isset($_GET['daterange'])){
                                                                     $bydate = split ("to", $_GET['daterange']);
-                                                                    $qu = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id AND c.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'  ORDER BY s.subcat_id ASC";
+                                                                    $qu = "SELECT c.generic,c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id AND c.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'  ORDER BY s.subcat_id ASC";
                                                                 }else{
-                                                                    $qu = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
+                                                                    $qu = "SELECT c.generic,c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
                                                                 }
 
                                                                 $queryforexcelcategory = $qu;
@@ -1458,7 +1458,7 @@
                         var filter = $('#tablecategory_filter label input').val();
 
                         if ( filter.length ) {
-                            var query = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id AND c.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"'  ORDER BY s.subcat_id ASC";
+                            var query = "SELECT c.generic, c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id AND c.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"'  ORDER BY s.subcat_id ASC";
                         } else {
                             var query = "<?php echo $queryforexcelcategory; ?>";
                         }
@@ -1471,7 +1471,7 @@
                         var filter = $('#tablecategory_filter label input').val();
                         
                         if ( filter.length ) {
-                            var query = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
+                            var query = "SELECT c.generic, c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
                         } else {
                             var query = "<?php echo $queryforexcelcategory; ?>";
                         }

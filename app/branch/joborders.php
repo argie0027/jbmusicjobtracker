@@ -705,10 +705,11 @@ $queryforexcel = "";
             });
             $('.view').on('click',function(){
 
-                //$('.datepickerfordatedelivery').show();
+                $('.datepickerfordatedelivery').slideUp('fast');
                 $('.ishaveammount').slideUp('fast');
                 $('.savesetdate').attr("id", "sdfsdf");
                 $('#saveseteddate').html("<i class='fa fa-plus'></i> Ok");
+
                 if(ID){
                     $('.modald').fadeIn('slow');
                     $("#view-modal").modal("show");
@@ -790,18 +791,20 @@ $queryforexcel = "";
                                 $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Done-Ready for Delivery'){
                                 $('.ishaveammount').slideDown('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mredilive">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Waiting List'){
                                 $('.ishaveammount').slideUp('fast');
                                 $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 $('.ishaveammount').slideDown('fast');
                                 $('.span-status').html('<small class="badge col-centered mred">Unclaimed</small>');
-                            }else{
+                            }else if(obj.response[0].repair_status == 'Approved'){
                                 $('.ishaveammount').slideDown('fast');
                                 $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
+                            }else if(obj.response[0].repair_status == 'Claimed'){
+                                $('.ishaveammount').slideDown('fast');
+                                $('.span-status').html('<small class="badge col-centered bg-green">'+obj.response[0].repair_status+'</small>');
                             }
-
 
                             //clear set date field if JO is not disapproved and cant repair
                             if(obj.response[0].jobclear == '1') {

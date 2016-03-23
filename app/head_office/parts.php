@@ -208,7 +208,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Add Stocks</h4>
+                    <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Add Stock</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group col-xs-6">
@@ -267,7 +267,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                                 <input type="number" name="quantity" class="form-control" placeholder="Quantity ">
                             </div>
                             <div class="form-group col-xs-6">
-                                <label>Cost:</label>
+                                <label>Cost per Piece:</label>
                                 <input type="text" name="cost" class="form-control" placeholder="Cost ">
                             </div>
 
@@ -365,7 +365,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         </div>
 
                         <div class="form-group col-xs-6">
-                            <label>Cost:</label>
+                            <label>Cost per Piece:</label>
                             <input type="text" name="ecost" class="form-control" placeholder="Cost ">
                         </div>
                         <div class="clear"></div>

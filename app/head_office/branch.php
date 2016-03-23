@@ -1029,7 +1029,7 @@
                                 nickname: $("[name=nickname]").val(),
                                 emailaddress: $("[name=emailaddress]").val(),
                                 contact: $("[name=contact]").val(),
-                                address: $("[name=branchaddress]").val()
+                                address: $("[name=address]").val()
                             },
                             success: function(e){
                                 var obj = jQuery.parseJSON(e);

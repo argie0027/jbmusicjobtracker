@@ -70,7 +70,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 		 		$updatenewtechstatistic = "UPDATE `tech_statistic` SET `techid` = '".$itemvalue."', `updated_at` = '".dateToday()."' WHERE `techid` = '" . $tech_statusQuery[0]['tech_id'] . "' AND jobid='".$jobid."'";
 		 		$updatetechstatistic = $db->ExecuteQuery($updatenewtechstatistic);
 
-
 		 		if( $updatetech ) {
 
 		 			// upadte previous tech status

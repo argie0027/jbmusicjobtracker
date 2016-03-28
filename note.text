@@ -1,61 +1,26 @@
-1.	Settings>Diagnosis> Export to Excel  not working - (Working naman)
-2.	Settings>Brands> Export to Excel not working - (Working naman)
-3.	Settings>Models> Add (HOLD - GENERIC) - (DONE Generic ung category)
-	a.	Provision to add one or more main category and sub categories.. kse may mga parts daw na generic na may fall to most of the categories.. 
-4.	Settings>Models>Export to Excel (HOLD - GENERIC) - (DONE)
-	a.	Due to # 7, excel info should be something like this:
-5.	Sales Report>Pie Chart>Hover Text should be - (DONE)
-	a.	Pending: <number>
-	b.	Ongoing: <number>
-	c.	Done: <number>
-6.	Sales Report>Data on Pie and Tables
-	a.	It says Sta Rosa has a total of 5 JO, pero sa table 4 lang - ( kung sa table 5 ung joborder possible na isa sa jo is remark as cant repair. Remember hindi na kasama sa sales ung cant repair job and deleted job )
-	b.	Nagcreate ako ng bagong JO, so dapat magfall siya sa Pending, Pending ( Nag create ako ng jo okay naman sya )
-		should have 1 na.
-7.	Sales Report> Monthly Summary - (DONE)
-	a.	Table should be
-	Month (walang s)	Total Job Order	Monthly Revenue	Pending Job Orders	Ongoing Job Orders	Done Job Orders
-	b.	Same table titles din yung sa nagegenerate na excel
-8.	Branch>Edit Branch - (DONE)
-	a.	Profile address appears to be the branch address..
-9.	SOA>Edit 
-		a.	Technician list does not populate - (DONE)
-		c.	Data should be:
-			i.	Total Parts Cost: 3,500 
-			ii.	Total Charges: [          ] editable field ito, minsan kse guto nila mag add ng charges - (Editable Field DONE)
-			iii.	Less Deposit: [          ] editable field ito, minsan kse guto nila mag add ng charges - (Editable Field DONE)
-			iv.	Less Discount: [          ] editable field ito, minsan kse guto nila mag add ng charges - (Editable Field DONE)
-			v.	Balance: [       ] –label ito; formula is total parts cost + total charges – deposit – discount - (DONE)
-			vi.	Remove mo na yung Subjob Total pati Total Balance - (DONE)
-
-		d.	Every edit sa SOA magssend din ng email sa Client na need nila magpay at magconfirm/approve (so babalik yung JO sa Waiting for Client Approval); tapos once approved and paid, dun lang papasok as revenue ito at doon lang siya papasok sa “Approved Job Order” - (TO FOLLOW)
-		e.	Add Part, cancel button font is black, it should be white - (DONE)
-		f.	Add Technician, cancel button font is black, it should be white - (DONE)
-
-Branch Office
-
-1.	Sales Report>Pie Chart>Hover Text should be
-	a.	Pending: <number>
-	b.	Ongoing: <number>
-	c.	Done: <number>
-2.	Sales Report>Data on Pie and Tables 
-	a.	It says Sta Rosa has a total of 5 JO, pero sa table 4 lang - ( kung sa table 5 ung joborder possible na isa sa jo is remark as cant repair. Remember hindi na kasama sa sales ung cant repair job and deleted job )
-	b.	Nagcreate ako ng bagong JO, so dapat magfall siya sa Pending, Pending should have 1 na. - ( Nag create ako ng jo okay naman sya )
-3.	Sales Report> Monthly Summary - (DONE)
-	a.	Table should be
-
-4.	Job Order> Create> Remove Estimated Finish Date - (DONE)
-5.	Job Order> Ready for Pick up> View> Set Delivery Date - (DONE)
-	a.	Dapat lagi forward date, hindi siya pede mag input ng date in the past
+QA13
+1.	Settings> Main Category> Export to Excel - (DONE word nga lang nilagay ko [yes or no])
+	a.	Please add column for is Generic, tapos check or X
+2.	Settings>Models>Export to Excel - (DONE word nga lang nilagay ko [yes or no])
+	a.	Please add column for is Generic, tapos check or X
+3.	Sales Report>  Monthly Summary - (DONE)
+4.	Sales Report>Generate Excel should have the same table column names - (DONE)
+5.	Parts>Add Stocks>New Part - (DONE)
+6.	Technician>View>Change Current Tasks(Job ID) to Current Task: - (DONE)
+7.	Technician>View> - (DONE)
+8.	Technician>View>Generate Excel - (DONE)
+9.	Branch>Edit Branch
+	a.	Profile address appears to be the branch address.. dapat yung address pa rin ng profile yun - (DONE)
+Computation Scenarios - (TO FOLLOW)
+1.	–Branch creates a Job Order; item is under warranty both parts and service kunwari kse bagong bili siya; normally kung under warranty dapat hindi na siya sisingilin ng service charge, pero choice ng branch pa rin kung gusto nila magsingil ng service charge. Like example below na nagisingil pa si branch ng 800. Okay lang yun.
+a.	SOA in Main should also appear na may 800 na service charge
+b.	During ongoing repair, Main office can edit and add more findings in the item, like may nadiscover na bagong sira etc
+2.	SOA> Info does not match; Please see screenshot - (TO FOLLOW )
 
 Notes for ALL:
-1. System should be viewable and compatible with Chrome and Firefox - (DONE) 
+1. System should be viewable and compatible with Chrome and Firefox - (Ano ung hindi compatible dito?)
 
 Additional:
-1. Any adjustments sa SOA alert client/customer by email. Also viewable sa Client Portal - (DONE)
-
-
-
-
+1. Pag add ng Branch, there should have a Permissions like access para malimit din daw ng Main offices ang modules ng Branch - (additional function to pag binago natin)
 
 

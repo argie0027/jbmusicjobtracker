@@ -977,7 +977,7 @@ function modald(){
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -1183,7 +1183,7 @@ function viewsoa(){
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->

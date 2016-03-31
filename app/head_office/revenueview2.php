@@ -369,7 +369,7 @@
                                             <td><?php echo $jan;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 01";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 01";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -395,7 +395,7 @@
                                             <td><?php echo $feb;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 04";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 04";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -421,7 +421,7 @@
                                             <td><?php echo $mar;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 05";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 05";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -447,7 +447,7 @@
                                             <td><?php echo $apr;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 04";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 04";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -472,7 +472,7 @@
                                             <td><?php echo $may;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 05";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 05";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -497,7 +497,7 @@
                                             <td><?php echo $jun;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 06";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 06";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -522,7 +522,7 @@
                                             <td><?php echo $jul;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 07";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 07";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -547,7 +547,7 @@
                                             <td><?php echo $aug;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 08";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 08";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -572,7 +572,7 @@
                                             <td><?php echo $sep;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 09";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 09";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -597,7 +597,7 @@
                                             <td><?php echo $oct;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 10";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 10";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -622,7 +622,7 @@
                                             <td><?php echo $nov;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 11";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 11";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>
@@ -647,7 +647,7 @@
                                             <td><?php echo $dev;?></td>
                                             <td>
                                                 <?php 
-                                                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 12";
+                                                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 12";
                                                 $jant  = $db->ReadData($jant);
                                                 if($jant[0]['total'] == NULL){echo "0";}else{echo $jant[0]['total'];};
                                                 ?>

@@ -579,7 +579,7 @@ $queryforexcel = "";
 
             $("#search_customers").keyup(function(){
                 var toSearch = $("#search_customers").val();
-                $('.search-list').html("");
+
                 $('.search-list-result').slideDown('fast');
                 $.ajax({
                     type: 'POST',
@@ -590,6 +590,8 @@ $queryforexcel = "";
                         branchid: '<?php echo $_SESSION['Branchid'];?>'
                     },
                     success: function(e){
+
+                            $('.search-list').html("");
                             
                             if(e != 'error'){
                                 var obj = jQuery.parseJSON(e);
@@ -637,12 +639,12 @@ $queryforexcel = "";
             });
             $("select[name='isjbitem']").change(function(){
                 if ($(this).val() == 0) {
-                    $('[name="servicefee"]').val(800.00);
+                    $('[name="servicefee"]').val('800.00');
                     $("input[name='warranty_date']").val('');
                     $('#tableinfocard tbody').html('');
                     $('.hideshow.warranty-date, .hideshow.info-card').fadeOut('fast');
                 } else {
-                    $('[name="servicefee"]').val(0.00);
+                    $('[name="servicefee"]').val('0.00');
                     $('.hideshow.warranty-date, .hideshow.info-card').fadeIn('fast');
                 }
             });
@@ -655,7 +657,7 @@ $queryforexcel = "";
                     $('.hideshow.warranty-date, .hideshow.info-card').fadeOut('fast');
                 }
             });
-            $("input[name='warranty_date']").change(function(){
+            $("input[name='warranty_date']").on('change', function(){
                 var maincategory = $("select[name='maincategory']").val();
                 var warranty_date = $(this).val();
 
@@ -674,7 +676,13 @@ $queryforexcel = "";
                             var trtable = '<tr><td>'+value.subcategory+'</td><td class="center">'+value.parts_free+'</td><td class="center">'+value.diagnostic_free+'</td></tr>';
                             $('#tableinfocard tbody').prepend(trtable);
                         });
-                    }
+
+                        if($('#tableinfocard tbody tr td:nth-child(3)').find('i').hasClass('not-free')){
+                            $('[name=servicefee]').val('800.00');
+                        } else {
+                            $('[name=servicefee]').val('0.00');
+                        }
+                    } 
                 });
 
                 if(warranty_date != '') {
@@ -843,12 +851,12 @@ $queryforexcel = "";
                             }
                             //
 
-                             $('.partcost').html("<b>P </b>"+formatNumber(obj.response3[0].totalpartscost));
+                            $('.partcost').html("<b>P </b>"+formatNumber(obj.response3[0].totalpartscost));
                             $('.servicescharge').html("<b>P </b>"+formatNumber(obj.response3[0].service_charges));
                             $('.chargetotal').html("<b>P </b>"+formatNumber(obj.response3[0].total_charges));
                             $('.lessdeposit').html("<b>P </b>"+formatNumber(obj.response3[0].less_deposit));
                             $('.lessdiscount').html("<b>P </b>"+formatNumber(obj.response3[0].less_discount));
-                            $('.balancecharge').html("<b>P </b>"+formatNumber(obj.response3[0].balance));
+                            $('.balancecharge').html("<b>P </b>"+formatNumber(parseFloat(obj.response3[0].totalpartscost) + parseFloat(obj.response3[0].service_charges) + parseFloat(obj.response3[0].total_charges) - parseFloat(obj.response3[0].less_deposit) - parseFloat(obj.response3[0].less_discount)));
                         }
                     });
                     
@@ -1097,12 +1105,12 @@ $queryforexcel = "";
 
             $("select[name='eisjbitem']").change(function(){
                 if ($(this).val() == 0) {
-                    $('[name="eservicefee"]').val(800.00);
+                    $('[name="eservicefee"]').val('800.00');
                     $("input[name='ewarranty_date']").val('');
                     $('#etableinfocard tbody').html('');
                     $('.hideshow.ewarranty-date, .hideshow.einfo-card').fadeOut('fast');
                 } else {
-                    $('[name="eservicefee"]').val(0.00);
+                    $('[name="eservicefee"]').val('0.00');
                     $('.hideshow.ewarranty-date, .hideshow.einfo-card').fadeIn('fast');
                 }
             });            
@@ -1115,7 +1123,7 @@ $queryforexcel = "";
                     $('.hideshow.ewarranty-date, .hideshow.einfo-card').fadeOut('fast');
                 }
             });
-            $("input[name='ewarranty_date']").change(function(){
+            $("input[name='ewarranty_date']").on('change', function(){
                 var maincategory = $("select[name='emaincategory']").val();
                 var warranty_date = $(this).val();
 
@@ -1134,6 +1142,12 @@ $queryforexcel = "";
                             var trtable = '<tr><td>'+value.subcategory+'</td><td class="center">'+value.parts_free+'</td><td class="center">'+value.diagnostic_free+'</td></tr>';
                             $('#etableinfocard tbody').prepend(trtable);
                         });
+
+                        if($('e#tableinfocard tbody tr td:nth-child(3)').find('i').hasClass('not-free')){
+                            $('[name=eservicefee]').val('800.00');
+                        } else {
+                            $('[name=eservicefee]').val('0.00');
+                        }
                     }
                 });
 

@@ -1,26 +1,100 @@
-QA13
-1.	Settings> Main Category> Export to Excel - (DONE word nga lang nilagay ko [yes or no])
-	a.	Please add column for is Generic, tapos check or X
-2.	Settings>Models>Export to Excel - (DONE word nga lang nilagay ko [yes or no])
-	a.	Please add column for is Generic, tapos check or X
-3.	Sales Report>  Monthly Summary - (DONE)
-4.	Sales Report>Generate Excel should have the same table column names - (DONE)
-5.	Parts>Add Stocks>New Part - (DONE)
-6.	Technician>View>Change Current Tasks(Job ID) to Current Task: - (DONE)
-7.	Technician>View> - (DONE)
-8.	Technician>View>Generate Excel - (DONE)
-9.	Branch>Edit Branch
-	a.	Profile address appears to be the branch address.. dapat yung address pa rin ng profile yun - (DONE)
-Computation Scenarios - (TO FOLLOW)
-1.	–Branch creates a Job Order; item is under warranty both parts and service kunwari kse bagong bili siya; normally kung under warranty dapat hindi na siya sisingilin ng service charge, pero choice ng branch pa rin kung gusto nila magsingil ng service charge. Like example below na nagisingil pa si branch ng 800. Okay lang yun.
-a.	SOA in Main should also appear na may 800 na service charge
-b.	During ongoing repair, Main office can edit and add more findings in the item, like may nadiscover na bagong sira etc
-2.	SOA> Info does not match; Please see screenshot - (TO FOLLOW )
+QA 14
 
-Notes for ALL:
-1. System should be viewable and compatible with Chrome and Firefox - (Ano ung hindi compatible dito?)
+1.	Even if Profile details have been edited already, when you click this, you can still see Mac’s name hehe. Please see picture below: - (DONE)
+2.	Branch>Branch Revenue>Export to Excel -the Excel should have this info at the top - (DONE)
+3.	History logs should include all actions like, edit part, added part, added branch etc.. lahat ng view, add, edit, delete at generate functions naten in all modules. - (DONE)
 
-Additional:
-1. Pag add ng Branch, there should have a Permissions like access para malimit din daw ng Main offices ang modules ng Branch - (additional function to pag binago natin)
+Design
+
+1.	Settings>Staff Settings> Permission> - (DONE)
+	a.	Should be: Permissions for: Peter Jedidiah Banton
+2.	Settings>Main Category>add - (DONE)
+	a.	Change “Submit”  button to [ + Create Category]  like this 
+3.	Part>Add Part - (DONE)
+	a.	Dropdown text should be: Existing Part or New Part
+4.	Technicians>Add>  - (DONE)
+	a.	Title should be: Register a Technician and not Create Technician
+5.	Branch>Add - (DONE)
+	a.	Title should be: Register a Branch/Store
+6.	Settings>Staff Settings>Add - (DONE)
+	a.	Title should be: Register a Staff
+7.	Job Order> View - (DONE)
+	a.	Text should be Job Order not Jor Order
 
 
+Job Order Process
+
+1. Branch
+	Job Order
+	- add->Job Order-> (sabihin na natin na may service charge na 800)
+	- set delivery date to service departmenr
+	- view->Amount Due (kung mapapansin mo 0 pa lahat ng computation kasi hindi pa sya naka set as generated soa)
+		- Si main kasi mag dedecide na pwede nyang bawasan ung service charge
+		- less deposit
+		- less discount
+		- after mag generate soa makikita na ung mga computation
+
+2. Main Office
+	Job Order
+	- item arrieved
+	- view->Add part and Technician
+	- can change service charge
+	- can change total charges
+	- can change less deposit - QUESTION dito ba papasok kung nakapag bayad na si customer?
+	- can change less discount
+	- generate soa (job order set to waiting for customer approval)
+
+3. Branch
+	SOA
+	- view->Set Approved or Disapproved by a customer
+
+4. Main Office
+	SOA
+	- view->Start Repairing (job order set to ongoing repair)
+		- Dito makikita mo ung computation
+		- Total Parts Cost - parts cost
+		- Service Charges - servie cost was added in the first place
+		- Total Charges - pag kaka intindi ko dito sa gawa ni mac. pwede mag decide si main kung mag aadditional charges sya so in short additional labor sya. (mag babago lang to pag nag edit ng soa)
+		- Less Deposit - QUESTION dito ba papasok kung nakapag bayad na si customer?
+		- Less Discount - discount
+		- Subjob Total - dito papasok ung additional cost for part so binalik ko si subjob total eto ung last time na pinatanggal mo saken sa QA12
+		- Balance - computation subjobtotal + total charges
+	- edit-> note ko lang kapag ung conforme natin is not approved and repair status is claimed hindi ka makaka pag edit ng soa. Makaka pag edit ka lang soa while repair status is ongoing
+		- 
+
+
+Hi Pau
+
+Natapos ko na ung QA14 except ung sa edit SOA. Nung time na ginagawa ko ung edit SOA napasin ko malaki ung magiging effect nito sa salesreport plus sa database na ginawa ni mac. As of now may mga binalik ako sa edit SOA na pinatanggal mo sken nung QA12 ata un. Nag upload na ko ng latest build na ginawa ko. Pero marami akong magiging question para sayo about edit SOA.
+
+Punta ka sa:
+Head Office->Statements of account->I view mo ung Ongoing Repair na JO
+	- Ibig sabihin ng Ongoing Repair status eto ung nabayaran na ni customer sa unang computation.
+	- By the way nag create ako ng JO with sample generated SOA and computations
+	- View
+		- Computations
+			Total Parts Cost: P 3,200 - total part cost
+			Service Charges : P 700 - service charge ginawa ko lang na 700 ung cost
+			Total Charges: P 0.00 - total charge pag kakaintindi ko sa ginawa ni mac eto ung parang additional charges in short "LABOR" bukod sa service charge. Mejo magulo kasi may service charge na then may additional LABOR pa?
+			Less Deposit: P 0.00 - as of now ginawa ko syang 0. Pag kakaintindi ko dito parang initial deposit to ni customer?
+			Less Discount: P 0.00
+			Subjob Total: P 0 - dito pala pumapasok ung addtional part(s) cost, tech, diagnosis
+			Balance: P 0 - mag kakaroon lang to pag may subjob total
+		- Question
+			1. Sa Total Charges dapat paba ng mag karoon tayo ng additional labor bukod sa service charges na 700?
+
+	- Edit (note: may ginawa akong disabled field kapag ung conforme natin is not approved and repair status is claimed hindi ka makaka pag edit ng soa.)
+		- Computations
+			Total Parts Cost: P 3,200
+			Service Charges : P 700
+			Total Charges: P 0.00
+			Less Deposit: P 0.00
+			Less Discount: P 0.00
+			Subjob Total: P 0
+			Balance: P 0
+		- Question
+			1. Total Charges - ginawang editable to tama. Kasi pwedeng mag additional labor?
+			2. Less Deposit and Less Discount - editable fields. san ba dapat mag rereflec to?. 
+				- Kung ang effect nito is dun sa magiging less na bayad ni customer. 
+				a. What if nag lagay ako ng value dito. So ung total na cost 3200 + 700 = 3900 - less deposit value - less discount value. Paano un? nakapag bayad na si customer ng 3900 kung mag lalagay tayo ng less value para mo na rin binawasan ung binayad ni customer na 3900. This is a current production computation.
+			3. Subjob Total - Nag rereflec to sa addtional field ng part(s) cost, tech, diagnosis. So dapat eto ung magiging balance tama?

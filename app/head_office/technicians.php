@@ -121,8 +121,9 @@
                                                         $currenttast = "-";
                                                     }
 
-                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
+                                                    $selecttechvalue = "SELECT SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
                                                     $totald =$db->ReadData($selecttechvalue);
+
                                                     ?>
                                                         <tr id="<?php echo $value['tech_id']; ?>" class="clickable">
                                                             <td><?php echo $value['tech_id']; ?></td>
@@ -156,7 +157,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Create Technician</h4>
+            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Register a Technician</h4>
         </div>
         <div class="modal-body">
          <form id="createtech" name="createtech" method="post" role="form">
@@ -532,7 +533,7 @@
                             var totalearnings = 0;
                              
                             for (var i = 0; i < obj.response3.length; i++) {
-                                var total = parseFloat(obj.response3[i].totalpartscost) + parseFloat(obj.response3[i].service_charges) + parseFloat(obj.response3[i].total_charges);
+                                var total = parseFloat(obj.response3[i].totalpartscost) + parseFloat(obj.response3[i].service_charges) + parseFloat(obj.response3[i].total_charges) - parseFloat(obj.response3[i].less_deposit) - parseFloat(obj.response3[i].less_discount);
                                 totalearnings = (obj.response3[i].jobclear == 0) ? totalearnings + total : totalearnings; 
 
                                 var cantRep = (obj.response3[i].jobclear == 0) ? '<i class="fa fa-times"></i>' : '<i class="fa fa-check"></i>';

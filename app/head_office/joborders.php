@@ -270,7 +270,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></span></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -362,27 +362,27 @@
                                 <table class="table">
                                     <tbody><tr>
                                         <th style="width:50%">Total Parts Cost:</th>
-                                        <td>Php <span class="partcost">0.00</span></td>
+                                        <td><strong>P</strong> <span class="partcost">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Service Charges</th>
-                                        <td>Php <span class="servicescharge">0.00</span></td>
+                                        <td><strong>P</strong> <span class="servicescharge">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Total Charges:</th>
-                                        <td>Php <span class="chargetotal">0.00</span></td>
+                                        <td><strong>P</strong> <span class="chargetotal">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Less Deposit</th>
-                                        <td>Php <span class="lessdeposit">0.00</span></td>
+                                        <td><strong>P</strong> <span class="lessdeposit">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Less Discount</th>
-                                        <td>Php <span class="lessdiscount">0.00</span></td>
+                                        <td><strong>P</strong> <span class="lessdiscount">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Balance</th>
-                                        <td>Php <span class="balancecharge">0.00</span></td>
+                                        <td><strong>P</strong> <span class="balancecharge">0.00</span></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -648,7 +648,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -1021,7 +1021,7 @@
                     $('.lessdeposit').html("0.00");     
                     $('.lessdiscount').html("0.00"); 
                     $('.chargetotal').html("0.00");  
-                    $("[name=servicescharge]").val("800");
+                    $("[name=servicescharge]").val("800.00");
                     $("[name=lessdeposit]").val("0.00");
                     $("[name=lessdiscount]").val("0.00");
                     $("[name=chargetotal]").val("0.00");
@@ -1425,7 +1425,7 @@
                 $('.view').on('click',function(){
                     //clearallfield();
                     $('.savesetdate').slideDown('fast');
-                   $('.savesetdate').attr("id", "applychanges");
+                    $('.savesetdate').attr("id", "applychanges");
                     $('#setOngoingRepair').html('<i class="fa fa-plus"></i> Generate SOA ');
                     $('.removethisongoing').slideDown('fast');
                     $('.datelivery').slideUp('fast');
@@ -1450,6 +1450,7 @@
                             var obj = jQuery.parseJSON(e);
 
                             $('.idhere').html(obj.response[0].jobid);
+                            $('[name=servicescharge]').val(obj.response[0].servicefee);
                             
                             var now = moment(obj.response[0].dateadded);
                             $('.datehere').html(now.format("MMMM D, YYYY"));
@@ -1596,12 +1597,12 @@
                             techID = obj.response[0].tech_id;
                             var d = obj.response[0].partsid.split(',');
 
-                            $('.partcost').html(obj.response3[0].totalpartscost);
-                            $('.servicescharge').html(obj.response3[0].service_charges);
-                            $('.chargetotal').html(obj.response3[0].total_charges);
-                            $('.lessdeposit').html(obj.response3[0].less_deposit);
-                            $('.lessdiscount').html(obj.response3[0].less_discount);
-                            $('.balancecharge').html(obj.response3[0].balance);
+                            $('.partcost').html(formatNumber(obj.response3[0].totalpartscost));
+                            $('.servicescharge').html(formatNumber(obj.response3[0].service_charges));
+                            $('.chargetotal').html(formatNumber(obj.response3[0].total_charges));
+                            $('.lessdeposit').html(formatNumber(obj.response3[0].less_deposit));
+                            $('.lessdiscount').html(formatNumber(obj.response3[0].less_discount));
+                            $('.balancecharge').html(formatNumber(parseFloat(obj.response3[0].totalpartscost) + parseFloat(obj.response3[0].service_charges) + parseFloat(obj.response3[0].total_charges) - parseFloat(obj.response3[0].less_deposit) - parseFloat(obj.response3[0].less_discount)) );
 
                             if(obj.response3[0].service_charges == "0.00") {
                                 $('[name="servicescharge"]').val("800");

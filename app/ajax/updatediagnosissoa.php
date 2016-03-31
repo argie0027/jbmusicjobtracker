@@ -145,11 +145,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 	 		}
     	}else if($typetoedit == "notify"){
 
+            var_dump($_POST);
+            exit;
+
     		$partname = trim(filter_input(INPUT_POST, 'partname', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$partcost = trim(filter_input(INPUT_POST, 'partcost', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$totalcharge = trim(filter_input(INPUT_POST, 'totalcharge', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$lessdeposit = trim(filter_input(INPUT_POST, 'lessdeposit', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    		$lessdiscount = trim(filter_input(INPUT_POST, 'lessdiscount', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+            $subjob = trim(filter_input(INPUT_POST, 'subjob', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     		$subject = 'JB SPORTS & MUSIC SOA Approval';
@@ -211,7 +214,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                                                                             <strong style="color: #222222;">Total Charges: </strong>  '.$totalcharge.'  <br>
                                                                             <strong style="color: #222222;">Less Deposit :</strong> '.$lessdeposit.'  <br>
                                                                             <strong style="color: #222222;">Less Discount :</strong> '.$lessdiscount.'  <br>
-                                                                            <strong style="color: #222222;">Balance :</strong> '.$totalcharge+$lessdeposit-$lessdiscount.'  <br>
+                                                                            <strong style="color: #222222;">Subjob Cost :</strong> '.$subjob.'  <br>
+                                                                            <strong style="color: #222222;">Balance :</strong> '.$subjob.'  <br>
                                                                             <br>
 
                                                                             Should you decide to pursue with the repair, please visit the branch for the down-payment and conforme.
@@ -270,6 +274,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
             //$retval =  sendMail($email, $subject, $message);
 
             if($retval){
+
+
                 echo "success";
             }else{
                 echo "false";

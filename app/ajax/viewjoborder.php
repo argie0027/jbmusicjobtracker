@@ -42,7 +42,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
             $queryin  = $db->ReadData($qu);
 
             $cost = "SELECT * FROM `jb_cost` WHERE  jobid = '".$jobid."'";
-
             $charges  = $db->ReadData($cost);
 
 

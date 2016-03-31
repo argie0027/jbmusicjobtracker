@@ -698,7 +698,7 @@
                         <div class="form-group col-xs-12">
                             <div class="modal-footer clearfix">
                             <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-                                <button type="submit" id="createdianogis" class="btn btn-primary "><i class="fa fa-plus"></i> Edit Model </button>
+                                <button type="submit" id="createdianogis" class="btn btn-primary "><i class="fa fa-pencil"></i> Edit Model </button>
                             </div>
                         </div>
                         <div class="clear"></div>
@@ -840,7 +840,7 @@
                             <div class="modal-footer clearfix">
                                 <button type="button" id="addsubcategory" class="btn btn-success pull-left"> Add Sub Category </button>
                                 <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-                                <button type="submit" id="createcategorybtn" class="btn btn-primary"><i class="fa fa-plus"></i> Submit </button>
+                                <button type="submit" id="createcategorybtn" class="btn btn-primary"><i class="fa fa-plus"></i> Create Category </button>
                             </div>
                         </div>
                         <div class="clear"></div>
@@ -955,7 +955,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Create Staff</h4>
+                        <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Register a Staff</h4>
                     </div>
                     <div class="modal-body">
                         <form id="createstaff" class="change_to_edit" name="createstaff" method="post" role="form">
@@ -1121,7 +1121,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"> Permission For: <strong><span class="firstname"></span> <span class="lastname"></span></strong></h4>
+                        <h4 class="modal-title"> Permissions For: <strong><span class="firstname"></span> <span class="lastname"></span></strong></h4>
                     </div>
                     <div class="modal-body">
                         <div class="box-body infor">

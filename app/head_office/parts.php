@@ -215,7 +215,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         <label>Part type:</label>
                         <select class="form-control" name="parttype">
                             <option value=""></option>
-                            <option value="1">Existing</option>
+                            <option value="1">Existing Part</option>
                             <option value="2">New Part</option>
                         </select>
                     </div>
@@ -669,7 +669,6 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
 
             $("#search_part").keyup(function () {
                 var toSearch = $("#search_part").val();
-                $('.search-list-part').html("");
                 $('.search-list-result-part').slideDown('fast');
                 $.ajax({
                     type: 'POST',
@@ -679,7 +678,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         toSearch: toSearch
                     },
                     success: function (e) {
-                        // 
+                        $('.search-list-part').html("");
                         if (e != 'error') {
                             var obj = jQuery.parseJSON(e);
                             var data = "";

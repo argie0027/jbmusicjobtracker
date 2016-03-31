@@ -92,7 +92,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"><?php echo $jobid;?></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"><?php echo $jobid;?></span>
                                 <small class="pull-right">Date: <span class="datehere"><?php 
                                 $dt = new DateTime($getjoball[0]['created_at']);
                                 echo $dt->format('M j Y');

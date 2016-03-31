@@ -48,6 +48,13 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                 "VALUES ('".$username."','".$password."','".$email."','".$fullname."','".$firstname."','".$lastname."','".$midname."','".$nickname."','".$address."','".$contact."','0','1','".$jobtitle."','".$branchid."', 'inactive', '".dateToday()."')";
             $query = $db->InsertData($sql);
 
+            /* Insert History */
+            $description = 'Main Office Staff Created';
+            $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
+            $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$_SESSION['Branchid']."', '".$fullname."','".dateToday()."')";
+            $query = $db->InsertData($insertHistory);
+            /* End of Insert History */
+
             if($query) {
                $response['status'] = 200;
                $response['message'] = 'Success';

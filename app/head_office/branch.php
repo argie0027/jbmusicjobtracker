@@ -115,7 +115,7 @@
                                                     $getcountjob = $db->ReadData($qu);
                                                     $jobcount = $db->GetNumberOfRows();
 
-                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid = '".$value['branch_id']."'";;
+                                                    $selecttechvalue = "SELECT SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid = '".$value['branch_id']."'";;
                                                     $totald =$db->ReadData($selecttechvalue);
 
 
@@ -144,7 +144,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Create Branch</h4>
+            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Register a Branch/Store</h4>
         </div>
         <div class="modal-body">
          <form id="createbranch" name="createbranch" method="post" role="form">

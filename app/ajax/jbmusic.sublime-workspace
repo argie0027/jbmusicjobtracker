@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"tech",
+				"tech_status"
+			],
+			[
+				"date",
+				"date_hired"
+			],
+			[
+				"te",
+				"tech_status"
+			],
+			[
+				"number",
+				"number_format"
+			],
+			[
+				"job",
+				"jobclear"
+			],
+			[
 				"strto",
 				"strtoupper"
 			],
@@ -399,9 +419,67 @@
 			"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/note.text",
 			"settings":
 			{
-				"buffer_size": 1108,
+				"buffer_size": 3331,
 				"line_ending": "Unix",
 				"name": "1.	Date – created a new staff today but it does no"
+			}
+		},
+		{
+			"file": "viewtechfull.php",
+			"settings":
+			{
+				"buffer_size": 2418,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 879 files for \"tech_statistic\"\n\n/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php:\n  421          <?php\n  422  \n  423:             $checkifstat = \"SELECT * FROM tech_statistic where techid = '\".$techid.\"'\";\n  424              $tcheck  = $db->ReadData($checkifstat);\n  425              if($tcheck){\n  426:                 $queryjobs = \"SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status FROM tech_statistic a, jb_cost b, jb_joborder c WHERE c.jobclear = 0 AND a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '\".$techid.\"'\";\n  427              }else{\n  428                 $queryjobs = \"SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status FROM jb_cost b, jb_joborder c WHERE c.jobclear = 0 AND b.jobid = c.jobid AND c.technicianid = '\".$techid.\"'\";\n\n/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/setdonerepair.php:\n   15      	$updatetechstat = $db->ExecuteQuery($udaptetechstatus);\n   16  \n   17:     	$tech_stats = \"INSERT INTO `tech_statistic`(`techid`, `jobid`,`created_at`) VALUES ('\".$techid.\"','\".$id.\"','\".dateToday().\"')\";\n   18      	$inserttectstas = $db->InsertData($tech_stats);\n   19  \n\n/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/viewtechfull.php:\n   11      $query  = $db->ReadData($checker);\n   12      if($query) {\n   13:         $checkifstat = \"SELECT * FROM tech_statistic where techid = '\".$techid.\"'\";\n   14          $tcheck  = $db->ReadData($checkifstat);\n   15          if($tcheck){\n   16:             $queryjobs = \"SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status FROM tech_statistic a, jb_cost b, jb_joborder c WHERE a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '\".$techid.\"'\";\n   17          }else{\n   18              $queryjobs = \"SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '\".$techid.\"'\";\n\n/Applications/MAMP/htdocs/jbmusicjobtracker/jbmusicjobtracker.sublime-workspace:\n  891  			\"queryjobs\",\n  892  			\"tech\",\n  893: 			\"tech_statistic\",\n  894  			\"setClaimedjob\",\n  895  			\"claimedjoborder\",\n\n6 matches across 4 files\n",
+			"settings":
+			{
+				"buffer_size": 2289,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "cantrepairremarks.php",
+			"settings":
+			{
+				"buffer_size": 2368,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "setdonerepair.php",
+			"settings":
+			{
+				"buffer_size": 11356,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "setongoing.php",
+			"settings":
+			{
+				"buffer_size": 2358,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
+			"settings":
+			{
+				"buffer_size": 38851,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
+			"settings":
+			{
+				"buffer_size": 164192,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -581,24 +659,38 @@
 	},
 	"file_history":
 	[
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/config/config.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/updatetech_parts.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createtech.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/settings.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/edittech.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ui_branch.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/search_tech.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/generateexcelbranch.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/soa.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/branch.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/joborders.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/salesreport.bak.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createemail.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/approvejob.php",
+		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/dashboard.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/test.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ui_branch.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ui_main.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/settings.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/soa.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/claimed.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/salesreport.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/profile.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/notifview.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/notification.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/customers.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/branch/joborders.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createbrand.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/include.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/forgot.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/edittech.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/updatetech_parts.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/updateprofile.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/updatemodel.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/updatediagnosissoasub.php",
@@ -625,10 +717,8 @@
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/deletepart.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/deletejoborder.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/deletebranch.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createemail.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/cantrepairremarks.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/approvejobcostactive.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/approvejob.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/deletetech.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/.env",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createadmin.php",
@@ -641,29 +731,20 @@
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createpart.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createstaff.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createsubjob.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/createtech.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/include.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/resources/js/AdminLTE/app.js",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/resources/js/jquery.min.js",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/resources/js/pdf/jquery-1.11.0.min.js",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/resources/js/pdf/jspdf.debug.js",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/jbmusicjobtracker.sublime-workspace",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/config/config.php",
 		"/Users/Argie/Desktop/jbmusicjobtracker/.env",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/index.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/branch.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/customers.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/parts.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/revenue.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/revenueview.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/salesreport.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/soa.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/dashboard.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/login.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/generateexcel.php",
-		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/settings.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/viewstaff.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/notifview.php",
 		"/Applications/MAMP/htdocs/jbmusicjobtracker/app/ajax/logout.php",
@@ -705,10 +786,7 @@
 		"/Applications/MAMP/htdocs/plugins/mfupload/index.html",
 		"/Applications/MAMP/htdocs/cliq12/application/controllers/Qry.php",
 		"/Applications/MAMP/htdocs/cliq12/application/config/autoload.php",
-		"/Applications/MAMP/htdocs/cliq12.bak/application/config/autoload.php",
-		"/Applications/MAMP/htdocs/cliq12/application/helpers/table_helper.php",
-		"/Applications/MAMP/htdocs/cliq12/application/libraries/Validate.php",
-		"/Applications/MAMP/htdocs/cliq12/application/libraries/Credentials.php"
+		"/Applications/MAMP/htdocs/cliq12.bak/application/config/autoload.php"
 	],
 	"find":
 	{
@@ -751,6 +829,49 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			".editdd",
+			"main category",
+			".edit",
+			" Edit Technician",
+			"createtech",
+			"select>",
+			"select",
+			"Create Technician",
+			"queryto",
+			".view",
+			"technician view",
+			".view",
+			"techindividual",
+			"generateExcelTechIndivid",
+			"tech",
+			"sale",
+			"queryto",
+			"revenuew",
+			"salesreport",
+			"cantrepairremarks",
+			"cantrepairs",
+			".view",
+			"Job Order Done History",
+			".view",
+			"setStartrepairing",
+			"applychanges",
+			"cantrepairremarks",
+			"tasklist",
+			"technician view",
+			".view",
+			"Technician View",
+			"ecurrenttasks",
+			"inserttectstas",
+			"tech_statistic",
+			".view",
+			"revenuew",
+			"PieData",
+			"<?",
+			"$claimedre",
+			"Unclaim",
+			"$unclaimre",
+			"claimed",
+			"split",
 			"$notif",
 			"permission",
 			"Permission",
@@ -835,50 +956,7 @@
 			"settime",
 			"qry/badge",
 			"www.cliq12.dev",
-			"get_badge()",
-			"qry/badge ",
-			"â€",
-			"notification",
-			"row",
-			"Last",
-			"/* Single",
-			"Single",
-			"settings",
-			"<textarea placeholder=\"Reply...\" class=\"autoresize\" style=\"overflow: hidden; height: 52px;\"></textarea><div class=\"autoresize-mirror\" style=\"padding: 20px 2px 2px; border: 0px none rgb(44, 44, 44); font-family: Roboto, sans-serif; font-size: 14px; line-height: 20px; box-sizing: border-box; width: 578px;\">dasdasdasd<br></div>",
-			"<a href=\"#\" class=\"report\"></a>",
-			"hear",
-			"needs",
-			"contactsales",
-			"here",
-			"name=\"",
-			"Email Address",
-			"email",
-			"zipcode",
-			"city",
-			"loader-content",
-			"completeLoading",
-			"loader-container",
-			"state",
-			"country 1",
-			"country",
-			"</option>",
-			"State 1",
-			"state 1",
-			"state1",
-			"divider",
-			"inviteModal",
-			"messageModal",
-			"<a href=\"#\" class=\"delete\">Delete</a>",
-			"<a href=\"#\" class=\"delete\"></a>",
-			"<li><a href=\"#\" class=\"delete\">Delete Comment</a></li>",
-			"<li><a href=\"change-password.html\">Change Password</a></li>",
-			"<li><a href=\"#\">Remind</a></li>\n													  <li><a href=\"#\">Cancel</a></li>",
-			"<li><a href=\"#\">Remind</a></li>\n<li><a href=\"#\">Cancel</a></li>",
-			"<li><a href=\"#\">Remind</a></li>\n													  <li><a href=\"#\">Cancel</a></li>",
-			"<li><a href=\"#\" class=\"unfriend\">Unfriend</a></li>",
-			"<li><a href=\"#\">Unfriend</a></li>",
-			"<li><a href=\"#\">Unfriend</a></li>'",
-			"<li><a href=\"#\" class=\"report\">Report/Flag this Post</a></li>"
+			"get_badge()"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -943,26 +1021,261 @@
 					"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/note.text",
 					"settings":
 					{
-						"buffer_size": 1108,
+						"buffer_size": 3331,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								983,
-								983
-							],
-							[
-								1104,
-								1104
+								2910,
+								2910
 							]
 						],
 						"settings":
 						{
 							"auto_name": "1.	Date – created a new staff today but it does no",
 							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "viewtechfull.php",
+					"settings":
+					{
+						"buffer_size": 2418,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								379,
+								379
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 13.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"settings":
+					{
+						"buffer_size": 2289,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										192,
+										206
+									],
+									[
+										475,
+										489
+									],
+									[
+										1069,
+										1083
+									],
+									[
+										1425,
+										1439
+									],
+									[
+										1696,
+										1710
+									],
+									[
+										2190,
+										2204
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								942,
+								942
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"detect_indentation": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "cantrepairremarks.php",
+					"settings":
+					{
+						"buffer_size": 2368,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "setdonerepair.php",
+					"settings":
+					{
+						"buffer_size": 11356,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1323,
+								1323
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "setongoing.php",
+					"settings":
+					{
+						"buffer_size": 2358,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								675,
+								460
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/technicians.php",
+					"settings":
+					{
+						"buffer_size": 38851,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5248,
+								5248
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1203.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/Applications/MAMP/htdocs/jbmusicjobtracker/app/head_office/joborders.php",
+					"settings":
+					{
+						"buffer_size": 164192,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								88525,
+								88537
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Monokai.tmTheme",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

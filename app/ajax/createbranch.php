@@ -57,9 +57,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                                     " `position`, `level`, `job_title`, `branch_id`, `customer_type_id`, `status`, `created_at`) ". 
                     " VALUES ('".$username."', '".$password."' ,'".$email."','".$fullname."','".$firstname."','".$lastname."','".$midname."','".$nickname."','".$address."','".$contact."','2','1','".$jobtitle."','".$lastbranchid."','0', 'active', '".dateToday()."')";
 
-                
-
                 $userquery = $db->InsertData($inseruser);
+
+                /* Insert History */
+                $description = 'Branch/Store Created';
+                $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
+                $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$_SESSION['Branchid']."', '".$branchname."','".dateToday()."')";
+                $query = $db->InsertData($insertHistory);
+                /* End of Insert History */
 
                 if($userquery) {
                    $response['status'] = 200;

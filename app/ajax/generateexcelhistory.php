@@ -11,7 +11,7 @@ header("Content-Disposition: attachment; filename=".$filename.".xls");
 ?>
 <table border="1">
     <tr>
-    	<th>Job ID.</th>
+    	<th>Info</th>
 		<th>Description</th>
 		<th>Branch</th>
 		<th>Name</th>

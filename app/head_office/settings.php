@@ -487,9 +487,9 @@
 
                                                                 if(isset($_GET['daterange'])){
                                                                     $bydate = split ("to", $_GET['daterange']);
-                                                                    $qu = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id AND c.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'  ORDER BY s.subcat_id ASC";
+                                                                    $qu = "SELECT c.generic,c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id AND c.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'  ORDER BY s.subcat_id ASC";
                                                                 }else{
-                                                                    $qu = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
+                                                                    $qu = "SELECT c.generic,c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
                                                                 }
 
                                                                 $queryforexcelcategory = $qu;
@@ -603,23 +603,23 @@
                         </div>
                         <div class="form-group col-xs-12">
                             <label>Brand Name:</label>
-                            <?php $brands = "SELECT * FROM jb_brands ORDER BY created_at DESC";
+                            <?php $brands = "SELECT * FROM jb_brands ORDER BY created_at ASC";
                                   $brandsquery = $db->ReadData($brands); ?>
                             <select class="form-control" name="modelbrand">
                                 <option></option>
                                 <?php foreach ($brandsquery as $key => $brand) : ?>
-                                <option value="<?=$brand['brandid']?>"><?=$brand['brandname']?></option>
+                                <option value="<?=$brand['brandid']?>"><?=$brand['brandname'];?></option>
                                 <? endforeach; ?>
                             </select>
                         </div>
                         <div class="form-group col-xs-6">
                             <label>Main Category:</label>
-                            <?php $category = "SELECT * FROM jb_partscat ORDER BY created_at DESC";
+                            <?php $category = "SELECT * FROM jb_partscat ORDER BY created_at ASC";
                                   $categoryquery = $db->ReadData($category); ?>
                             <select class="form-control" name="modelcategory">
                                 <option></option>
                                 <?php foreach ($categoryquery as $key => $category) : ?>
-                                <option value="<?=$category['cat_id']?>"><?=$category['category']?></option>
+                                <option value="<?=$category['cat_id']?>"><?=$category['category'];?> <?php if($category['generic'] == 'yes') :?>( Generic )<?php endif;?></option>
                                 <? endforeach; ?>
                             </select>
                         </div>
@@ -698,7 +698,7 @@
                         <div class="form-group col-xs-12">
                             <div class="modal-footer clearfix">
                             <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-                                <button type="submit" id="createdianogis" class="btn btn-primary "><i class="fa fa-plus"></i> Edit Model </button>
+                                <button type="submit" id="createdianogis" class="btn btn-primary "><i class="fa fa-pencil"></i> Edit Model </button>
                             </div>
                         </div>
                         <div class="clear"></div>
@@ -787,6 +787,14 @@
                                 <label>Main Category:</label>
                                 <input type="text" name="category" data-customer-id="" class="form-control" placeholder="Main Category">
                             </div>
+                            <div class="form-group col-xs-12">
+                                <label>Generic:</label>
+                                <select class="generic" name="generic">
+                                    <option value=""></option>
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+                            </div>
                             <div class="form-group col-xs-12 form-subcategory">
                                 <label>Sub Category:</label>
                                 <input type="text" name="subcategory" data-customer-id="" class="form-control" placeholder="Sub Category">
@@ -832,7 +840,7 @@
                             <div class="modal-footer clearfix">
                                 <button type="button" id="addsubcategory" class="btn btn-success pull-left"> Add Sub Category </button>
                                 <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-                                <button type="submit" id="createcategorybtn" class="btn btn-primary"><i class="fa fa-plus"></i> Submit </button>
+                                <button type="submit" id="createcategorybtn" class="btn btn-primary"><i class="fa fa-plus"></i> Create Category </button>
                             </div>
                         </div>
                         <div class="clear"></div>
@@ -918,6 +926,14 @@
                         <label>Main Category:</label>
                         <input type="text" name="ecategory" data-customer-id="" class="form-control" placeholder="Main Category">
                     </div>
+                    <div class="form-group col-xs-12">
+                        <label>Generic:</label>
+                        <select class="generic" name="egeneric">
+                            <option value=""></option>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
                 </div>
 
                     <div class="form-group col-xs-12">
@@ -939,7 +955,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Create Staff</h4>
+                        <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Register a Staff</h4>
                     </div>
                     <div class="modal-body">
                         <form id="createstaff" class="change_to_edit" name="createstaff" method="post" role="form">
@@ -1105,7 +1121,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"> Permission For: <strong><span class="firstname"></span> <span class="lastname"></span></strong></h4>
+                        <h4 class="modal-title"> Permissions For: <strong><span class="firstname"></span> <span class="lastname"></span></strong></h4>
                     </div>
                     <div class="modal-body">
                         <div class="box-body infor">
@@ -1442,7 +1458,7 @@
                         var filter = $('#tablecategory_filter label input').val();
 
                         if ( filter.length ) {
-                            var query = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id AND c.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"'  ORDER BY s.subcat_id ASC";
+                            var query = "SELECT c.generic, c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id AND c.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"'  ORDER BY s.subcat_id ASC";
                         } else {
                             var query = "<?php echo $queryforexcelcategory; ?>";
                         }
@@ -1455,7 +1471,7 @@
                         var filter = $('#tablecategory_filter label input').val();
                         
                         if ( filter.length ) {
-                            var query = "SELECT c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
+                            var query = "SELECT c.generic, c.cat_id, c.category, s.subcategory, s.parts_free, s.diagnostic_free FROM jb_partscat c, jb_partssubcat s WHERE ( c.category LIKE '%"+filter+"%' OR s.subcategory LIKE '%"+filter+"%' ) AND c.cat_id = s.cat_id ORDER BY s.subcat_id ASC";
                         } else {
                             var query = "<?php echo $queryforexcelcategory; ?>";
                         }
@@ -1546,6 +1562,7 @@
                             var obj = jQuery.parseJSON(e);
 
                             $('input[name="ecategory"]').val(obj.response[0].category);
+                            $('select[name="egeneric"] option[value="'+obj.response[0].generic+'"]').prop('selected', true);
 
                             var selectSecPart = $('#createcategory .form-subcategory:last-child').find('.subcategory-partfree').clone();
                             var selecSecDiag = $('#createcategory .form-subcategory:last-child').find('.subcategory-diagnosticfree').clone();
@@ -1716,6 +1733,10 @@
 
             <?php if($_SESSION['position'] == -1): ?>
             $('.permission').on('click',function(){
+
+                $('#permission [type="checkbox"]').parent().removeClass('checked');
+                $('#permission [type="checkbox"]').removeAttr('checked');
+
                 if(ID) {
                     $("#permission").modal("show");
                     $.ajax({
@@ -2874,6 +2895,9 @@
                         required: true,
                         minlength:3
                     },
+                    "generic":{
+                        required: true,
+                    }
                 },
                 submitHandler: function(form) {
                     $('.modald').fadeIn('slow');
@@ -2883,6 +2907,7 @@
                         data: {
                             action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                             category: $("[name=category]").val(),
+                            generic: $("[name=generic]").val(),
                             subcategory: $("[name='subcategory']").map(function(){ return $(this).val(); }).get(),
                             subcategoryPartFree: $("[name='subcategory-partfree']").map(function(){ return $(this).val(); }).get(),
                             subcategoryDiagnosticFree: $("[name='subcategory-diagnosticfree']").map(function(){ return $(this).val(); }).get() 
@@ -2947,6 +2972,9 @@
                         "ecategory":{
                             required: true,
                             minlength:3
+                        },
+                        "egeneric":{
+                            required: true,
                         }
                     },
                     submitHandler: function(form) {
@@ -2958,6 +2986,7 @@
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                                 id: ID,
                                 category: $("#editcategory [name=ecategory]").val(),
+                                generic: $("[name=egeneric]").val(),
                                 subcategory: $("#editcategory [name='subcategory']").map(function(){ return $(this).val(); }).get(),
                                 subcategoryPartFree: $("#editcategory [name='subcategory-partfree']").map(function(){ return $(this).val(); }).get(),
                                 subcategoryDiagnosticFree: $("#editcategory [name='subcategory-diagnosticfree']").map(function(){ return $(this).val(); }).get()  

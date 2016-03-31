@@ -96,7 +96,7 @@
                             <table id="example1" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Job ID</th>
+                                        <th>Info</th>
                                         <th>Description</th>
                                         <th>Branch</th>
                                         <th>Name</th>
@@ -135,7 +135,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->

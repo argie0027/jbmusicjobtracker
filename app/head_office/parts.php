@@ -110,9 +110,9 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
 
                             if(isset($_GET['daterange'])){
                                 $bydate = split ("to", $_GET['daterange']);
-                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' group by part_id order by created_at desc";
+                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' group by part_id order by created_at ASC";
                             }else{
-                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 group by part_id order by created_at desc";
+                                $sql = "SELECT * FROM `jb_part` WHERE isdeleted <> 1 group by part_id order by created_at ASC";
                             }
 
                             $queryforexcel = $sql;
@@ -208,14 +208,14 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Add Stocks</h4>
+                    <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Add Stock</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group col-xs-6">
                         <label>Part type:</label>
                         <select class="form-control" name="parttype">
                             <option value=""></option>
-                            <option value="1">Existing</option>
+                            <option value="1">Existing Part</option>
                             <option value="2">New Part</option>
                         </select>
                     </div>
@@ -235,7 +235,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                                 <select class="form-control" name="models">
                                     <option></option>
                                     <?php
-                                    $qu = "SELECT * FROM `jb_models` ORDER BY created_at DESC";
+                                    $qu = "SELECT * FROM `jb_models` ORDER BY created_at ASC";
                                     $query = $db->ReadData($qu);
                                     foreach ($query as $key => $value) {
                                         echo "<option value=\"" . $value['modelid'] . "\">" . $value['modelname'] . "</option> ";
@@ -264,16 +264,16 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
 
                             <div class="form-group col-xs-6">
                                 <label>Quantity:</label>
-                                <input type="text" name="quantity" class="form-control" placeholder="Quantity ">
+                                <input type="number" name="quantity" class="form-control" placeholder="Quantity ">
                             </div>
                             <div class="form-group col-xs-6">
-                                <label>Cost:</label>
+                                <label>Cost per Piece:</label>
                                 <input type="text" name="cost" class="form-control" placeholder="Cost ">
                             </div>
 
                         <div class="clear"></div>
                         <div class="modal-footer clearfix">
-                            <button type="button" class="btn btnmc" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
+                            <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
                             <button type="submit" id="savejob" class="btn btn-primary "><i class="fa fa-plus"></i> Submit</button>
                         </div>
 
@@ -299,7 +299,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         </div>
                         <div class="clear"></div>
                         <div class="modal-footer clearfix">
-                            <button type="button" class="btn btnmc" data-dismiss="modal"><i class="fa fa-times"></i>
+                            <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i>
                                 Discard
                             </button>
                             <button type="submit" id="savejob232" class="btn btn-primary "><i class="fa fa-plus"></i>
@@ -365,12 +365,12 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         </div>
 
                         <div class="form-group col-xs-6">
-                            <label>Cost:</label>
+                            <label>Cost per Piece:</label>
                             <input type="text" name="ecost" class="form-control" placeholder="Cost ">
                         </div>
                         <div class="clear"></div>
                         <div class="modal-footer clearfix">
-                            <button type="button" class="btn btnmc" data-dismiss="modal"><i class="fa fa-times"></i>
+                            <button type="button" class="btn btnmc discard" data-dismiss="modal"><i class="fa fa-times"></i>
                                 Discard
                             </button>
                             <button type="submit" id="savejob232" class="btn btn-primary "><i class="fa fa-plus"></i>
@@ -441,10 +441,11 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                                         <tr>
                                             <th class="text-center">Batch Date</th>
                                             <th class="text-center">Quantity</th>
-                                            <th class="text-center">Quantity Under Warranty</th>
+                                            <th class="text-center">Under Warranty</th>
                                             <th class="text-center">Batch Quantity</th>
                                             <th class="text-center">Cost</th>
                                             <th class="text-center">Total Price</th>
+                                            <th style="width:70px" class="text-center"></th>
                                         </tr>                                    
                                     </thead>
                                     <tbody></tbody>
@@ -452,13 +453,12 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                             </div><!-- /.col -->
                         </div><!-- /.row -->
 
-
                     </section><!-- /.content -->
-                    <div class="text-right">
-                        <button type="button" class="btn btn-primary generatebatchpart"><i class="fa fa-plus"></i> Generate Excel</button>
-                        <button type="submit" class="btn btn-success cancel-delet" data-dismiss="modal"><i class="fa fa-plus"></i> OK</button>
-                    </div>
                 </div><!-- /.modal-content -->
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-primary generatebatchpart"><i class="fa fa-plus"></i> Generate Excel</button>
+                    <button type="submit" class="btn btn-success cancel-delet" data-dismiss="modal"><i class="fa fa-plus"></i> OK</button>
+                </div>
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div><!-- /.modal -->
@@ -478,6 +478,29 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                     </center>
                     <div class="clear"></div>
                 </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="batchquantity" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                <form id="editpartbatch" method="post" role="form">
+                   <div class="form-group">
+                        <div class="form-group col-xs-6">
+                            <label>Batch Quantity:</label>
+                            <input type="number" name="ebbatchquantity" class="form-control" placeholder="Batch Quantity">
+                        </div>
+                    </div>
+                <div class="clear"></div>
+                 <div class="form-group col-xs-12">
+                     <button type="submit" id="submitdiagnosis" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Submit </button>
+                     <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                </div><!-- /.modal-content --> 
+                <div class="clear"></div>
+                </div><!-- /.modal-content --> 
+                </form>
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div><!-- /.modal -->
@@ -646,7 +669,6 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
 
             $("#search_part").keyup(function () {
                 var toSearch = $("#search_part").val();
-                $('.search-list-part').html("");
                 $('.search-list-result-part').slideDown('fast');
                 $.ajax({
                     type: 'POST',
@@ -656,7 +678,7 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         toSearch: toSearch
                     },
                     success: function (e) {
-                        // 
+                        $('.search-list-part').html("");
                         if (e != 'error') {
                             var obj = jQuery.parseJSON(e);
                             var data = "";
@@ -702,17 +724,77 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                             $('.vparts tbody').html('');
                             var tr = "";
                             $.each(obj.response, function(key, value){
-                                tr += '<tr class="text-center"><td>'+value.date+'</td><td>'+value.quantity+'</td><td>'+value.quantityfree+'</td><td>'+value.bacth_quantity+'</td><td>'+value.cost+'</td><td> <strong>P</strong> <span class="price">'+value.totalprice+'</td></span></tr>';
+                                tr += '<tr class="text-center"><td>'+value.date+'</td><td>'+value.quantity+'</td><td>'+value.quantityfree+'</td><td>'+value.bacth_quantity+'</td><td>'+value.cost+'</td><td> <strong>P</strong> <span class="price">'+value.totalprice+'</td></span><td><button class="btn btn-warning batch-edit" data-id="'+value.id+'"><i class="fa fa-pencil"></i></button></td></tr>';
                             });
                             
                             $('.vparts tbody').append(tr);
                             $('.price').number( true, 2 );
+
+                            //Edit Batch
+                            $('.batch-edit').click(function(){
+                                //console.log(ID, $(this).attr('data-id'));
+                                $('.batch-edit').removeClass('selected');
+                                $(this).addClass('selected');
+                                $('#batchquantity').modal('show');
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '../ajax/viewpartbatch.php',
+                                    data: {
+                                        action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
+                                        id: $('.batch-edit.selected').attr('data-id'),
+                                        partid: ID
+                                    },
+                                    success: function (e) {
+                                        var obj = jQuery.parseJSON(e);
+                                        if (e == "error") {
+                                            alert('Warning: Internal Server Error!');
+                                        } else {
+                                            $("[name=ebbatchquantity]").val(obj.response[0].bacth_quantity);
+                                        }
+                                    }
+                                });
+                            });
                         }
                     });
 
                     $("#view-modal").modal("show");
                 } else {
                     $("#selecrecord-modal").modal("show");
+                }
+            });
+
+
+            $("#editpartbatch").validate({
+                errorElement: 'p',
+                // Specify the validation rules
+                rules: {
+                    "ebbatchquantity": {
+                        required: true,
+                        number: true
+                    }
+                },
+                submitHandler: function (form) {
+                    $('.modald').fadeIn('fast');
+                    $.ajax({
+                        type: 'POST',
+                        url: '../ajax/editpartbatch.php',
+                        data: {
+                            action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
+                            quantity: $("[name=ebbatchquantity]").val(),
+                            id: $('.batch-edit.selected').attr('data-id'),
+                            partid: ID
+                        },
+                        success: function (e) {
+                            if (e == "success") {
+                                location.reload();
+                            } else {
+                                alert('Warning: '+e);
+                                $('.modald').fadeOut('fast');
+                            }
+                        }
+                    });
+                    return false;
                 }
             });
 
@@ -818,10 +900,12 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         required: true
                     },
                     "quantity": {
-                        required: true
+                        required: true,
+                        number: true
                     },
                     "cost": {
-                        required: true
+                        required: true,
+                        number: true
                     }
                 },
                 // Specify the validation error messages
@@ -917,7 +1001,8 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                         required: true
                     },
                     "ecost": {
-                        required: true
+                        required: true,
+                        number: true
                     }
                 },
                 // Specify the validation error messages
@@ -959,8 +1044,14 @@ headerDashboard($name, $query2, count($counterviewed)); ?>
                 }
             });
 
+            $('.discard').click( function(){
+                $('input, textarea').val('');
+                $('select option').removeAttr('selected');
+                $('p.error').remove();
+            });
 
         });
+
     </script>
 <?php
 htmlFooter('dashboard');

@@ -98,9 +98,9 @@
                                             <?php 
                                                 if(isset($_GET['daterange'])){
                                                     $bydate = split ("to", $_GET['daterange']);
-                                                    $sql = "SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' AND isdeleted <> 1";
+                                                    $sql = "SELECT * FROM `jb_technicians` WHERE created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' AND tech_id <> 1 AND isdeleted <> 1";
                                                 }else{
-                                                    $sql = "SELECT * FROM `jb_technicians` WHERE isdeleted <> 1";
+                                                    $sql = "SELECT * FROM `jb_technicians` WHERE tech_id <> 1 AND isdeleted <> 1";
                                                 }
                                                 $queryforexcel = $sql;
                                                 $query =$db->ReadData($sql); 
@@ -112,7 +112,6 @@
                                                     $currenttast = "";
 
                                                     if($query) {
-                                                        // if($query[0]['repair_status'] == 'Done-Ready for Delivery' || $query[0]['repair_status'] == 'Claimed' || $query[0]['repair_status'] == 'Approved' || $query[0]['repair_status'] == 'Ready for Claiming'){
                                                         if($query[0]['repair_status'] != 'Ongoing Repair'){
                                                             $currenttast = "-";
                                                         } else {
@@ -122,8 +121,9 @@
                                                         $currenttast = "-";
                                                     }
 
-                                                    $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
+                                                    $selecttechvalue = "SELECT SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
                                                     $totald =$db->ReadData($selecttechvalue);
+
                                                     ?>
                                                         <tr id="<?php echo $value['tech_id']; ?>" class="clickable">
                                                             <td><?php echo $value['tech_id']; ?></td>
@@ -157,7 +157,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Create Technician</h4>
+            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Register a Technician</h4>
         </div>
         <div class="modal-body">
          <form id="createtech" name="createtech" method="post" role="form">
@@ -184,7 +184,7 @@
             </div>
             <div class="form-group col-xs-6">
                 <label>Date Hired:</label>
-                <input type="date" name="datehired" class="form-control" placeholder="Date Hired">
+                <input type="text" name="datehired" class="form-control sandboxdate" placeholder="Date Hired">
             </div>
             <div class="form-group col-xs-6">
                 <label>Technician Status:</label>
@@ -237,7 +237,7 @@
             </div>
             <div class="form-group col-xs-6">
                 <label>Date Hired:</label>
-                <input type="date" name="edatehired" class="form-control" placeholder="Date Hired">
+                <input type="text" name="edatehired" class="form-control sandboxdate" placeholder="Date Hired">
             </div>
             <div class="form-group col-xs-6">
                 <label>Technician Status:</label>
@@ -305,8 +305,30 @@
                         </div><!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                            <strong>Status: </strong><span class="estatus"></span><br>
-                            <strong>Current Tasks(Job ID): </strong><span class="ecurrenttasks"></span><br><br>
-                            <strong>Total Earnings: </strong><span class="eearnings">11,520</span><br>
+                            <strong>Current Task(Job ID): </strong><span class="ecurrenttasks"></span><br><br>
+                            <!-- <strong>Total Earnings: </strong><span class="eearnings">11,520</span><br> -->
+                            <table style="font-size: 12px; width: 100%;">
+                                <tr>
+                                    <th><strong>Summary Total: </strong></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td>Earnings:</td>
+                                    <td class="text-right"><span class="eearnings">11,520</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Job Orders: </td>
+                                    <td class="text-right"><span class="ejoborders">11,520</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Successfully Repaired: </td>
+                                    <td class="text-right"><span class="erepaired">11,520</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Can’t Repair </td>
+                                    <td class="text-right"><span class="ecantrepair">11,520</span></td>
+                                </tr>
+                            </table>
                     </div><!-- /.row -->
 
                 </section><!-- /.content -->
@@ -387,38 +409,34 @@
              $('#createexcel').on('click', function(){
 
                 <?php if(isset($_GET['daterange'])) { ?>
-                        var daterange = getUrlParameter('daterange').split('to');
-                        var filter = $('#example1_filter label input').val();
+                    var daterange = getUrlParameter('daterange').split('to');
+                    var filter = $('#example1_filter label input').val();
 
-                        if ( filter.length ) {
-                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' AND isdeleted <> 1";
-                        } else {
-                            var query = "<?php echo $queryforexcel; ?>";
-                        }
-     
-                        query = query.replace(/%/g,"percentage");
-                        var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
-                        window.location = page;// you can use window.open also
+                    if ( filter.length ) {
+                        var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' AND tech_id <> 1 AND isdeleted <> 1";
+                    } else {
+                        var query = "<?php echo $queryforexcel; ?>";
+                    }
+ 
+                    query = query.replace(/%/g,"percentage");
+                    var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
+                    window.location = page;// you can use window.open also
 
-                    <?php } else { ?>
-                        var filter = $('#example1_filter label input').val();
-                        
-                        if ( filter.length ) {
-                            var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND isdeleted <> 1";
-                        } else {
-                            var query = "<?php echo $queryforexcel; ?>";
-                        }
+                <?php } else { ?>
+                    var filter = $('#example1_filter label input').val();
+                    
+                    if ( filter.length ) {
+                        var query = "SELECT * FROM `jb_technicians` WHERE name LIKE '%"+filter+"%' AND tech_id <> 1 AND isdeleted <> 1";
+                    } else {
+                        var query = "<?php echo $queryforexcel; ?>";
+                    }
 
-                        query = query.replace(/%/g,"percentage");
-                        var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
-                        window.location = page;// you can use window.open also
+                    query = query.replace(/%/g,"percentage");
+                    var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=tech_excel";
+                    window.location = page;// you can use window.open also
 
-                    <?php } ?>
+                <?php } ?>
 
-                // console.log("<?php echo $queryforexcel; ?>");
-                // var query = "<?php echo $queryforexcel; ?>";
-                // var page = '../ajax/generateexcel.php?querytogenerate='+query+"&&type=tech&&filename=techexcel";
-                // window.location = page;// you can use window.open also
             });
 
 
@@ -497,7 +515,8 @@
                         },
                         success: function(e){
                             
-                            $('.eearnings').html("0");
+                            $('.eearnings,.ejoborders,.erepaired,.ecantrepair').html("0");
+
                             var obj = jQuery.parseJSON(e);
                             $('.etechname').html(" " + obj.response[0].name);
                             $('.enumber').html(" " + obj.response[0].number);
@@ -514,17 +533,44 @@
                             var totalearnings = 0;
                              
                             for (var i = 0; i < obj.response3.length; i++) {
-                                var total = parseFloat(obj.response3[i].totalpartscost) + parseFloat(obj.response3[i].service_charges) + parseFloat(obj.response3[i].total_charges);
+                                var total = parseFloat(obj.response3[i].totalpartscost) + parseFloat(obj.response3[i].service_charges) + parseFloat(obj.response3[i].total_charges) - parseFloat(obj.response3[i].less_deposit) - parseFloat(obj.response3[i].less_discount);
                                 totalearnings = (obj.response3[i].jobclear == 0) ? totalearnings + total : totalearnings; 
 
                                 var cantRep = (obj.response3[i].jobclear == 0) ? '<i class="fa fa-times"></i>' : '<i class="fa fa-check"></i>';
                                 var dateStart = (obj.response3[i].date_start != null) ? obj.response3[i].date_start : '-';
                                 var dateDone = (obj.response3[i].date_done != null) ? obj.response3[i].date_done : '-';
 
-                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td>'+dateStart+'</td><td>'+dateDone+'</td><td><b>P </b><span class="number">'+ total +'</span></td><td class="text-center">'+cantRep+'</td><td><span class="badge bg-green">'+obj.response3[i].repair_status+'</span></td></tr>');
+                                var colorcode = '';
+                                var status = '';
+                                var cantrepair = '';
+                                var repaired = '';
+
+                                if(obj.response3[i].repair_status == "Ongoing Repair"){
+                                    colorcode = 'bg-teal';
+                                    status = obj.response3[i].repair_status;
+                                } 
+                                if(obj.response3[i].repair_status == "Claimed") {
+                                    colorcode = 'bg-green';
+                                    status = obj.response3[i].repair_status;
+                                }
+                                if(obj.response3[i].repair_status == "Done-Ready for Delivery"){
+                                    colorcode = 'mredilive';
+                                    status = 'Ready for Pickup';
+                                }
+                                if(obj.response3[i].repair_status == "Ready for Claiming"){
+                                    colorcode = 'mdone';
+                                    status = obj.response3[i].repair_status;
+                                }
+
+                                $('.tasklist').append('<tr><td>'+obj.response3[i].jobid+'</td><td>'+obj.response3[i].item+'</td><td>'+dateStart+'</td><td>'+dateDone+'</td><td><b>P </b><span class="number">'+ total +'</span></td><td class="text-center">'+cantRep+'</td><td><span class="badge '+colorcode+'">'+status+'</span></td></tr>');
                             };
-                             $('.eearnings').html("<b>P </b> <span class='number'>"+totalearnings+"</span>");
-                             $('.number').number( true, 2 );
+
+                            $('.eearnings').html("<b>P </b> <span class='number'>"+totalearnings+"</span>");
+                            $('.number').number( true, 2 );
+
+                            $('.ejoborders').text(obj.response3.length);
+                            $('.erepaired').text(obj.response3[0].repaired);
+                            $('.ecantrepair').text(obj.response3[0].cantrepair);
                         }
                     });
 

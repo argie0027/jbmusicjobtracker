@@ -8,10 +8,22 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $toSearch = trim(filter_input(INPUT_POST, 'toSearch', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
+    # Get generic category
+    $getGenericCat = "SELECT * FROM jb_models m, jb_partscat c WHERE m.cat_id = c.cat_id AND c.generic='yes' GROUP BY c.cat_id";
+    $getGenericCat = $db->ReadData($getGenericCat);
+
+    $catId = '';
+
+    if($getGenericCat) {
+        foreach ($getGenericCat as $key => $genericCatId) {
+            $catId .= " OR m.cat_id='".$genericCatId['cat_id']."'";
+        } 
+    } 
+
     if (!empty($_POST['categoryid'])){
-    	$sql = "SELECT p.*, s.parts_free, s.diagnostic_free FROM jb_part p, jb_models m, jb_partscat c, jb_partssubcat s  WHERE p.quantity != 0 AND p.modelid = m.modelid AND m.sub_catid = s.subcat_id AND m.cat_id = '".$_POST['categoryid']."' AND p.name LIKE '%".$toSearch."%' GROUP BY p.part_id ORDER BY p.created_at DESC";
+        $sql = "SELECT p.*, s.parts_free, s.diagnostic_free FROM jb_part p, jb_models m, jb_partscat c, jb_partssubcat s  WHERE p.quantity != 0 AND p.modelid = m.modelid AND m.sub_catid = s.subcat_id AND ( m.cat_id = '".$_POST['categoryid']."' ".$catId.") AND p.name LIKE '%".$toSearch."%' GROUP BY p.part_id ORDER BY p.created_at DESC";
     } else {
-    	$sql = "SELECT * FROM `jb_part` WHERE name LIKE '%".$toSearch."%' GROUP BY part_id ORDER BY created_at DESC";
+        $sql = "SELECT * FROM `jb_part` WHERE name LIKE '%".$toSearch."%' GROUP BY part_id ORDER BY created_at DESC";
     }
 
     $query = $db->ReadData($sql);

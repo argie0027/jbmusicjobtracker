@@ -12,12 +12,17 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     if($query) {
         $checkifstat = "SELECT * FROM tech_statistic where techid = '".$techid."'";
         $tcheck  = $db->ReadData($checkifstat);
+
+
+        $repaired = "(SELECT COUNT(jobclear) FROM jb_joborder WHERE jobclear = 0 AND technicianid = '".$techid."' AND repair_status != 'Waiting for SOA Approval' AND repair_status != 'Approved' ) AS repaired";
+        $canrepair = "(SELECT COUNT(jobclear) FROM jb_joborder WHERE jobclear = 1 AND technicianid = '".$techid."' AND repair_status != 'Waiting for SOA Approval' AND repair_status != 'Approved' ) AS cantrepair";
+
         if($tcheck){
-            $queryjobs = "SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear, DATE_FORMAT(a.date_start, '%d %b %Y') as date_start , DATE_FORMAT(a.date_done, '%d %b %Y') as date_done FROM tech_statistic a, jb_cost b, jb_joborder c WHERE a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '".$techid."'";
+            $queryjobs = "SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, b.less_deposit, b.less_discount, c.item, c.repair_status, c.jobclear, DATE_FORMAT(a.date_start, '%d %b %Y') as date_start , DATE_FORMAT(a.date_done, '%d %b %Y') as date_done, ".$repaired.", ".$canrepair." FROM tech_statistic a, jb_cost b, jb_joborder c WHERE a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '".$techid."'";
         }else{
-            $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '".$techid."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved'";
+            $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, b.less_deposit, b.less_discount, c.item, c.repair_status, c.jobclear FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '".$techid."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved'";
         }
-    	$query3  = $db->ReadData($queryjobs);
+    	$query3 = $db->ReadData($queryjobs);
 
 
     	// $querycurrenttasks = "SELECT jobid FROM `jb_joborder` WHERE technicianid = '".$techid."'";
@@ -25,14 +30,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     	// $query2  = $db->ReadData($querycurrenttasks);
 
         $querycurrenttasks = "SELECT * FROM `jb_joborder` WHERE technicianid = '".$techid."' ORDER BY created_at DESC";
-        $query2  = $db->ReadData($querycurrenttasks);
+        $query2 = $db->ReadData($querycurrenttasks);
         $currenttast = "";
 
-        if($query3) {
-            if($query3[0]['repair_status'] == 'Done-Ready for Delivery' || $query3[0]['repair_status'] == 'Claimed' || $query3[0]['repair_status'] == 'Waiting for SOA Approval'){
+        if($query2) {
+            if($query2[0]['repair_status'] != 'Ongoing Repair'){
                 $currenttast['jobid'] = "-";
             } else {
-                $currenttast['jobid'] = $query3[0]['jobid'] . " (".$query3[0]['item'] . ")"; 
+                $currenttast['jobid'] = $query2[0]['jobid'] . " (".$query2[0]['item'] . ")";
             }
         } else {
             $currenttast['jobid'] = "-";

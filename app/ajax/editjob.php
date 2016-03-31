@@ -5,6 +5,7 @@ include '../include.php';
 $request = filter_input(INPUT_POST, 'action');
 
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
+
     $customerID = trim(filter_input(INPUT_POST, 'customerID', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $joborderid = trim(filter_input(INPUT_POST, 'joborderid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $name = trim(ucwords(strtolower(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
@@ -19,8 +20,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $diagnosis = trim(filter_input(INPUT_POST, 'diagnosis', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $remarks = trim(ucwords(strtolower(filter_input(INPUT_POST, 'remarks', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
     $status = trim(filter_input(INPUT_POST, 'status', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-    $date = trim(filter_input(INPUT_POST, 'date', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
 
     $referenceno = trim(filter_input(INPUT_POST, 'referenceno', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $servicefee = trim(filter_input(INPUT_POST, 'servicefee', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -34,6 +33,13 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $query = $db->InsertData($sql);
 
     /* Insert History */
+    $description = 'Customer Edited';
+    $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$_SESSION['Branchid']."', '".$name."','".dateToday()."')";
+    $query = $db->InsertData($insertHistory);
+    /* End of Insert History */
+
+    /* Insert History */
     $getBranchId = "SELECT branchid FROM jb_joborder WHERE jobid = ".$joborderid;
     $resultBranchId = $db->ReadData($getBranchId);
 
@@ -45,22 +51,26 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     
     if($query) {
         
-    	$joborder_update = "UPDATE jb_joborder SET item='".$itemname."',diagnosis='".$diagnosis."',remarks='".$remarks."',estimated_finish_date='".$date."', isunder_warranty='".$isunder_warranty."', referenceno='".$referenceno."', servicefee='".$servicefee."', catid='".$maincategory."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
+    	$joborder_update = "UPDATE jb_joborder SET item='".$itemname."',diagnosis='".$diagnosis."',remarks='".$remarks."', isunder_warranty='".$isunder_warranty."', referenceno='".$referenceno."', servicefee='".$servicefee."', catid='".$maincategory."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
         $updatejobs = $db->InsertData($joborder_update);
         if($updatejobs){
+            $deleteWarranty = "DELETE FROM `jb_warranty` WHERE jobid = '" .$joborderid. "'";
 
             if($warranty_date) { 
-                $warranty_query = "UPDATE jb_warranty SET warranty_date='".$warranty_date."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
-                // $warranty_query = "INSERT INTO `jb_warranty`(`jobid`, `warranty_type`, `warranty_date`) VALUES ('".$jobID."','".$warranty_type."','".$warranty_date."')";
-                 $warranty_in = $db->InsertData($warranty_query);
-                 if($warranty_in){
+                $warranty_out = $db->InsertData($deleteWarranty);
+
+                // $warranty_query = "UPDATE jb_warranty SET warranty_date='".$warranty_date."', `updated_at` = '".dateToday()."' WHERE jobid = '".$joborderid."'";
+                $warranty_query = "INSERT INTO `jb_warranty`(`jobid`, `warranty_date`, created_at) VALUES ('".$joborderid."','".$warranty_date."','".dateToday()."')";
+                $warranty_in = $db->InsertData($warranty_query);
+                if($warranty_in){
                     echo "success";
-                 }else {
-                     echo $db->GetErrorMessage();
+                }else {
+                    echo $db->GetErrorMessage();
                     echo "error warranty";
-                 }
-            }else {
-                    echo "success";
+                }
+            } else {
+                $warranty_out = $db->InsertData($deleteWarranty);
+                echo "success";
             }
 
         }else {

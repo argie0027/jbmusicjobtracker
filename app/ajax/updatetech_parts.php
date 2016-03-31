@@ -6,6 +6,7 @@ $request = filter_input(INPUT_POST, 'action');
 $idcost = "";
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
 
+    $conforme = trim(filter_input(INPUT_POST, 'conforme', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $jobid = trim(filter_input(INPUT_POST, 'jobid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $techid = trim(filter_input(INPUT_POST, 'techID', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $partnid = trim(filter_input(INPUT_POST, 'partsID', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -13,7 +14,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $dd = substr($dd, 0, -1);
 
-    $parts = trim(ucwords(strtolower(filter_input(INPUT_POST, 'parts', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
+    $parts = trim(filter_input(INPUT_POST, 'parts', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $itemname = trim(ucwords(strtolower(filter_input(INPUT_POST, 'itemname', FILTER_SANITIZE_FULL_SPECIAL_CHARS))));
 
@@ -24,7 +25,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $lessdiscount = trim(filter_input(INPUT_POST, 'lessdiscount', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $balancecharge = trim(filter_input(INPUT_POST, 'balancecharge', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-    $parts = "UPDATE `jb_joborder` SET `partsid` = '".$dd."', parts = '".$parts."', repair_status = 'Waiting for SOA Approval', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
+    $parts = "UPDATE `jb_joborder` SET `partsid` = '".$dd."', parts = '".$parts."', repair_status = 'Waiting for SOA Approval', conforme = '".$conforme."', `updated_at` = '".dateToday()."' WHERE jobid = '".$jobid."'";
     $queryparts = $db->InsertData($parts);
 
     $notif = split(',', NOTIF);
@@ -76,111 +77,111 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                         if($updatecosts){
                             $subject = 'JB SPORTS & MUSIC SOA Approval';
                             $message = '<html>
-<head>
-    <title>JB MUSIC & SPORTS</title>
-    <style type="text/css">
-        div, p, a, li, td {
-            -webkit-text-size-adjust: none;
-        }
-    </style>
-</head>
-<body bgcolor="#FFFFFF">
-    <!-- Table Wrap  -->
-    <table align="center" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="600">
-        <!-- Content Container -->
-        <tbody>
-           <tr>
-            <td align="center" valign="top" width="650" style="padding:0px">
+                                            <head>
+                                                <title>JB MUSIC & SPORTS</title>
+                                                <style type="text/css">
+                                                    div, p, a, li, td {
+                                                        -webkit-text-size-adjust: none;
+                                                    }
+                                                </style>
+                                            </head>
+                                            <body bgcolor="#FFFFFF">
+                                                <!-- Table Wrap  -->
+                                                <table align="center" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="600">
+                                                    <!-- Content Container -->
+                                                    <tbody>
+                                                       <tr>
+                                                        <td align="center" valign="top" width="650" style="padding:0px">
 
-                <!-- Table for Banner -->
-                <table border="0" cellpadding="0" cellspacing="0" width="540">
-                    <tbody>
-                        <tr>
-                            <td align="left" valign="middle" height="100" bgcolor="#3e4095" width="100%" style="padding-top: 15px; padding-right: 10px; padding-bottom: 10px; text-align: center; padding-left: 10px;">
-                                <img src="http://jbmusicjobtracker.com/resources/img/logo2.png" width="400">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table><!-- Table for Banner END -->
+                                                            <!-- Table for Banner -->
+                                                            <table border="0" cellpadding="0" cellspacing="0" width="540">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="left" valign="middle" height="100" bgcolor="#3e4095" width="100%" style="padding-top: 15px; padding-right: 10px; padding-bottom: 10px; text-align: center; padding-left: 10px;">
+                                                                            <img src="http://jbmusicjobtracker.com/resources/img/logo2.png" width="400">
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><!-- Table for Banner END -->
 
-                <!-- Table for One Column -->
-                <table border="0" cellpadding="0" cellspacing="0" width="540">
-                    <tbody>
-                        <tr>
-                            <td align="center" valign="middle" width="540" bgcolor="#3e4094" style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top: solid 5px #fff212; font-family: Arial, sans-serif; font-size: 16px; color: #FFFFFF;" >
+                                                            <!-- Table for One Column -->
+                                                            <table border="0" cellpadding="0" cellspacing="0" width="540">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="center" valign="middle" width="540" bgcolor="#3e4094" style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top: solid 5px #fff212; font-family: Arial, sans-serif; font-size: 16px; color: #FFFFFF;" >
 
-                            </td>
-                        </tr>
-                    </tbody>
-                </table><!-- Table for One Column END -->
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table><!-- Table for One Column END -->
 
-                <table border="0" cellpadding="0" cellspacing="0" width="540">
-                    <tbody>
-                        <tr>
-                            <td align="left" valign="top" width="540" bgcolor="#FFFFFF" style="padding: 20px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
-                                <table border="0" cellpadding="0" cellspacing="0" width="500">
-                                    <tbody>
-                                        <tr>
-                                            <td align="left" valign="top" width="540" colspan="2" bgcolor="#FFFFFF" style="padding-bottom:5px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
-                                                <strong style="color: #222222;"><br>Message:</strong>
-                                                <p>
+                                                            <table border="0" cellpadding="0" cellspacing="0" width="540">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="left" valign="top" width="540" bgcolor="#FFFFFF" style="padding: 20px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
+                                                                            <table border="0" cellpadding="0" cellspacing="0" width="500">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td align="left" valign="top" width="540" colspan="2" bgcolor="#FFFFFF" style="padding-bottom:5px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
+                                                                                            <strong style="color: #222222;"><br>Message:</strong>
+                                                                                            <p>
 
-                                                The Service Team is done with the computation of the repair for your item: <br><br>
-                                                '.$itemname.'<br><br>
-                                                Below is the breakdown of the computation:
-                                                <br><br>
-                                                <strong style="color: #222222;">Total Parts Cost:</strong> '.$partcost.' <br>
-                                                <strong style="color: #222222;">Service Charges :</strong> '.$servicescharge.'  <br>
-                                                <strong style="color: #222222;">Total Charges: </strong>  '.$chargetotal.'  <br>
-                                                <br>
+                                                                                            The Service Team is done with the computation of the repair for your item: <br><br>
+                                                                                            '.$itemname.'<br><br>
+                                                                                            Below is the breakdown of the computation:
+                                                                                            <br><br>
+                                                                                            <strong style="color: #222222;">Total Parts Cost:</strong> '.$partcost.' <br>
+                                                                                            <strong style="color: #222222;">Service Charges :</strong> '.$servicescharge.'  <br>
+                                                                                            <strong style="color: #222222;">Total Charges: </strong>  '.$chargetotal.'  <br>
+                                                                                            <br>
 
-                                                Should you decide to pursue with the repair, please visit the branch for the down-payment and conforme.
-                                                <br><br>
-                                                Will be waiting for you to visit us before proceeding with the repair.
-                                                <br><br>
-                                                Hope to see you soon!
+                                                                                            Should you decide to pursue with the repair, please visit the branch for the down-payment and conforme.
+                                                                                            <br><br>
+                                                                                            Will be waiting for you to visit us before proceeding with the repair.
+                                                                                            <br><br>
+                                                                                            Hope to see you soon!
 
-                                                <br><br>
-                                                Regards,<br>
-                                                JB Music and Sports Repair Service Team
-                                                </p>
-                                                </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="left" valign="top" width="540" bgcolor="#FFFFFF" style="padding-bottom:14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
-                                                </td>
-                                        </tr>
+                                                                                            <br><br>
+                                                                                            Regards,<br>
+                                                                                            JB Music and Sports Repair Service Team
+                                                                                            </p>
+                                                                                            </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="left" valign="top" width="540" bgcolor="#FFFFFF" style="padding-bottom:14px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
+                                                                                            </td>
+                                                                                    </tr>
 
-                                    </tbody>
-                                </table>
+                                                                                </tbody>
+                                                                            </table>
 
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
 
-                <br>
-                <table width="540" border="0" cellpadding="0" cellspacing="0">
-                    <tbody>
-                        <tr>
-                            <td width="540" align="left" valign="middle" bgcolor="#3e4094 " style="padding-top: 15px; padding-right: 10px; padding-bottom: 15px; padding-left: 20px; border-bottom: solid 5px #fff212; font-family: Arial, sans-serif; font-size: 12px; line-height: 14px; color: #FFFFFF;" >
-                           This e-mail was sent as a notication for your Job Order Status with  <a href="#" target="_blank" style="text-decoration:none; color: #FFFFFF;"><strong> JB Music & Sports</strong></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-            </tr>
-        </tbody><!-- Content Container END -->
-        <!-- Bottom Spacer -->
-        <tfoot>
-            <tr>
-                <td align="center" valign="top" width="650" height="5" style="padding:0px">&nbsp;
-                </td>
-            </tr>
-        </tfoot><!-- Bottom Spacer END -->
-    </table><!-- Table Wrap END -->
-</body>
-</html>';                   
+                                                            <br>
+                                                            <table width="540" border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td width="540" align="left" valign="middle" bgcolor="#3e4094 " style="padding-top: 15px; padding-right: 10px; padding-bottom: 15px; padding-left: 20px; border-bottom: solid 5px #fff212; font-family: Arial, sans-serif; font-size: 12px; line-height: 14px; color: #FFFFFF;" >
+                                                                       This e-mail was sent as a notication for your Job Order Status with  <a href="#" target="_blank" style="text-decoration:none; color: #FFFFFF;"><strong> JB Music & Sports</strong></a></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        </tr>
+                                                    </tbody><!-- Content Container END -->
+                                                    <!-- Bottom Spacer -->
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td align="center" valign="top" width="650" height="5" style="padding:0px">&nbsp;
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot><!-- Bottom Spacer END -->
+                                                </table><!-- Table Wrap END -->
+                                            </body>
+                                            </html>';                   
                             $headers = "From: JB MUSIC & SPORTS <system@jbmusicjobtracker.com>\r\n";
                             $headers .= "Reply-To: ". "jbmusicjobtracker@gmail.com" . "\r\n";
                             $headers .= "MIME-Version: 1.0\r\n";

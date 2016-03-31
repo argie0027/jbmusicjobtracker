@@ -78,7 +78,12 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                     $retval =  mail($email, $subject, $message, $headers);
                     //$retval = sendMail($email, $subject, $message);
                     unset($_SESSION['nicknake']);
+                    unset($_SESSION['name']);
+                    unset($_SESSION['email']);
+
                     $_SESSION['nicknake'] = $nickname;
+                    $_SESSION['name'] = $fullname;
+                    $_SESSION['email'] = $email;
                 }
                 
             } else {
@@ -118,7 +123,12 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                 //$retval = sendMail($email, $subject, $message);
 
                 unset($_SESSION['nicknake']);
+                unset($_SESSION['name']);
+                unset($_SESSION['email']);
+
                 $_SESSION['nicknake'] = $nickname;
+                $_SESSION['name'] = $fullname;
+                $_SESSION['email'] = $email;
             }
             
         } else {
@@ -133,6 +143,14 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     // Proccess Complete
     if( isset($query) && $retval ) {
+
+        /* Insert History */
+        $description = 'Profile Updated';
+        $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
+        $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$_SESSION['Branchid']."', '".$fullname."','".dateToday()."')";
+        $query = $db->InsertData($insertHistory);
+        /* End of Insert History */
+
         $response['status'] = 200;
         $response['message'] = 'Success';
     } else {

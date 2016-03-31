@@ -36,5 +36,5 @@ function checkspecialchars($str) {
 }
 
 function dateToday() {
-	return date("Y-m-d h:i:s");
+	return date("Y-m-d H:i:s");
 }

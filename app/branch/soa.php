@@ -96,49 +96,50 @@
                                              if(isset($_GET['daterange'])){
                                                  $bydate = split ("to", $_GET['daterange']); 
                                                     if(!isset($_GET['type'])){
-                                                     $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid = b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 AND a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' ORDER BY a.created_at DESC";
+                                                     $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid = b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 AND a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."' ORDER BY a.created_at DESC";
                                                    }else{
                                                         $type = $_GET['type'];
                                                         if($type == "waiting_for_soa_approval") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
                                                         }else if($type == "ready_for_delivery") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
                                                         }else if($type == "ongoing_repair") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
                                                         }else if($type == "today") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '".date("y-m-d")."' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '".date("y-m-d")."' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
                                                         }else if($type == "ready_for_claiming") {
                                                             $sql = "SELECT c.name, b.diagnosis, b.item,b.jobid, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem FROM  jb_joborder b , jb_customer c, jb_diagnosis d WHERE  b.diagnosis = d.id AND  b.branchid  ='".$_SESSION['Branchid']. "' AND b.customerid = c.customerid AND b.repair_status = 'Ready for Claiming' ORDER BY b.created_at DESC";
                                                         }else if($type == "Claimed") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";
                                                         }else if($type == "approved") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";}
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 AND (a.created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."') ORDER BY a.created_at DESC";}
                                                         }
                                              }else{
                                                     if(!isset($_GET['type'])){
-                                                     $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                     $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                    }else{
                                                         $type = $_GET['type'];
                                                         if($type == "waiting_for_soa_approval") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                         }else if($type == "ready_for_delivery") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                         }else if($type == "ongoing_repair") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                         }else if($type == "today") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '".date("y-m-d")."' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '".date("y-m-d")."' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                         }else if($type == "ready_for_claiming") {
                                                             $sql = "SELECT c.name, b.diagnosis, b.item,b.jobid, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem FROM  jb_joborder b , jb_customer c, jb_diagnosis d WHERE  b.diagnosis = d.id AND  b.branchid  ='".$_SESSION['Branchid']. "' AND b.customerid = c.customerid AND b.repair_status = 'Ready for Claiming' AND b.isdeleted != 1 ORDER BY b.created_at DESC";
                                                         }else if($type == "Claimed") {
-                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                            $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                         }else if($type == "approved") {
-                                                             $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost + e.service_charges+ e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                                             $sql = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges + e.totalpartscost + e.total_charges - e.less_deposit - e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid ='".$_SESSION['Branchid']. "' AND b.branchid  ='".$_SESSION['Branchid']. "' AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                                         }
                                                    }
                                              }
                                                 $queryforexcel = $sql;
                                                 $queryforexcel = str_replace("+", "~~", $queryforexcel);
                                                 $query =$db->ReadData($sql); 
+
                                                 foreach ($query as $key => $value) {
                                                     ?>
                                                         <tr id="<?php echo $value['jobid']; ?>" class="clickable">
@@ -206,7 +207,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -277,21 +278,24 @@
                             </address>
 
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             
                         </div><!-- /.col -->
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-5 invoice-col">
                             <strong>Computed By: </strong><span class="computedby"></span><br>
                                 <strong>Accepted By : </strong><span class="acceptedby"></span><br>
                                 <strong class=" pull-left ">Conforme: </strong>
-                                <small  id="disapprove"  class="waitingview2 badge pull-left bg-green"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="waitingview badge pull-left mrorange"> <i class="fa fa-check"> </i>  Waiting for Approval </small>
+                                <small  class="approvedview badge pull-left approvedme"> <i class="fa fa-check"> </i> Approved  </small>
+                                <small  class="disapprovedview badge pull-left mred"> <i class="fa fa-times"> </i> Disapproved </small>
+                                <small  class="cantrepairview badge pull-left bg-grey"> <i class="fa fa-times"> </i> Cant Repair </small>
                                 <button id="approvejob" class=" approvedview2 btn bg-green  margin"> <i class="fa fa-check"> </i>  Approve </button>
                                 <button id="cantapprove" class=" approvedview2 btn bg-red  margin"> <i class="fa fa-check"> </i>  Disapprove </button>
                                 
                                 <div class="ongoingrepairhideshow2">
                                  <br>
                                         <label>Delivery Date:</label>
-                                        <input type="date" name="datedelivery" class="form-control" placeholder="Estimated Finish Date">
+                                        <input type="text" name="datedelivery" class="form-control" placeholder="Estimated Finish Date">
                                         <button id="save_donedate" class=" approvedview2 btn bg-green margin"><i class="fa fa-check"> </i> Save Delivery Date</button>
                                 </div>
 
@@ -480,7 +484,7 @@
 
                         <?php if(!isset($_GET['type'])) { ?>
                             if ( filter.length ) {
-                                var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 AND a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' ORDER BY a.created_at DESC";
+                                var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 AND a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"' ORDER BY a.created_at DESC";
                             } else {
                                 var query = "<?php echo $queryforexcel; ?>";
                             }
@@ -489,25 +493,25 @@
                             <?php $type = $_GET['type'];
                             if($type == "waiting_for_soa_approval") { ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "ready_for_delivery") { ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.sopluaa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.sopluaa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "ongoing_repair"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "today"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '<?php echo date('y-m-d') ?>' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '<?php echo date('y-m-d') ?>' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
@@ -519,13 +523,13 @@
                                 }
                             <?php }else if($type == "Claimed"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "approved"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 AND (a.created_at BETWEEN '"+daterange[0]+"' AND '"+daterange[1]+"') ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
@@ -534,6 +538,7 @@
                         <?php } ?>
 
                         query = query.replace(/plus/g,"~~");
+                        query = query.replace(/minus/g,"--");
                         query = query.replace(/%/g,"percentage");
                         var page = '../ajax/generateexcelbranch.php?querytogenerate='+query+"&&type=soa2&&filename=soabranchexcel";
                         window.location = page;// you can use window.open also
@@ -543,7 +548,7 @@
 
                         <?php if(!isset($_GET['type'])) { ?>
                             if ( filter.length ) {
-                                var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                             } else {
                                 var query = "<?php echo $queryforexcel; ?>";
                             }
@@ -552,25 +557,25 @@
                             <?php $type = $_GET['type'];
                             if($type == "waiting_for_soa_approval") { ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Waiting for SOA Approval' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "ready_for_delivery") { ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ready for Delivery' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "ongoing_repair"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Ongoing Repair' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "today"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '<?php echo date('y-m-d') ?>' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid  AND b.done_date_delivery = '<?php echo date('y-m-d') ?>' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
@@ -582,13 +587,13 @@
                                 }
                             <?php }else if($type == "Claimed"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Claimed' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
                             <?php }else if($type == "approved"){ ?>
                                 if ( filter.length ) {
-                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.totalpartscost plus e.service_charges plus e.total_charges) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
+                                    var query = "SELECT a.soa_id, a.jobid, a.customerid, a.branchid, a.technicianid, a.cost_id, a.status, a.conforme, a.created_at, a.updated_at, c.name, b.diagnosis, b.item, b.customerid, b.remarks, b.branchid, b.repair_status, b.parts, d.diagnosis as diagnosisitem, (e.service_charges plus e.totalpartscost plus e.total_charges minus e.less_deposit minus e.less_discount ) as totalcost FROM jb_soa a, jb_joborder b , jb_customer c, jb_diagnosis d, jb_cost e WHERE (a.jobid LIKE '%"+filter+"%' OR c.name LIKE '%"+filter+"%' OR b.item LIKE '%"+filter+"%' OR b.repair_status LIKE '%"+filter+"%' OR d.diagnosis LIKE '%"+filter+"%') AND a.cost_id = e.cost_id AND b.diagnosis = d.id AND a.branchid = <?php echo $_SESSION['Branchid'] ?> AND b.branchid  = <?php echo $_SESSION['Branchid'] ?> AND a.jobid =  b.jobid AND b.customerid = c.customerid AND b.repair_status = 'Approved' AND b.isdeleted != 1 ORDER BY a.created_at DESC";
                                 } else {
                                     var query = "<?php echo $queryforexcel; ?>";
                                 }
@@ -597,6 +602,7 @@
                         <?php } ?>
 
                         query = query.replace(/plus/g,"~~");
+                        query = query.replace(/minus/g,"--");
                         query = query.replace(/%/g,"percentage");
                         var page = '../ajax/generateexcelbranch.php?querytogenerate='+query+"&&type=soa2&&filename=soabranchexcel";
                         window.location = page;// you can use window.open also
@@ -630,7 +636,8 @@
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                                 jobid: ID,
                                 reference: $("[name=referencenumberfinal]").val(),
-                                parts: $('.span-parts').text()
+                                parts: $('.span-parts').text(),
+                                conforme: 'Approved'
                         },
                         success: function(e){
                             $('.modald').fadeOut('fast');
@@ -732,7 +739,8 @@
                         url: '../ajax/setdisapprove.php',
                         data: {
                             action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
-                            id: ID
+                            id: ID,
+                            conforme: 'Disapproved'
                         },
                         success: function(e){
                             
@@ -822,6 +830,9 @@
                     $('.ongoingrepairhideshow2').slideUp('fast');
                     $('.datelivery2').slideUp('fast');
                     $('#claimedjoborder').slideUp('fast');
+                    $('#approvejob').slideUp('fast');
+                    $('#disapprove').slideUp('fast');
+                    $('#cantapprove').slideUp('fast');
 
                     if(ID){
                         
@@ -877,14 +888,7 @@
 
                             for (var i = 0; i < removebr.length; i++) {
                                 tempremover = tempremover + removebr[i] + "<br>";
-                            };
-                            
-                            if(obj.response[0].done_date_delivery == "0000-00-00"){
-                                $('.setdatedelivery').html("Delivery date is not available.");
-                                $("#setReadyForClaiming").slideUp('fast');
-                            }else{
-                                $('.setdatedelivery').html(obj.response[0].done_date_delivery);
-                            }  
+                            }; 
 
                             var dat = obj.response[0].date_delivery.split("-");
 
@@ -894,58 +898,58 @@
                             $('.span-tech').html(obj.response[0].technam);
                             $('.span-remarks').html(obj.response[0].remarks);
 
-                             if(obj.response[0].repair_status == 'Ready for Delivery'){
-
-                                $('.savesetdate').attr("id", "saveseteddate");
-                                $('.datepickerfordatedelivery').slideDown('fast');
-                                $('.ongoingrepairhideshow2').slideDown('fast');
-                                $('#saveseteddate').html("<i class='fa fa-plus'></i> Set Delivery Date");
-                                $('.span-status').html('<small class="badge col-centered bg-navy">'+obj.response[0].repair_status+'</small>');
-
-                            }else if(obj.response[0].repair_status == 'Waiting for SOA Approval'){
-                                $('.span-status').html('<small class="badge col-centered mrorange">Waiting for Customer Approval</small>');
-                            }else if(obj.response[0].repair_status == 'Ongoing Repair'){
-                                $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
-                            }else if(obj.response[0].repair_status == 'Done-Ready for Delivery'){
-                                $('#disapprove').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
-                                $('.datelivery2').slideDown('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
-                            }else{
-                                $('.span-status').html('<small class="badge col-centered bg-aqua">'+obj.response[0].repair_status+'</small>');
-                            }
                             if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 $('#claimedjoborder').slideDown('fast');
-                                $('#approvejob').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mdone">'+obj.response[0].repair_status+'</small>');
                             }
 
-                            if(obj.response2[0] == undefined ){
-                                $("#approvejob").css('display','none');;
-                                $("#disapprove").css('display','none');
-                            }
-                             if(obj.response2[0].status == 1) {
-                                $("#approvejob").css('display','none');
-                                $("#cantapprove").css('display','none')
-                                $("#disapprove").css('display','inline');
-                            }else{
-                                $("#approvejob").css('display','inline');
-                                $("#disapprove").css('display','none');
-                            }
-
-                            if(obj.response[0].repair_status == 'Ready for Claiming'){
-                                $('#claimedjoborder').slideDown('fast');
-                                $('#approvejob').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
-                            }
                             if(obj.response[0].repair_status == 'Done-Ready for Delivery'){
-                                $('#approvejob').slideUp('fast');
-                                $('#disapprove').slideUp('fast');
-                                $('#cantapprove').slideUp('fast');
                                 $('.datelivery2').slideDown('fast');
+                                if(obj.response[0].done_date_delivery == "0000-00-00"){
+                                    $('.setdatedelivery').html("Delivery date is not available.");
+                                    $("#setReadyForClaiming").slideUp('fast');
+                                } else {
+                                    $("#setReadyForClaiming").slideDown('fast');
+                                    $('.setdatedelivery').html(obj.response[0].done_date_delivery);
+                                }
                                 $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            if(obj.response[0].repair_status == 'Waiting for SOA Approval'){
+                                $('.span-status').html('<small class="badge col-centered mrorange">Waiting for Customer Approval</small>');
+                                $('#approvejob').slideDown('fast');
+                                $('#cantapprove').slideDown('fast');
+                            }
+
+                            if(obj.response[0].repair_status == 'Claimed'){
+                                $('.span-status').html('<small class="badge col-centered bg-green">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            if(obj.response[0].repair_status == 'Approved'){
+                                $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            if(obj.response[0].repair_status == 'Ongoing Repair'){
+                                $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
+                            }
+
+                            $(".waitingview").css('display','none');
+                            $(".approvedview").css('display','none');
+                            $(".disapprovedview").css('display','none');
+                            $(".cantrepairview").css('display','none');
+
+                            // Conforme Status
+                            if(obj.response[0].conforme == 'Waiting for Approval') {
+                                $(".waitingview").css('display','inline');
+                            }
+                            if(obj.response[0].conforme == 'Approved') {
+                                $(".approvedview").css('display','inline');
+                            }
+                            if(obj.response[0].conforme == 'Disapproved') {
+                                $(".disapprovedview").css('display','inline');
+                            }
+                            if(obj.response[0].conforme == 'Cant Repair') {
+                                $(".cantrepairview").css('display','inline');
                             }
 
                             $('.totalpartcost').html("<b>P </b>"+formatNumber(obj.response3[0].totalpartscost));
@@ -953,7 +957,7 @@
                             $('.totalcharges').html("<b>P </b>"+formatNumber(obj.response3[0].total_charges));
                             $('.lessdeposit').html("<b>P </b>"+formatNumber(obj.response3[0].less_deposit));
                             $('.lessdiscount').html("<b>P </b>"+formatNumber(obj.response3[0].less_discount));
-                            $('.balance').html("<b>P </b>"+formatNumber(obj.response3[0].balance));
+                            $('.balance').html("<b>P </b>"+formatNumber(parseFloat(obj.response3[0].totalpartscost) + parseFloat(obj.response3[0].service_charges) + parseFloat(obj.response3[0].total_charges) - parseFloat(obj.response3[0].less_deposit) - parseFloat(obj.response3[0].less_discount)));
                             $('.span-cost').html("<b>P </b>" + formatNumber(obj.response3[0].balance));
                             
                             $('.computedby').html(obj.response3[0].computed_by);

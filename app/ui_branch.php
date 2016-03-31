@@ -53,6 +53,7 @@ function htmlHeader($dashboard = false)
         <?php } ?>
 
         <link href="<?php echo SITE_CSS_DIR ?>AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo SITE_CSS_DIR ?>bootstrap-datepicker.css" rel="stylesheet" type="text/css" data-noprefix/>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -123,8 +124,6 @@ function htmlHeader($dashboard = false)
                 $('.notification').fadeOut('slow');
             }
           </script>
-
-
     </head>
     <body class="<?php echo  $dashboard; ?> skin-blue pace-done fixed">
 
@@ -196,12 +195,13 @@ function htmlFooter($dashboard = false)
         <script src="<?php echo SITE_JS_DIR ?>plugins/colorpicker/bootstrap-colorpicker.min.js" type="text/javascript"></script>
         <!-- bootstrap time picker -->
         <script src="<?php echo SITE_JS_DIR ?>plugins/timepicker/bootstrap-timepicker.min.js" type="text/javascript"></script>
+        <script src="<?php echo SITE_JS_DIR ?>bootstrap-datepicker.js"></script>
 
 
         <!-- page script -->
         <script type="text/javascript">
             $(function() {
-                // $("#example1").dataTable();
+
                 $('#example1, #tablediagnosis').dataTable({
                     "bPaginate": true,
                     "bLengthChange": true,
@@ -211,6 +211,20 @@ function htmlFooter($dashboard = false)
                     "order": false,
                     "aaSorting":[],
                     "bAutoWidth": false
+                });
+
+                $('input[name="datedelivery"]').datepicker({
+                    format: 'yyyy-mm-dd',
+                    startDate: new Date()
+                });
+
+                $('input[name="warranty_date"], input[name="ewarranty_date"]').datepicker({
+                    format: 'yyyy-mm-dd',
+                    endDate: new Date()
+                });
+
+                $('.sandboxdate').datepicker({
+                    format: 'yyyy-mm-dd'
                 });
 
                 // $("body").on("contextmenu",function(e){
@@ -618,7 +632,7 @@ function loginscript(){
 
 function createJobForm($option = false, $diagnosis = false) {
         global $db;
-        $sqlForMainCategory = "SELECT * FROM jb_partscat ORDER BY created_at DESC";
+        $sqlForMainCategory = "SELECT * FROM jb_partscat ORDER BY created_at ASC";
         $queryCategory = $db->ReadData($sqlForMainCategory);
 
         ?>
@@ -723,7 +737,7 @@ function createJobForm($option = false, $diagnosis = false) {
                     <select class="form-control" name="maincategory" id="maincategory">
                     <option></option>
                     <? foreach ($queryCategory as $key => $value) :?>
-                        <option value="<?php echo $value['cat_id'];?>"><?php echo $value['category']; ?></option>
+                        <option value="<?php echo $value['cat_id'];?>"><?php echo $value['category']; ?> <?php if($value['generic'] == 'yes') :?>( Generic )<?php endif;?></option>
                     <? endforeach ;?>
                     </select>
                 </div>
@@ -733,7 +747,7 @@ function createJobForm($option = false, $diagnosis = false) {
                 <div class="form-group col-xs-6">
                     <div class="form-group">
                         <label>Purchase Date</label>
-                         <input type="date" name="warranty_date" class="form-control">
+                        <input type="text" name="warranty_date" class="form-control">
                     </div>
                 </div>
             </div>
@@ -767,10 +781,6 @@ function createJobForm($option = false, $diagnosis = false) {
                         ?>
                     </select>
                 <!-- <textarea class="form-control" name="diagnosis" rows="3" placeholder="Diagnosis "></textarea> -->
-            </div>
-            <div class="form-group col-xs-6">
-                    <label>Estimated Finish Date:</label>
-                <input type="date" name="date" class="form-control" placeholder="Estimated Finish Date ">
             </div>
             <div class="form-group col-xs-12">
                 <label>Remarks:</label>
@@ -880,7 +890,7 @@ function editjoborderform($option = false, $diagnosis = false){
                 <div class="form-group col-xs-6">
                     <div class="form-group">
                         <label>Purchase Date</label>
-                        <input type="date" name="ewarranty_date" class="form-control">
+                        <input type="text" name="ewarranty_date" class="form-control">
                     </div>
                 </div>
             </div>
@@ -914,10 +924,6 @@ function editjoborderform($option = false, $diagnosis = false){
                             echo $diagnosis;
                         ?>
                     </select>
-            </div>
-            <div class="form-group col-xs-6">
-                    <label>Estimated Finish Date:</label>
-                <input type="date" name="edate" class="form-control" placeholder="Estimated Finish Date ">
             </div>
             <div class="form-group col-xs-12">
                 <label>Remarks:</label>
@@ -971,7 +977,7 @@ function modald(){
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -1092,10 +1098,10 @@ function modald(){
                             <form id="setdeliverydate" class="change_to_edit" name="createjob" method="post" role="form">
                                 <div class="form-group ">
                                     <label>Set Delivery Date:</label>
-                                <input type="date" name="datedelivery" placeholder="Date Delivery.." class="form-control datedelivery">
+                                <input type="text" name="datedelivery" placeholder="Date Delivery.." class="form-control datedelivery">
 
                                 <br>
-                                <button type="submit" id="savejob" class="btn btn-success pull-left savesetdate "><i class="fa fa-plus"></i>  Save Delivery Date </button>
+                                <button type="submit" id="savejob" class="btn btn-success savesetdate "><i class="fa fa-plus"></i>  Save Delivery Date </button>
                              </form>
                             </div>
                           </div>
@@ -1177,7 +1183,7 @@ function viewsoa(){
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->

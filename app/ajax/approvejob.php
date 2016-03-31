@@ -8,6 +8,7 @@ $request = filter_input(INPUT_POST, 'action');
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
 
     $notif = split(',', NOTIF);
+    $conforme = trim(filter_input(INPUT_POST, 'conforme', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $jobid = trim(filter_input(INPUT_POST, 'jobid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $parts = trim(filter_input(INPUT_POST, 'parts', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $reference = trim(filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -17,7 +18,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
         $parts = "UPDATE `jb_soa` SET `status` = '1', `updated_at` = '".dateToday()."' WHERE `jobid` = '".$jobid."'";
         $queryparts = $db->InsertData($parts);
 
-        $repair_status = "UPDATE `jb_joborder` SET repair_status = 'Approved', referenceno = '".$reference."', `updated_at` = '".dateToday()."' WHERE `jobid` = '".$jobid."'";
+        $repair_status = "UPDATE `jb_joborder` SET repair_status = 'Approved', conforme = '".$conforme."', referenceno = '".$reference."', `updated_at` = '".dateToday()."' WHERE `jobid` = '".$jobid."'";
         $queryparts = $db->InsertData($repair_status);
 
         $selectsoa = "select * from jb_soa WHERE jobid = '" .$jobid. "'";

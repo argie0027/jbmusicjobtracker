@@ -340,7 +340,7 @@ else if($type == "joborder"){
                 $currenttast = "-";
             }
 
-            $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
+            $selecttechvalue = "SELECT (a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
             $totald =$db->ReadData($selecttechvalue);
             ?>
                 <tr id="<?php echo $value['tech_id']; ?>" class="clickable">
@@ -369,12 +369,13 @@ else if($type == "joborder"){
 }else if($type == "techindividual"){  
 ?>
 
+<h3 class="box-title">Technician Info</h3>
+
 <table border="1">
     <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Current Tasks</th>
-        <th>Total Earnings</th>
         <th>Status</th>
     </tr>
         <?php 
@@ -383,7 +384,7 @@ else if($type == "joborder"){
                 $techid = $value['tech_id'];
                 $query  ="SELECT item, jobid FROM jb_joborder WHERE technicianid = '".$value['tech_id']."'";
                 $query = $db->ReadData($query); 
-                $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
+                $selecttechvalue = "SELECT (a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total, b.repair_status FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.technicianid = '".$value['tech_id']."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved' ";
                 $totald =$db->ReadData($selecttechvalue);
 
                 $queryStatTech  ="SELECT * FROM jb_joborder WHERE technicianid = '".$value['tech_id']."' ORDER BY created_at DESC";
@@ -405,7 +406,6 @@ else if($type == "joborder"){
                     <td><?php echo $value['tech_id']; ?></td>
                     <td><?php echo $value['name']; ?></td>
                     <td><?php echo $currenttast; ?> </td>
-                    <td><b>P </b><?php echo number_format($totald[0]['total'], 2);?></td>
                     <td>
                         <?php
                             if($value['status'] == 1) {
@@ -422,6 +422,42 @@ else if($type == "joborder"){
             }
         ?>
 </table>
+<?php
+
+    $checkifstat = "SELECT * FROM tech_statistic where techid = '".$techid."'";
+    $tcheck  = $db->ReadData($checkifstat);
+
+    $repaired = "(SELECT COUNT(jobclear) FROM jb_joborder WHERE jobclear = 0 AND technicianid = '".$techid."' AND repair_status != 'Waiting for SOA Approval' AND repair_status != 'Approved' ) AS repaired";
+    $canrepair = "(SELECT COUNT(jobclear) FROM jb_joborder WHERE jobclear = 1 AND technicianid = '".$techid."' AND repair_status != 'Waiting for SOA Approval' AND repair_status != 'Approved' ) AS cantrepair";
+
+    if($tcheck){
+        $queryjobs = "SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear, DATE_FORMAT(a.date_start, '%d %b %Y') as date_start , DATE_FORMAT(a.date_done, '%d %b %Y') as date_done, ".$repaired.", ".$canrepair." FROM tech_statistic a, jb_cost b, jb_joborder c WHERE a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '".$techid."'";
+    }else{
+        $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '".$techid."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved'";
+    }
+    $query3  = $db->ReadData($queryjobs);
+?>
+
+<h3 class="box-title">Summary total</h3>
+<table border="1">
+    <tr>
+        <td>Earnings:</td>
+        <td class="text-right"><strong>P </strong><?php echo number_format($totald[0]['total'], 2);?></td>
+    </tr>
+    <tr>
+        <td>Job Orders: </td>
+        <td class="text-right"><?php echo count($query3); ?></td>
+    </tr>
+    <tr>
+        <td>Successfully Repaired: </td>
+        <td class="text-right"><?php echo $query3[0]['repaired']; ?></td>
+    </tr>
+    <tr>
+        <td>Can't Repair </td>
+        <td class="text-right"><?php echo $query3[0]['cantrepair']; ?></td>
+    </tr>
+</table>
+
 <h3 class="box-title">Job Order History</h3>
 <table border="1">
     <tbody>
@@ -434,17 +470,6 @@ else if($type == "joborder"){
             <th style="width: 90px">Cant Repair</th>
             <th style="width: 40px">Status</th>
         </tr>
-        <?php
-
-            $checkifstat = "SELECT * FROM tech_statistic where techid = '".$techid."'";
-            $tcheck  = $db->ReadData($checkifstat);
-            if($tcheck){
-                $queryjobs = "SELECT a.jobid, a.techid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear, DATE_FORMAT(a.date_start, '%d %b %Y') as date_start , DATE_FORMAT(a.date_done, '%d %b %Y') as date_done FROM tech_statistic a, jb_cost b, jb_joborder c WHERE a.jobid = b.jobid AND a.jobid = c.jobid AND a.techid = '".$techid."'";
-            }else{
-                $queryjobs = "SELECT b.jobid, b.totalpartscost, b.service_charges, b.total_charges, c.item, c.repair_status, c.jobclear FROM jb_cost b, jb_joborder c WHERE b.jobid = c.jobid AND c.technicianid = '".$techid."' AND b.repair_status != 'Waiting for SOA Approval' AND b.repair_status != 'Approved'";
-            }
-            $query3  = $db->ReadData($queryjobs);
-            ?>
 
             <?php foreach ($query3 AS $value): ?>
             <?php $cantre = ($value['jobclear'] == 0 ) ? 'No' : 'Yes'; ?>
@@ -455,7 +480,7 @@ else if($type == "joborder"){
                 <td><?php echo $value['date_done']; ?></td>
                 <td><b>P </b><?php echo number_format($value['totalpartscost'] + $value['service_charges'], 2); ?></td>
                 <td><?php echo $cantre;?></td>
-                <td><span class="badge bg-green"><?php echo $value['repair_status']; ?></span></td>
+                <td><span class="badge bg-green"><?php echo ($value['repair_status'] == 'Done-Ready for Delivery' ) ? 'Ready for Pickup' : $value['repair_status']; ?></span></td>
             </tr>
             <?php endforeach; ?>
     </tbody>
@@ -471,70 +496,111 @@ else if($type == "joborder"){
         $range2 = " AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'";
     }
 
-	$getalljobforbranch2 = "SELECT * FROM `jb_joborder` WHERE  jobclear = 0 AND branchid = '".$id."' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+	$getalljobforbranch2 = "SELECT * FROM `jb_joborder` WHERE  isdeleted = 0 AND jobclear = 0 AND branchid = '".$id."' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobforbranch  = $db->ReadData($getalljobforbranch2);
     $jobcounter = $db->GetNumberOfRows();
 
 
-    $ongoing = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $ongoing = "SELECT *  from `jb_joborder` WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."'  AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $ongoingquery  = $db->ReadData($ongoing);
     $ongoingre = $db->GetNumberOfRows();
 
-    $pending = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."'  AND repair_status <> 'Claimed'  AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $pending = "SELECT *  from `jb_joborder` WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."'  AND repair_status <> 'Claimed'  AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobfosdfrbranch  = $db->ReadData($pending);
     $pendingre = $db->GetNumberOfRows();
 
 
-    $claimed = "SELECT *  from `jb_joborder` WHERE jobclear = 0 AND branchid  = '".$id."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $claimed = "SELECT *  from `jb_joborder` WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getallsdfjobforbranch  = $db->ReadData($claimed);
     $claimedre = $db->GetNumberOfRows();
 
 
-	 $jan = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+	 $jan = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $jan  = $db->ReadData($jan);
     $jan = $db->GetNumberOfRows();
-    $feb = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $feb = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $feb  = $db->ReadData($feb);
     $feb = $db->GetNumberOfRows();
-    $mar = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $mar = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $mar  = $db->ReadData($mar);
     $mar = $db->GetNumberOfRows();
-    $apr = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $apr = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $apr  = $db->ReadData($apr);
     $apr = $db->GetNumberOfRows();
-    $may = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $may = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $may  = $db->ReadData($may);
     $may = $db->GetNumberOfRows();
-    $jun = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $jun = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $jun  = $db->ReadData($jun);
     $jun = $db->GetNumberOfRows();
-    $jul = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $jul = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $jul  = $db->ReadData($jul);
     $jul = $db->GetNumberOfRows();
-    $aug = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $aug = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $aug  = $db->ReadData($aug);
     $aug = $db->GetNumberOfRows();
-    $sep = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $sep = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $sep  = $db->ReadData($sep);
     $sep = $db->GetNumberOfRows();
-    $oct = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $oct = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $oct  = $db->ReadData($oct);
     $oct = $db->GetNumberOfRows();
-    $nov = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $nov = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $nov  = $db->ReadData($nov);
     $nov = $db->GetNumberOfRows();
-    $dev = "SELECT * FROM jb_joborder  WHERE jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."'".$range2."";
+    $dev = "SELECT * FROM jb_joborder  WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$id."' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."'".$range2."";
     $dev  = $db->ReadData($dev);
     $dev = $db->GetNumberOfRows();
 
     $jobcounter = $db->GetNumberOfRows();
-    $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."'    AND repair_status = 'Ongoing Repair' ".$range2."";
+    $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."'    AND repair_status = 'Ongoing Repair' ".$range2."";
 
 	?>
 
+    <h3>Branch Info</h3>
+    <table class="table table-condensed" border="1">
+        <tr>
+            <th>Branch Name</th>
+            <th>Contact Number</th>
+            <th>Email Address</th>
+        </tr>
+        <?php
+            $brachInfo = "SELECT * FROM jb_branch WHERE branch_id='".$id."'";
+            $brachInfo = $db->ReadData($brachInfo);
+        ?>
+        <tr>
+            <td><?php echo $brachInfo[0]['branch_name'];?></td>
+            <td><?php echo $brachInfo[0]['number'];?></td>
+            <td><?php echo $brachInfo[0]['email'];?></td>
+        </tr>
+        
+    </table>
+
+    <h3>Contact Person</h3>
+    <table class="table table-condensed" border="1">
+        <tr>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Email Address</th>
+            <th>Address</th>
+        </tr>
+        <?php
+            $contactInfo = "SELECT * FROM `jb_user` WHERE branch_id = '".$id."' AND position = '2'";
+            $contactInfo = $db->ReadData($contactInfo);
+        ?>
+        <tr>
+            <td><?php echo $contactInfo[0]['name'];?></td>
+            <td><?php echo $contactInfo[0]['contact_number'];?></td>
+            <td> <?php echo $contactInfo[0]['email'];?></td>
+            <td><?php echo $contactInfo[0]['address'];?></td>
+        </tr>
+        
+    </table>
+
+    <h1></h1>
 	<table class="table table-condensed" border="1">
         <tr>
-            <th>Total Job Order</th>
+            <th>Total Job Orders</th>
             <th>Revenue</th>
             <th>Pending Job Orders</th>
             <th>Ongoing Job Orders</th>
@@ -545,7 +611,7 @@ else if($type == "joborder"){
             <td>
               <?php 
 
-                $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $selecttechvalue = "SELECT SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' YEAR(b.created_at) = '".$currtYear."' ".$range."";
 
                 $totald =$db->ReadData($selecttechvalue);
                 echo "<b>P</b> ". number_format($totald[0]['total'],2);
@@ -560,41 +626,35 @@ else if($type == "joborder"){
 
 	<table class="table table-condensed" border="1">
         <tr>
-            <th style="width: 10px">Months</th>
-            <th>Total Job Order</th>
+            <th style="width: 10px">Month</th>
+            <th>Total Job Orders</th>
             <th>Monthly Revenue</th>
-            <th>Pending Item</th>
-            <th>Ongoing Job Order</th>
-            <th>Unclaimed Item</th>
-            <th>Claimed Item</th>
+            <th>Pending Job Orders</th>
+            <th>Ongoing Job Orders</th>
+            <th>Done Job Orders</th>
         </tr>
         <tr>
             <td>January</td>
             <td><?php echo $jan;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 01 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 01 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -604,28 +664,23 @@ else if($type == "joborder"){
             <td><?php echo $feb;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 02 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 02 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -635,28 +690,23 @@ else if($type == "joborder"){
             <td><?php echo $mar;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 03 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 03 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -666,28 +716,23 @@ else if($type == "joborder"){
             <td><?php echo $apr;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 04 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 04 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -696,30 +741,25 @@ else if($type == "joborder"){
             <td><?php echo $may;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 05 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 05 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php
 
-                    $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                    $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                     $ongoingquery  = $db->ReadData($ongoing);
                     echo $db->GetNumberOfRows();
 
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -728,28 +768,23 @@ else if($type == "joborder"){
             <td><?php echo $jun;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 06 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 06 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -758,28 +793,23 @@ else if($type == "joborder"){
             <td><?php echo $jul;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 07 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 07 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -788,28 +818,23 @@ else if($type == "joborder"){
             <td><?php echo $aug;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 08 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 08 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -818,28 +843,23 @@ else if($type == "joborder"){
             <td><?php echo $sep;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 09 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 09 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -848,28 +868,23 @@ else if($type == "joborder"){
             <td><?php echo $oct;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 10 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 10 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -878,28 +893,23 @@ else if($type == "joborder"){
             <td><?php echo $nov;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 11 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 11 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -908,28 +918,23 @@ else if($type == "joborder"){
             <td><?php echo $dev;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 12 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid  = '".$_GET['id']."' AND MONTH(b.created_at) = 12 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Waiting List' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND branchid  = '".$_GET['id']."' AND repair_status = 'Claimed' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND branchid  = '".$_GET['id']."' AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -947,62 +952,62 @@ else if($type == "joborder"){
         $range2 = " AND created_at BETWEEN '".$bydate[0]."' AND '".$bydate[1]."'";
     }
 
-    $getalljobforbranch2 = "SELECT * FROM jobclear = 0 AND jb_joborder AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $getalljobforbranch2 = "SELECT * FROM isdeleted = 0 AND jobclear = 0 AND jb_joborder AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobforbranch  = $db->ReadData($getalljobforbranch2);
     $jobcounter = $db->GetNumberOfRows();
 
 
-    $ongoing = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $ongoing = "SELECT *  from jb_joborder WHERE  isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $ongoingquery  = $db->ReadData($ongoing);
     $ongoingre = $db->GetNumberOfRows();
 
-    $pending = "SELECT *  from jb_joborder WHERE  jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $pending = "SELECT *  from jb_joborder WHERE  isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobfosdfrbranch  = $db->ReadData($pending);
     $pendingre = $db->GetNumberOfRows();
 
-    $claimed = "SELECT *  from jb_joborder WHERE jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $claimed = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getallsdfjobforbranch  = $db->ReadData($claimed);
     $claimedre = $db->GetNumberOfRows();
 
 
-    $jan = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $jan = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $jan  = $db->ReadData($jan);
     $jan = $db->GetNumberOfRows();
-    $feb = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $feb = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $feb  = $db->ReadData($feb);
     $feb = $db->GetNumberOfRows();
-    $mar = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $mar = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $mar  = $db->ReadData($mar);
     $mar = $db->GetNumberOfRows();
-    $apr = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $apr = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $apr  = $db->ReadData($apr);
     $apr = $db->GetNumberOfRows();
-    $may = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $may = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $may  = $db->ReadData($may);
     $may = $db->GetNumberOfRows();
-    $jun = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $jun = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $jun  = $db->ReadData($jun);
     $jun = $db->GetNumberOfRows();
-    $jul = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $jul = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $jul  = $db->ReadData($jul);
     $jul = $db->GetNumberOfRows();
-    $aug = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $aug = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $aug  = $db->ReadData($aug);
     $aug = $db->GetNumberOfRows();
-    $sep = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $sep = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $sep  = $db->ReadData($sep);
     $sep = $db->GetNumberOfRows();
-    $oct = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $oct = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $oct  = $db->ReadData($oct);
     $oct = $db->GetNumberOfRows();
-    $nov = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $nov = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $nov  = $db->ReadData($nov);
     $nov = $db->GetNumberOfRows();
-    $dev = "SELECT * FROM jb_joborder  WHERE  jobclear = 0 AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $dev = "SELECT * FROM jb_joborder  WHERE  isdeleted = 0 AND jobclear = 0 AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $dev  = $db->ReadData($dev);
     $dev = $db->GetNumberOfRows();
 
-    $getalljobforbranch2 = "SELECT * FROM jb_joborder WHERE jobclear = 0 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+    $getalljobforbranch2 = "SELECT * FROM jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
     $getalljobforbranch  = $db->ReadData($getalljobforbranch2);
     $jobcounter = $db->GetNumberOfRows();
 
@@ -1010,7 +1015,7 @@ else if($type == "joborder"){
 
     <table border="1">
         <tr>
-            <th>Total Job Order</th>
+            <th>Total Job Orders</th>
             <th>Revenue</th>
             <th>Pending Job Orders</th>
             <th>Ongoing Job Orders</th>
@@ -1020,7 +1025,7 @@ else if($type == "joborder"){
             <td><?php echo $jobcounter;?></td>
             <td>
                 <?php 
-                $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $selecttechvalue = "SELECT SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
 
                 $totald =$db->ReadData($selecttechvalue);
                 echo "<b>P</b> ". number_format($totald[0]['total'],2);
@@ -1035,41 +1040,35 @@ else if($type == "joborder"){
 
     <table border="1">
         <tr>
-            <th style="width: 10px">Months</th>
-            <th>Total Job Order</th>
+            <th style="width: 10px">Month</th>
+            <th>Total Job Orders</th>
             <th>Monthly Revenue</th>
             <th>Pending Job Orders</th>
-            <th>Ongoing Job Order</th>
-            <th>Unclaimed Item</th>
-            <th>Claimed Item</th>
+            <th>Ongoing Job Orders</th>
+            <th>Done Job Orders</th>
         </tr>
         <tr>
             <td>January</td>
             <td><?php echo $jan;?></td>
             <td>
                 <?php 
-                    $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 01 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                    $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 01 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                     $jant  = $db->ReadData($jant);
                     if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 01 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1079,28 +1078,23 @@ else if($type == "joborder"){
             <td><?php echo $feb;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 02 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 02 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 02 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1110,28 +1104,23 @@ else if($type == "joborder"){
             <td><?php echo $mar;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 03 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 03 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 03 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1141,28 +1130,23 @@ else if($type == "joborder"){
             <td><?php echo $apr;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 04 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 04 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 04 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1171,30 +1155,25 @@ else if($type == "joborder"){
             <td><?php echo $may;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 05 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 05 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php
 
-                    $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                    $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                     $ongoingquery  = $db->ReadData($ongoing);
                     echo $db->GetNumberOfRows();
 
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 05 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1203,28 +1182,23 @@ else if($type == "joborder"){
             <td><?php echo $jun;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 06 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 06 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 06 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1233,28 +1207,23 @@ else if($type == "joborder"){
             <td><?php echo $jul;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 07 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 07 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 07 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1263,28 +1232,23 @@ else if($type == "joborder"){
             <td><?php echo $aug;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 08 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 08 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 08 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1293,28 +1257,23 @@ else if($type == "joborder"){
             <td><?php echo $sep;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 09 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 09 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 09 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1323,28 +1282,23 @@ else if($type == "joborder"){
             <td><?php echo $oct;?></td>
             <td>
                 <?php 
-                    $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 10 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                    $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 10 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                     $jant  = $db->ReadData($jant);
                     if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 10 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1353,28 +1307,23 @@ else if($type == "joborder"){
             <td><?php echo $nov;?></td>
             <td>
                 <?php 
-                    $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 11 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                    $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 11 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                     $jant  = $db->ReadData($jant);
                     if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 11 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1383,28 +1332,23 @@ else if($type == "joborder"){
             <td><?php echo $dev;?></td>
             <td>
                 <?php 
-                $jant = "SELECT  (SUM(a.totalpartscost) + SUM(a.service_charges)+ SUM(a.total_charges)) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND  MONTH(b.created_at) = 12 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
+                $jant = "SELECT  SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND  MONTH(b.created_at) = 12 AND YEAR(b.created_at) = '".$currtYear."' ".$range."";
                 $jant  = $db->ReadData($jant);
                 if($jant[0]['total'] == NULL){echo "<b>P</b> "." 0";}else{ echo "<b>P</b> ". number_format($jant[0]['total'],2);};
                 ?>
             </td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Waiting List' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status <> 'Claimed' AND repair_status <> 'Ready for Claiming' AND repair_status <> 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND repair_status = 'Ongoing Repair' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
             <td><?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Ready for Claiming' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
-                $ongoingquery  = $db->ReadData($ongoing);
-                echo $db->GetNumberOfRows();
-                ?></td>
-            <td> <?php 
-                $ongoing = "SELECT *  from jb_joborder WHERE jobclear = 0 AND repair_status = 'Claimed' AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
+                $ongoing = "SELECT *  from jb_joborder WHERE isdeleted = 0 AND jobclear = 0 AND (repair_status = 'Claimed' OR repair_status = 'Ready for Claiming') AND MONTH(created_at) = 12 AND YEAR(created_at) = '".$currtYear."' ".$range2."";
                 $ongoingquery  = $db->ReadData($ongoing);
                 echo $db->GetNumberOfRows();
                 ?></td>
@@ -1431,7 +1375,7 @@ else if($type == "joborder"){
         $getcountjob = $db->ReadData($qu);
         $jobcount = $db->GetNumberOfRows();
 
-            $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid = '".$value['branch_id']."'";;
+            $selecttechvalue = "SELECT (a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE a.jobid = b.jobid AND b.branchid = '".$value['branch_id']."'";;
         $totald =$db->ReadData($selecttechvalue);
     ?>
     <tr id="<?php echo $value['branch_id']; ?>" data-name = "<?php echo $value['branch_name']; ?>" class="clickable">
@@ -1540,6 +1484,7 @@ else if($type == "joborder"){
             <th>Sub Category</th>
             <th>Parts Free</th>
             <th>Diagnostic Free</th>
+            <th>Generic</th>
         </tr>
     </thead>
     <?php
@@ -1588,6 +1533,7 @@ else if($type == "joborder"){
         <td class='dia'><?php echo $value['subcategory']; ?></td>
         <td class='dia'><?php echo $parts_free; ?></td>
         <td class='dia'><?php echo $diagnostic_free; ?></td>
+        <td class='dia'><?php echo ucfirst($value['generic']); ?></td>
     </tr>
 <?php } ?>
 </table>
@@ -1603,6 +1549,7 @@ else if($type == "joborder"){
             <th>Brand</th>
             <th>Main Category</th>
             <th>Sub Category</th>
+            <th>Generic</th>
         </tr>
     </thead>
     <?php
@@ -1611,7 +1558,7 @@ else if($type == "joborder"){
     foreach ($selectparts as $key => $model) {
         $counter++;
         $querybrand = $db->ReadData("SELECT brandname FROM jb_brands WHERE brandid = '".$model['brandid']."'");
-        $querycategory = $db->ReadData("SELECT category FROM jb_partscat WHERE cat_id = '".$model['cat_id']."'");
+        $querycategory = $db->ReadData("SELECT category, generic FROM jb_partscat WHERE cat_id = '".$model['cat_id']."'");
         $querysubcategory = $db->ReadData("SELECT subcategory FROM jb_partssubcat WHERE subcat_id = '".$model['sub_catid']."'");
     ?>
     <tr>
@@ -1621,6 +1568,7 @@ else if($type == "joborder"){
         <td><?php if ($querybrand) { echo $querybrand[0]['brandname']; } ?></td>
         <td><?php if ($querycategory) { echo $querycategory[0]['category']; } ?></td>
         <td> <?php if ($querysubcategory) {echo $querysubcategory[0]['subcategory']; } ?></td>
+        <td> <?php if ($querycategory) {echo ucfirst($querycategory[0]['generic']); } ?></td>
     </tr>
     <?php } ?>
 </table>

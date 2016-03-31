@@ -109,13 +109,13 @@
                                                 $queryforexcel = $sql;
 
                                                 $query =$db->ReadData($sql); 
-                                                 foreach ($query as $key => $value) {
+                                                foreach ($query as $key => $value) {
 
                                                     $qu = "SELECT a.jobid, a.soaid, a.customerid, a.branchid, a.partsid, a.technicianid, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at,a.isdeleted, a.repair_status, b.customerid, b.name, c.branch_id, c.branch_name, d.tech_id, d.name as technam FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d WHERE a.jobclear = 0 AND a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND a.branchid = '".$value['branch_id']."' AND a.isdeleted = '0'  ORDER BY created_at DESC";
                                                     $getcountjob = $db->ReadData($qu);
                                                     $jobcount = $db->GetNumberOfRows();
 
-                                                        $selecttechvalue = "SELECT SUM(a.totalpartscost + a.service_charges + a.total_charges) as total FROM jb_cost a, jb_joborder b WHERE b.jobclear = 0 AND a.jobid = b.jobid AND b.branchid = '".$value['branch_id']."'";;
+                                                    $selecttechvalue = "SELECT SUM(a.service_charges + a.totalpartscost + a.total_charges - a.less_deposit - a.less_discount ) as total FROM jb_cost a, jb_joborder b WHERE b.isdeleted = 0 AND b.jobclear = 0 AND a.jobid = b.jobid AND b.repair_status <> 'Ready for Delivery' AND b.repair_status <> 'Waiting for SOA Approval' AND b.repair_status <> 'Waiting List' AND b.branchid = '".$value['branch_id']."'";;
                                                     $totald =$db->ReadData($selecttechvalue);
 
 
@@ -144,7 +144,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Create Branch</h4>
+            <h4 class="modal-title"><i class="fa  fa-plus-circle"></i> Register a Branch/Store</h4>
         </div>
         <div class="modal-body">
          <form id="createbranch" name="createbranch" method="post" role="form">
@@ -571,7 +571,7 @@
                             $('.modald').fadeOut('fast');
                             var obj = jQuery.parseJSON(e);
                             $("[name=ebranchname]").val(obj.response2[0].branch_name);
-                            $("[name=ebranchaddress]").val(obj.response[0].address);
+                            $("[name=ebranchaddress]").val(obj.response2[0].address);
                             $("[name=enumber]").val(obj.response2[0].number);
                             $("[name=eemail]").val(obj.response2[0].email);
                             $("[name=efirstname]").val(obj.response[0].firstname);
@@ -1029,7 +1029,7 @@
                                 nickname: $("[name=nickname]").val(),
                                 emailaddress: $("[name=emailaddress]").val(),
                                 contact: $("[name=contact]").val(),
-                                address: $("[name=branchaddress]").val()
+                                address: $("[name=address]").val()
                             },
                             success: function(e){
                                 var obj = jQuery.parseJSON(e);

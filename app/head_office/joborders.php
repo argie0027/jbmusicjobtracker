@@ -270,7 +270,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></span></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -362,27 +362,27 @@
                                 <table class="table">
                                     <tbody><tr>
                                         <th style="width:50%">Total Parts Cost:</th>
-                                        <td>Php <span class="partcost">0.00</span></td>
+                                        <td><strong>P</strong> <span class="partcost">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Service Charges</th>
-                                        <td>Php <span class="servicescharge">0.00</span></td>
+                                        <td><strong>P</strong> <span class="servicescharge">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Total Charges:</th>
-                                        <td>Php <span class="chargetotal">0.00</span></td>
+                                        <td><strong>P</strong> <span class="chargetotal">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Less Deposit</th>
-                                        <td>Php <span class="lessdeposit">0.00</span></td>
+                                        <td><strong>P</strong> <span class="lessdeposit">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Less Discount</th>
-                                        <td>Php <span class="lessdiscount">0.00</span></td>
+                                        <td><strong>P</strong> <span class="lessdiscount">0.00</span></td>
                                     </tr>
                                     <tr>
                                         <th>Balance</th>
-                                        <td>Php <span class="balancecharge">0.00</span></td>
+                                        <td><strong>P</strong> <span class="balancecharge">0.00</span></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -404,7 +404,7 @@
                             <form id="setdeliverydateformmain" class="change_to_edit" name="createjob" method="post" role="form">
                                 <div class="form-group ">
                                     <label>Set Delivery Date:</label>
-                                <input type="date" name="datedeliverymain" placeholder="Date Delivery.." class="form-control datedelivery">
+                                <input type="text" name="datedeliverymain" placeholder="Date Delivery.." class="form-control datedelivery">
 
                                 <br>
                                 <button type="submit" id="savejob" class="btn btn-success pull-left savesetdatemain "><i class="fa fa-plus"></i>  Save Delivery Date </button>
@@ -449,7 +449,7 @@
                                 </div>
                             <div class="clear"></div>
                              <div class="form-group col-xs-12">
-                                 <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                                 <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                                  <button type="submit" id="assignedtech" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Assign Tech </button>
                             </div><!-- /.modal-content --> 
                             <div class="clear"></div>
@@ -502,7 +502,7 @@
 
                             <div class="clear"></div>
                              <div class="form-group col-xs-12">
-                                 <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                                 <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                                  <button type="submit" id="addparttojoborder" class="btn btn-success pull-left "><i class="fa fa-plus"></i> Add Part </button>
                             </div><!-- /.modal-content --> 
                             <div class="clear"></div>
@@ -549,7 +549,7 @@
                         <h4 class="modal-title text-red" ><i class="fa  fa-times-circle"> </i> Are you sure you want to delete Job order No. <span id="idhere2"></span>?</h4>
                     </div>
                     <div class="modal-body">
-                         <button type="button" class="btn  cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
+                         <button type="button" class="btn btnmc cancel-delet" data-dismiss="modal"><i class="fa fa-times"></i> Cancel </button>  
                          <button type="submit" id="deleteitem" class="btn btn-success  pull-left "><i class="fa fa-plus"></i> Delete </button>
                     </div><!-- /.modal-content --> 
                     </div><!-- /.modal-dialog -->
@@ -648,7 +648,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <h2 class="page-header">
-                                <i class="fa fa-globe"></i> Jor Order  #<span class="idhere"></span>
+                                <i class="fa fa-globe"></i> Job Order  #<span class="idhere"></span>
                                 <small class="pull-right">Date: <span class="datehere"></small>
                             </h2>                            
                         </div><!-- /.col -->
@@ -1021,7 +1021,7 @@
                     $('.lessdeposit').html("0.00");     
                     $('.lessdiscount').html("0.00"); 
                     $('.chargetotal').html("0.00");  
-                    $("[name=servicescharge]").val("800");
+                    $("[name=servicescharge]").val("800.00");
                     $("[name=lessdeposit]").val("0.00");
                     $("[name=lessdiscount]").val("0.00");
                     $("[name=chargetotal]").val("0.00");
@@ -1204,7 +1204,8 @@
                                     lessdeposit: $('.lessdeposit').text(),
                                     lessdiscount: $('.lessdiscount').text(),
                                     balancecharge: $('.balancecharge').text(),
-                                    email: emailaddress
+                                    email: emailaddress,
+                                    conforme: 'Waiting for Approval'
                                 },
                                 success: function(e){
                                     
@@ -1405,7 +1406,8 @@
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                                 id: ID,
                                 type: 'waiting_list',
-                                otherremarks: $("[name=otheremarks]").val()
+                                otherremarks: $("[name=otheremarks]").val(),
+                                conforme: 'Cant Repair'
                             },
                             success: function(e){
                                 
@@ -1423,7 +1425,7 @@
                 $('.view').on('click',function(){
                     //clearallfield();
                     $('.savesetdate').slideDown('fast');
-                   $('.savesetdate').attr("id", "applychanges");
+                    $('.savesetdate').attr("id", "applychanges");
                     $('#setOngoingRepair').html('<i class="fa fa-plus"></i> Generate SOA ');
                     $('.removethisongoing').slideDown('fast');
                     $('.datelivery').slideUp('fast');
@@ -1448,6 +1450,7 @@
                             var obj = jQuery.parseJSON(e);
 
                             $('.idhere').html(obj.response[0].jobid);
+                            $('[name=servicescharge]').val(obj.response[0].servicefee);
                             
                             var now = moment(obj.response[0].dateadded);
                             $('.datehere').html(now.format("MMMM D, YYYY"));
@@ -1527,10 +1530,7 @@
                                 $('.savesetdate').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
                                 $('#cantrepair').slideDown('fast');
-                                // $('.savesetdate').html("<i class='fa fa-check'></i> Done Job Order");
                                 $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
-
-                                // $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Done-Delivered'){
                                 $('.savesetdate').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
@@ -1541,16 +1541,15 @@
                                 $('.span-status').html('<small class="badge col-centered bg-red">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 if(obj.response[0].technam == ""){
-
                                 $('.savesetdate').slideUp('fast');
                                 $('#cantrepair').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-red">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mdone">'+obj.response[0].repair_status+'</small>');
                                 }else{
 
                                 $('.savesetdate').slideUp('fast');
                                 $('.removethisongoing').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-red">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mdone">'+obj.response[0].repair_status+'</small>');
                                 }
                             }else if(obj.response[0].repair_status == 'Claimed'){
                                 $('.savesetdate').slideUp('fast');
@@ -1559,8 +1558,10 @@
                             }else if(obj.response[0].repair_status == 'Waiting List'){
                                 $('#cantrepair').fadeIn('fast');
                                 $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
-                            }else{
-                                $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
+                            }else if( obj.response[0].repair_status == 'Done-Ready for Delivery'){
+                                $('.span-status').html('<small class="badge col-centered mredilive">'+obj.response[0].repair_status+'</small>');
+                            }else if(obj.response[0].repair_status == 'Approved'){
+                                $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
                             }
 
                             //clear set date field if JO is not disapproved and cant repair
@@ -1596,12 +1597,12 @@
                             techID = obj.response[0].tech_id;
                             var d = obj.response[0].partsid.split(',');
 
-                            $('.partcost').html(obj.response3[0].totalpartscost);
-                            $('.servicescharge').html(obj.response3[0].service_charges);
-                            $('.chargetotal').html(obj.response3[0].total_charges);
-                            $('.lessdeposit').html(obj.response3[0].less_deposit);
-                            $('.lessdiscount').html(obj.response3[0].less_discount);
-                            $('.balancecharge').html(obj.response3[0].balance);
+                            $('.partcost').html(formatNumber(obj.response3[0].totalpartscost));
+                            $('.servicescharge').html(formatNumber(obj.response3[0].service_charges));
+                            $('.chargetotal').html(formatNumber(obj.response3[0].total_charges));
+                            $('.lessdeposit').html(formatNumber(obj.response3[0].less_deposit));
+                            $('.lessdiscount').html(formatNumber(obj.response3[0].less_discount));
+                            $('.balancecharge').html(formatNumber(parseFloat(obj.response3[0].totalpartscost) + parseFloat(obj.response3[0].service_charges) + parseFloat(obj.response3[0].total_charges) - parseFloat(obj.response3[0].less_deposit) - parseFloat(obj.response3[0].less_discount)) );
 
                             if(obj.response3[0].service_charges == "0.00") {
                                 $('[name="servicescharge"]').val("800");

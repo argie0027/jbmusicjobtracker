@@ -15,6 +15,15 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     $insertbranch = "UPDATE `jb_technicians` SET `name`='".$techname."',`email`='".$email."',`address`='".$address."',`number`='".$number."',`nickname`='".$nickname."',`date_hired`='".$date_hired."',`tech_status`='".$tech_status."',`updated_at` = '".dateToday()."' WHERE tech_id = '".$id."'";
     $query = $db->ExecuteQuery($insertbranch);
+
+
+    /* Insert History */
+    $description = 'Technician Edited';
+    $branchName = ( $_SESSION['Branchname'] == 'Admin') ? 'Main Office' : $_SESSION['Branchname'];
+    $insertHistory = "INSERT INTO `jb_history`(`description`, `branch`, `name`, `branchid`, `isbranch`, `jobnumber`,`created_at`)". " VALUES ('".$description."', '".$branchName."', '".$_SESSION['nicknake']."', '".$_SESSION['Branchid']."', '".$_SESSION['Branchid']."', '".$techname."','".dateToday()."')";
+    $query = $db->InsertData($insertHistory);
+    /* End of Insert History */
+
 	if($query){
         echo "success";
 	}else {

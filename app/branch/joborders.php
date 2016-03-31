@@ -187,6 +187,7 @@ $queryforexcel = "";
             </thead>
 <tbody>
     <?php
+
     foreach ($query as $key => $value) {
         $return = "<tr id='".$value['jobid']."' class='clickable'>
             <td>".$value['jobid']."</td>
@@ -210,7 +211,7 @@ $queryforexcel = "";
                         }else if($value['repair_status'] == "Ready for Claiming") {
                             $return = $return . "<td><small class=\"badge col-centered mred\">Unclaimed</small></td>";
                         }else{
-                            $return = $return . "<td><small class=\"badge col-centered bg-aqua\">".$value['repair_status']."</small></td>";
+                            $return = $return . "<td><small class=\"badge col-centered approvedme\">".$value['repair_status']."</small></td>";
                         }
         $return = $return . "</tr>";
         echo $return;
@@ -578,7 +579,7 @@ $queryforexcel = "";
 
             $("#search_customers").keyup(function(){
                 var toSearch = $("#search_customers").val();
-                $('.search-list').html("");
+
                 $('.search-list-result').slideDown('fast');
                 $.ajax({
                     type: 'POST',
@@ -589,6 +590,8 @@ $queryforexcel = "";
                         branchid: '<?php echo $_SESSION['Branchid'];?>'
                     },
                     success: function(e){
+
+                            $('.search-list').html("");
                             
                             if(e != 'error'){
                                 var obj = jQuery.parseJSON(e);
@@ -636,12 +639,12 @@ $queryforexcel = "";
             });
             $("select[name='isjbitem']").change(function(){
                 if ($(this).val() == 0) {
-                    $('[name="servicefee"]').val(800.00);
+                    $('[name="servicefee"]').val('800.00');
                     $("input[name='warranty_date']").val('');
                     $('#tableinfocard tbody').html('');
                     $('.hideshow.warranty-date, .hideshow.info-card').fadeOut('fast');
                 } else {
-                    $('[name="servicefee"]').val(0.00);
+                    $('[name="servicefee"]').val('0.00');
                     $('.hideshow.warranty-date, .hideshow.info-card').fadeIn('fast');
                 }
             });
@@ -654,7 +657,7 @@ $queryforexcel = "";
                     $('.hideshow.warranty-date, .hideshow.info-card').fadeOut('fast');
                 }
             });
-            $("input[name='warranty_date']").change(function(){
+            $("input[name='warranty_date']").on('change', function(){
                 var maincategory = $("select[name='maincategory']").val();
                 var warranty_date = $(this).val();
 
@@ -673,7 +676,13 @@ $queryforexcel = "";
                             var trtable = '<tr><td>'+value.subcategory+'</td><td class="center">'+value.parts_free+'</td><td class="center">'+value.diagnostic_free+'</td></tr>';
                             $('#tableinfocard tbody').prepend(trtable);
                         });
-                    }
+
+                        if($('#tableinfocard tbody tr td:nth-child(3)').find('i').hasClass('not-free')){
+                            $('[name=servicefee]').val('800.00');
+                        } else {
+                            $('[name=servicefee]').val('0.00');
+                        }
+                    } 
                 });
 
                 if(warranty_date != '') {
@@ -704,10 +713,11 @@ $queryforexcel = "";
             });
             $('.view').on('click',function(){
 
-                //$('.datepickerfordatedelivery').show();
+                $('.datepickerfordatedelivery').slideUp('fast');
                 $('.ishaveammount').slideUp('fast');
                 $('.savesetdate').attr("id", "sdfsdf");
                 $('#saveseteddate').html("<i class='fa fa-plus'></i> Ok");
+
                 if(ID){
                     $('.modald').fadeIn('slow');
                     $("#view-modal").modal("show");
@@ -789,18 +799,20 @@ $queryforexcel = "";
                                 $('.span-status').html('<small class="badge col-centered bg-teal">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Done-Ready for Delivery'){
                                 $('.ishaveammount').slideDown('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-blue">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered mredilive">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Waiting List'){
                                 $('.ishaveammount').slideUp('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-aqua">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered morange">'+obj.response[0].repair_status+'</small>');
                             }else if(obj.response[0].repair_status == 'Ready for Claiming'){
                                 $('.ishaveammount').slideDown('fast');
                                 $('.span-status').html('<small class="badge col-centered mred">Unclaimed</small>');
-                            }else{
+                            }else if(obj.response[0].repair_status == 'Approved'){
                                 $('.ishaveammount').slideDown('fast');
-                                $('.span-status').html('<small class="badge col-centered bg-aqua">'+obj.response[0].repair_status+'</small>');
+                                $('.span-status').html('<small class="badge col-centered approvedme">'+obj.response[0].repair_status+'</small>');
+                            }else if(obj.response[0].repair_status == 'Claimed'){
+                                $('.ishaveammount').slideDown('fast');
+                                $('.span-status').html('<small class="badge col-centered bg-green">'+obj.response[0].repair_status+'</small>');
                             }
-
 
                             //clear set date field if JO is not disapproved and cant repair
                             if(obj.response[0].jobclear == '1') {
@@ -839,12 +851,12 @@ $queryforexcel = "";
                             }
                             //
 
-                             $('.partcost').html("<b>P </b>"+formatNumber(obj.response3[0].totalpartscost));
+                            $('.partcost').html("<b>P </b>"+formatNumber(obj.response3[0].totalpartscost));
                             $('.servicescharge').html("<b>P </b>"+formatNumber(obj.response3[0].service_charges));
                             $('.chargetotal').html("<b>P </b>"+formatNumber(obj.response3[0].total_charges));
                             $('.lessdeposit').html("<b>P </b>"+formatNumber(obj.response3[0].less_deposit));
                             $('.lessdiscount').html("<b>P </b>"+formatNumber(obj.response3[0].less_discount));
-                            $('.balancecharge').html("<b>P </b>"+formatNumber(obj.response3[0].balance));
+                            $('.balancecharge').html("<b>P </b>"+formatNumber(parseFloat(obj.response3[0].totalpartscost) + parseFloat(obj.response3[0].service_charges) + parseFloat(obj.response3[0].total_charges) - parseFloat(obj.response3[0].less_deposit) - parseFloat(obj.response3[0].less_discount)));
                         }
                     });
                     
@@ -946,7 +958,7 @@ $queryforexcel = "";
                             if(obj.status == 101) {
                                 if( $.type(obj.date_delivery) != 'undefined' && obj.date_delivery == true ) {
                                     $('input[name="datedelivery"]').parent().find('p.error').remove();
-                                    $('input[name="datedelivery"]').parent().append('<p for="datedelivery" generated="true" class="error" style="position: absolute;top: 58px;">Date is already set.</p>');
+                                    $('input[name="datedelivery"]').parent().append('<p for="datedelivery" generated="true" class="error">Date is already set.</p>');
                                 }
 
                                 $("#saveseteddate").html('<i class="fa fa-plus"></i>  Save Delivery Date');
@@ -1076,8 +1088,6 @@ $queryforexcel = "";
                             $('input[name="eitemname"]').val(obj.response[0].item);
                             $('#eremarks').val(obj.response[0].remarks);
                             $('select[name="ediagnosis"]').val(obj.response[0].diagnosis);
-                            var dat2 = obj.response[0].estimated_finish_date.split("-");
-                            $('input[name="edate"]').val(dat2[0] + "-" + dat2[1] + "-"+ dat2[2]);
 
                             $('.branchnamehere').html(obj.response[0].branch_name);
                             $('.branchaddresshere').html(obj.response[0].branch_address);
@@ -1095,12 +1105,12 @@ $queryforexcel = "";
 
             $("select[name='eisjbitem']").change(function(){
                 if ($(this).val() == 0) {
-                    $('[name="eservicefee"]').val(800.00);
+                    $('[name="eservicefee"]').val('800.00');
                     $("input[name='ewarranty_date']").val('');
                     $('#etableinfocard tbody').html('');
                     $('.hideshow.ewarranty-date, .hideshow.einfo-card').fadeOut('fast');
                 } else {
-                    $('[name="eservicefee"]').val(0.00);
+                    $('[name="eservicefee"]').val('0.00');
                     $('.hideshow.ewarranty-date, .hideshow.einfo-card').fadeIn('fast');
                 }
             });            
@@ -1113,7 +1123,7 @@ $queryforexcel = "";
                     $('.hideshow.ewarranty-date, .hideshow.einfo-card').fadeOut('fast');
                 }
             });
-            $("input[name='ewarranty_date']").change(function(){
+            $("input[name='ewarranty_date']").on('change', function(){
                 var maincategory = $("select[name='emaincategory']").val();
                 var warranty_date = $(this).val();
 
@@ -1132,6 +1142,12 @@ $queryforexcel = "";
                             var trtable = '<tr><td>'+value.subcategory+'</td><td class="center">'+value.parts_free+'</td><td class="center">'+value.diagnostic_free+'</td></tr>';
                             $('#etableinfocard tbody').prepend(trtable);
                         });
+
+                        if($('e#tableinfocard tbody tr td:nth-child(3)').find('i').hasClass('not-free')){
+                            $('[name=eservicefee]').val('800.00');
+                        } else {
+                            $('[name=eservicefee]').val('0.00');
+                        }
                     }
                 });
 
@@ -1254,17 +1270,10 @@ $queryforexcel = "";
             required: true,
             minlength:2
             },
-            "edate":{
-            required: true
-            },
             "ediagnosis":{
             required: true,
             minlength:1
             },
-            // "ewarranty_date":{
-            // required: true,
-            // minlength:1
-            // },
             "emaincategory":{
             required: true,
             minlength:1
@@ -1310,15 +1319,9 @@ $queryforexcel = "";
             eitemname:{
             required: "Please provide a Item Name"
             },
-            edate:{
-            required: "Please provide a Date"
-            },
             ediagnosis:{
             required: "Please provide a Diagnosis"
             },
-            // ewarranty_date:{
-            // required: "Please select Purchase Date."
-            // },
             emaincategory:{
             required: "Please select Main Category."
             },
@@ -1350,7 +1353,6 @@ $queryforexcel = "";
                         itemname: $("[name=eitemname]").val(),
                         diagnosis: $("[name=ediagnosis]").val(),
                         remarks: $("[name=eremarks]").val(),
-                        date: $("[name=edate]").val(),
                         referenceno: $("[name=ereferenceno]").val(),
                         servicefee: $("[name=eservicefee]").val(),
                         customerID: customerID,
@@ -1400,16 +1402,10 @@ $queryforexcel = "";
             required: true,
             minlength:2
             },
-            "date":{
-            required: true
-            },
             "diagnosis":{
             required: true,
             minlength:1
             },
-            // "warranty_date":{
-            //     required: true
-            // },
             "maincategory":{
             required: true,
             minlength:1
@@ -1457,9 +1453,6 @@ $queryforexcel = "";
             required: "Please provide a Item Name",
             minlength: "Your item name must be at least 2 characters long"
             },
-            date:{
-            required: "Please provide a Date",
-            },
             diagnosis:{
             required: "Please provide a Diagnosis",
             minlength: "Your diagnosis must be at least 1 characters long"
@@ -1499,7 +1492,6 @@ $queryforexcel = "";
                         itemname: $("[name=itemname]").val(),
                         diagnosis: $("[name=diagnosis]").val(),
                         remarks: $("[name=remarks]").val(),
-                        date: $("[name=date]").val(),
                         referenceno: $("[name=referenceno]").val(),
                         servicefee: $("[name=servicefee]").val(),
                         isExisting: $('#existingc').val(),

@@ -23,11 +23,11 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
     if($query_checker){
 
-        $sql = "SELECT a.jobid, a.soaid, a.customerid, a.branchid, a.catid, a.partsid, a.parts, a.technicianid, a.repair_status, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at as dateadded, a.referenceno, a.servicefee, a.isdeleted,a.date_delivery, a.done_date_delivery,a.isunder_warranty,a.estimated_finish_date,a.jobclear, b.*, c.branch_id, c.branch_name, c.address as branch_address, c.contactperson as contact_person, c.email as contact_email, c.number as branch_number, d.tech_id, d.name as technam, e.warranty_type, e.warranty_date, e.jobid as e_jobID, f.diagnosis as diagnosisitem, g.*, h.* FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d, jb_warranty e, jb_diagnosis f, jb_partscat g, jb_partssubcat h WHERE a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND  a.jobid = e.jobid  AND a.diagnosis = f.id AND g.cat_id = a.catid AND g.cat_id = h.cat_id AND a.jobid = '" .$jobid. "'";
+        $sql = "SELECT a.conforme, a.jobid, a.soaid, a.customerid, a.branchid, a.catid, a.partsid, a.parts, a.technicianid, a.repair_status, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at as dateadded, a.referenceno, a.servicefee, a.isdeleted,a.date_delivery, a.done_date_delivery,a.isunder_warranty,a.estimated_finish_date,a.jobclear, b.*, c.branch_id, c.branch_name, c.address as branch_address, c.contactperson as contact_person, c.email as contact_email, c.number as branch_number, d.tech_id, d.name as technam, e.warranty_type, e.warranty_date, e.jobid as e_jobID, f.diagnosis as diagnosisitem, g.*, h.* FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d, jb_warranty e, jb_diagnosis f, jb_partscat g, jb_partssubcat h WHERE a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND  a.jobid = e.jobid  AND a.diagnosis = f.id AND g.cat_id = a.catid AND g.cat_id = h.cat_id AND a.jobid = '" .$jobid. "'";
 
     }else {
 
-        $sql = "SELECT a.jobid, a.soaid, a.customerid, a.branchid, a.catid, a.partsid, a.parts, a.technicianid, a.repair_status, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at as dateadded, a.referenceno, a.servicefee,a.isdeleted,a.date_delivery,a.done_date_delivery, a.isunder_warranty,a.estimated_finish_date,a.jobclear, b.*, c.branch_id, c.branch_name, c.address as branch_address, c.contactperson as contact_person, c.email as contact_email, c.number as branch_number, d.tech_id, d.name as technam, f.diagnosis as diagnosisitem, g.*, h.* FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d, jb_diagnosis f, jb_partscat g, jb_partssubcat h WHERE a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND a.diagnosis = f.id AND g.cat_id = a.catid AND g.cat_id = h.cat_id AND a.jobid = '" .$jobid. "'";
+        $sql = "SELECT a.conforme, a.jobid, a.soaid, a.customerid, a.branchid, a.catid, a.partsid, a.parts, a.technicianid, a.repair_status, a.item, a.diagnosis, a.remarks, a.status_id,a.created_at as dateadded, a.referenceno, a.servicefee,a.isdeleted,a.date_delivery,a.done_date_delivery, a.isunder_warranty,a.estimated_finish_date,a.jobclear, b.*, c.branch_id, c.branch_name, c.address as branch_address, c.contactperson as contact_person, c.email as contact_email, c.number as branch_number, d.tech_id, d.name as technam, f.diagnosis as diagnosisitem, g.*, h.* FROM jb_joborder a, jb_customer b, jb_branch c, jb_technicians d, jb_diagnosis f, jb_partscat g, jb_partssubcat h WHERE a.customerid = b.customerid AND a.branchid = c.branch_id AND a.technicianid = d.tech_id AND a.diagnosis = f.id AND g.cat_id = a.catid AND g.cat_id = h.cat_id AND a.jobid = '" .$jobid. "'";
 
     } 
 
@@ -42,7 +42,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
             $queryin  = $db->ReadData($qu);
 
             $cost = "SELECT * FROM `jb_cost` WHERE  jobid = '".$jobid."'";
-
             $charges  = $db->ReadData($cost);
 
 
@@ -50,7 +49,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
             $subjoblist  = $db->ReadData($cost);
 
-            if( $query[0]['isunder_warranty'] == 1 ) {
+            if( isset($query[0]['isunder_warranty']) && $query[0]['isunder_warranty'] == 1 ) {
+                
                 $purchase_date = strtotime($query[0]['warranty_date']);
                 $current_date = strtotime(date("Y-m-d")); 
                 $datediff = $current_date - $purchase_date; 

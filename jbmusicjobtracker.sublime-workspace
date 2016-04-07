@@ -520,21 +520,19 @@
 	"buffers":
 	[
 		{
-			"contents": "### Database ###\n\n# Users\nid\nusername\npassword\nfirstname\nmiddleInitial\nlastname\nphoto\nemail\nmobile\naddressOne\naddressTwo\ncity\nfacebook\ntwitter\ninstagram\nclassId\ntestTakenId\nnumberOfTimes\nforgotKey\nuserType\n	- student\n	- teacher\n	- admin\nregistrationStatus\n	- disapproved\n	- approved\nstatus\n	- enable\n	- disable\ncreatedAt\nupdatedAt\n\n# Test to be Taken\nid\ntestName\ncreatedAt\nupdatedAt\n\n\n# Class\nid\nclassName\ncreatedAt\nupdatedAt\n\n# Subject\nid\nsubjectName\npercentage\ncreatedAt\nupdatedAt\n\n# Question\nid\nquestion\ncorrectAnswer\nchoices\n	- a\n	- b\n	- c\n	- d\ncreatedAt\nupdatedAt\n\n\n\nby default, we'll have 2 teachers\nsi Ray and yung assistant nya\nalthough I'm thinking we should prepare for more teachers\nso dapat yung creation ng classes, dapat may assignment ng Teacher\n1:many\n1 class : many teacher",
+			"file": ".env",
 			"settings":
 			{
-				"buffer_size": 790,
-				"line_ending": "Windows",
-				"name": "### Database ###"
+				"buffer_size": 86,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "<ul class=\"parsley-errors-list filled\" id=\"parsley-id-3108\"><li class=\"parsley-required\">This value is required.</li></ul>\nform-control parsley-error\n\n<link href=\"<?php echo base_url();?>css/bootstrap.min.css\" rel=\"stylesheet\">\n		<link href=\"<?php echo base_url();?>css/animate.min.css\" rel=\"stylesheet\">\n		<link href=\"<?php echo base_url();?>css/icheck/flat/green.css\" rel=\"stylesheet\">\n		<link href=\"<?php echo base_url();?>css/custom.css\" rel=\"stylesheet\">\n		<link href=\"<?php echo base_url();?>css/icheck/flat/green.css\" rel=\"stylesheet\">\n		<link href=\"<?php echo base_url();?>fonts/css/font-awesome.min.css\" rel=\"stylesheet\">\n		<link href=\"<?php echo base_url();?>css/select/select2.min.css\" rel=\"stylesheet\">\n  		<link href=\"<?php echo base_url();?>css/switchery/switchery.min.css\" rel=\"stylesheet\">\n  		<link href=\"<?php echo base_url();?>css/bootstrap-datepicker.css\" rel=\"stylesheet\">\n\n		<script type=\"text/javascript\" src=\"<?php echo base_url();?>js/jquery.min.js\"></script>\n		<script type=\"text/javascript\" src=\"<?php echo base_url();?>js/bootstrap.min.js\"></script>\n		<script type=\"text/javascript\" src=\"<?php echo base_url();?>js/nicescroll/jquery.nicescroll.min.js\"></script>\n		<script type=\"text/javascript\" src=\"<?php echo base_url();?>js/icheck/icheck.min.js\"></script>\n		<script type=\"text/javascript\" src=\"<?php echo base_url();?>js/parsley/parsley.min.js\"></script>\n		<script type=\"text/javascript\" src=\"<?php echo base_url();?>js/bootstrap-datepicker.js\"></script>\n\n\n		<div id=\"register\" class=\"animate form\">\n	<section class=\"login_content\">\n		<form data-parsley-validate action=\"<?php echo site_url('snd/signup'); ?>\" method=\"post\">\n			<h1>Create Account</h1>\n			<div>\n				<input type=\"text\" name=\"username\" class=\"form-control\" placeholder=\"Username\" data-parsley-whitespace=\"trim\" required />\n			</div>\n			<div>\n				<input type=\"password\" name=\"password\" class=\"form-control password\" minlength=\"8\" placeholder=\"Password\" required />\n			</div>\n			<div>\n				<input type=\"password\" name=\"confirmpassword\" class=\"form-control\" minlength=\"8\" placeholder=\"Confirm Password\" data-parsley-equalto=\"#register .password\" data-parsley-error-message=\"This value should be the same of password.\" required />\n			</div>\n			<div>\n				<input type=\"text\" name=\"firstname\" class=\"form-control\" placeholder=\"First Name\" required />\n			</div>\n			<div>\n				<input type=\"text\" name=\"middleinitial\" class=\"form-control\" placeholder=\"Middle Initial\" required />\n			</div>\n			<div>\n				<input type=\"text\" name=\"lastname\" class=\"form-control\" placeholder=\"Last Name\" required />\n			</div>\n			<div>\n				Male: <input type=\"radio\" class=\"flat\" name=\"gender\" value=\"male\" checked required /> \n				Female: <input type=\"radio\" class=\"flat\" name=\"gender\" value=\"female\" />\n			</div>\n			<div>\n				<input type=\"text\" name=\"birthday\" class=\"form-control\" placeholder=\"Birthday\" required />\n			</div>\n			<div>\n				<input type=\"email\" name=\"email\" class=\"form-control\" placeholder=\"Email\" data-parsley-type=\"email\" required />\n			</div>\n			<div>\n				<input type=\"number\" name=\"mobile\" class=\"form-control number-field\" min=\"0\" minlength=\"11\" placeholder=\"Mobile Number\" required />\n			</div>\n			<div>\n				<input type=\"text\" name=\"addressone\" class=\"form-control\" placeholder=\"Address One\" required />\n			</div>\n			<div>\n				<input type=\"text\" name=\"addresstwo\" class=\"form-control\" placeholder=\"Address Two\" />\n			</div>\n			<div>\n				<input type=\"text\" name=\"city\" class=\"form-control\" placeholder=\"City\" required />\n			</div>\n			<div>\n				<label class=\"text-left\">Test to be taken:</label>\n				<select class=\"form-control\" name=\"testtaken\" required>\n					<option value=\"\"></option>\n					<option value=\"NCLEX\">NCLEX</option>\n					<option value=\"HAAD\">HAAD</option>\n					<option value=\"DHA\">DHA</option>\n					<option value=\"Prometric\">Prometric</option>\n					<option value=\"Others\" data-option=\"true\">Others</option>\n                </select>\n                <input type=\"text\" class=\"form-control hidden testtaken-others\" placeholder=\"Others\" />\n			</div>\n			<div>\n				<label class=\"text-left\">Number of times to be taking the test:</label>\n				<select class=\"form-control\" name=\"numberoftimes\" required>\n					<option value=\"\"></option>\n					<option value=\"1\">This is my first time</option>\n					<option value=\"2\">2nd</option>\n					<option value=\"3\">3rd</option>\n					<option value=\"Optional\" data-option=\"true\">Optional</option>\n                </select>\n                <input type=\"text\" min=\"0\" class=\"form-control number-field hidden numberoftimes-optional\" placeholder=\"Optional\" data-parsley-type=\"digits\" />\n			</div>\n			<div>\n				<button type=\"submit\" class=\"btn btn-default submit\">Submit</button>\n			</div>\n			<div class=\"clearfix\"></div>\n			<div class=\"separator\">\n				<p class=\"change_link\">Already a member ?\n					<a href=\"#tologin\" class=\"to_register\"> Log in </a>\n				</p>\n			</div>\n		</form>\n	</section>",
+			"file": "classes/class.MySQLiDBManager.inc",
 			"settings":
 			{
-				"buffer_size": 4907,
-				"line_ending": "Windows",
-				"name": "<ul class=\"parsley-errors-list filled\" id=\"parsley"
+				"buffer_size": 7328,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -591,13 +589,11 @@
 	},
 	"expanded_folders":
 	[
-		"/C/xampp/htdocs/ragrc/application",
-		"/C/xampp/htdocs/ragrc/application/libraries",
-		"/C/xampp/htdocs/ragrc/js",
-		"/C/xampp/htdocs/ragrc/js/home"
+		"/C/xampp/htdocs/jbmusicjobtracker"
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
 		"/C/xampp/htdocs/ragrc/js/home/signin.js",
 		"/C/xampp/htdocs/ragrc/application/views/home/signin.php",
 		"/C/xampp/htdocs/ragrc/application/config/autoload.php",
@@ -679,7 +675,6 @@
 		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/branch/soa.php",
 		"/C/Users/Argie Navora/AppData/Local/Temp/Temp1_jbmusicjobtracker.zip/jbmusicjobtracker/app/head_office/soa.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/classes/class.MySQLiDBManager.inc",
-		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/createjob.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/revenue.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/head_office/profile.php",
 		"/C/xampp/htdocs/jbmusicjobtracker/app/ajax/editpartbatch.php",
@@ -729,7 +724,7 @@
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"find_in_files":
 	{
@@ -1002,27 +997,27 @@
 			[
 				{
 					"buffer": 0,
+					"file": ".env",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 790,
+						"buffer_size": 86,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								790,
-								790
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"auto_name": "### Database ###",
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 144.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -1030,27 +1025,27 @@
 				},
 				{
 					"buffer": 1,
+					"file": "classes/class.MySQLiDBManager.inc",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4907,
+						"buffer_size": 7328,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								122,
+								0,
 								0
 							]
 						],
 						"settings":
 						{
-							"auto_name": "<ul class=\"parsley-errors-list filled\" id=\"parsley",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 702.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1061,7 +1056,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -1098,7 +1093,7 @@
 	"project": "jbmusicjobtracker.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":

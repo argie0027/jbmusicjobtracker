@@ -11,7 +11,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
     $id = trim(filter_input(INPUT_POST, 'jobid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     $techid = trim(filter_input(INPUT_POST, 'techid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
+    $customer = trim(filter_input(INPUT_POST, 'customer', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     $branch= trim(filter_input(INPUT_POST, 'branch', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -152,7 +152,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
                                                     <td align="left" valign="middle" height="100" bgcolor="#3e4095" width="100%" style="padding-top: 15px; padding-right: 10px; padding-bottom: 10px; text-align: center; padding-left: 10px;">
 
-                                                        <img src="http://clientportal.jbmusicjobtracker.com/resources/img/logo2.png" width="400">
+                                                        <img src="'.SITE_IMAGES_DIR.'logo2.png" width="400">
 
                                                     </td>
 
@@ -202,33 +202,12 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
                                                                     <td align="left" valign="top" width="540" colspan="2" bgcolor="#FFFFFF" style="padding-bottom:5px; font-family: Arial, sans-serif; font-size: 14px; line-height: 18px; color: #444444;" >
 
-                                                                        <strong style="color: #222222;"><br>Message:</strong>
+                                                                        <strong style="color: #222222;"><br>Hi '.$customer.'!</strong>
 
                                                                         <p>
 
-
-
                                                                         Good News!<br><br>
-
-
-
-                                                                        Your item is ready for show off! Visit us and claim your repaired item at our store.<br><br>
-
-
-
-                                                                        Store Location is: '.$branch.'<br><br>
-
-
-
-                                                                        You can view your billing statement here: <a href="http://clientportal.jbmusicjobtracker.com/">Client Portal<a><br><br>
-
-
-
-                                                                        Hope to see you soon!
-
-
-
-
+                                                                        Our Service team is already done with the repair of your item.
 
                                                                         <br><br>
 
@@ -322,8 +301,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-            // $retval =  mail($email, $subject, $message, $headers);
-             $retval = sendMail($email, $subject, $message, $headers);
+            $retval =  mail($email, $subject, $message, $headers);
+            //$retval = sendMail($email, $subject, $message, $headers);
 
 
 

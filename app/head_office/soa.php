@@ -637,6 +637,7 @@
 $(function(){
     var emailaddress = "";
     var branchname = "";
+    var customername = "";
     var ID;
     var countersubjob = 1;
 
@@ -1173,7 +1174,9 @@ $(function(){
             url: '../ajax/setongoing.php',
             data: {
                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
-                jobid: ID
+                jobid: ID,
+                customer: $('#viewsoa').find('.namehere').text(),
+                customeremail: $('#viewsoa').find('.emailhere').text()
             },
             success: function(e){
                 
@@ -1245,6 +1248,7 @@ $(function(){
                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
                 jobid: ID,
                 techid: $('.span-tech').attr('id'),
+                customer: customername,
                 email: emailaddress,
                 branch: branchname
             },
@@ -1271,7 +1275,10 @@ $(function(){
                     id: ID,
                     type: 'ongoing',
                     otherremarks: $("[name=otheremarks]").val(),
-                    conforme: 'Cant Repair'
+                    conforme: 'Cant Repair',
+                    customer: $('#viewsoa').find('.namehere').text(),
+                    customeremail: $('#viewsoa').find('.emailhere').text(),
+                    branchnamehere: $('#viewsoa').find('.branchnamehere').text()
                 },
                 success: function(e){
                     
@@ -1495,6 +1502,7 @@ $(function(){
             $('.addresshere').html(obj.response[0].address);
             $('.contacthere').html(obj.response[0].number);
             $('.emailhere').html(obj.response[0].email);
+            customername = obj.response[0].name;
             emailaddress = obj.response[0].email;
 
             var isunderwarantyd = "";
@@ -2287,12 +2295,21 @@ $('#addparttojoborder').on('click',function(){
             $('.balanceff').html("<b>P </b>"+formatNumber(parseFloat(obj.response3[0].total_charges) + subitemtotal));
             // $('.balanceff').html("<b>P </b>"+formatNumber(parseFloat(obj.response3[0].totalpartscost) + parseFloat(obj.response3[0].service_charges) + parseFloat(obj.response3[0].total_charges) - parseFloat(obj.response3[0].less_deposit) - parseFloat(obj.response3[0].less_discount) + subitemtotal));
 
+            // if(obj.response[0].conforme != 'Approved' || obj.response[0].repair_status == 'Claimed') {
+            //     $('#editdiagnosis, #editpartbtn, #edittech, #editsoa .buttononli').css('visibility', 'hidden');
+            //     $('#editsoa [name=span-item], #editsoa [name=span-remarks], #editsoa [name=totalcharges], #editsoa [name=lessdeposit], #editsoa [name=lessdiscount]').attr('disabled', 'disabled');
+            // } else {
+            //     $('#editdiagnosis, #editpartbtn, #edittech, #editsoa .buttononli').css('visibility', 'visible');
+            //     $('#editsoa [name=span-item], #editsoa [name=span-remarks], #editsoa [name=totalcharges], #editsoa [name=lessdeposit], #editsoa [name=lessdiscount]').removeAttr('disabled');
+            // }
+
+            //disabled field
             if(obj.response[0].conforme != 'Approved' || obj.response[0].repair_status == 'Claimed') {
                 $('#editdiagnosis, #editpartbtn, #edittech, #editsoa .buttononli').css('visibility', 'hidden');
                 $('#editsoa [name=span-item], #editsoa [name=span-remarks], #editsoa [name=totalcharges], #editsoa [name=lessdeposit], #editsoa [name=lessdiscount]').attr('disabled', 'disabled');
             } else {
-                $('#editdiagnosis, #editpartbtn, #edittech, #editsoa .buttononli').css('visibility', 'visible');
-                $('#editsoa [name=span-item], #editsoa [name=span-remarks], #editsoa [name=totalcharges], #editsoa [name=lessdeposit], #editsoa [name=lessdiscount]').removeAttr('disabled');
+                $('#editdiagnosis, #editpartbtn, #edittech, #editsoa .buttononli').css('visibility', 'hidden');
+                $('#editsoa [name=span-item], #editsoa [name=totalcharges], #editsoa [name=lessdeposit], #editsoa [name=lessdiscount]').attr('disabled', 'disabled');
             }
 
         }

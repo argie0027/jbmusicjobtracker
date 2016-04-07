@@ -33,7 +33,7 @@ class MySQLiDBManager{
 	const SETTINGS_DB_FIELD = 'database';
 	
 	//Initialization of Database Object
-	function MySQLiDBManager($hostName="localhost", $portNumber="3306", $databaseName="jbguitar", $userName="root", $password="root"){
+	function MySQLiDBManager($hostName="localhost", $portNumber="3306", $databaseName="jbguitar", $userName="root", $password=""){
 		
 		if(strlen($hostName)<=0){
 			

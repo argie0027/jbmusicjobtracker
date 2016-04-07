@@ -210,8 +210,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                             $headers .= "Reply-To: ". "jbmusicjobtracker@gmail.com" . "\r\n";
                             $headers .= "MIME-Version: 1.0\r\n";
                             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-                            //$retval =  mail($email, $subject, $message, $headers);
-                            $retval = sendMail($email, $subject, $message);
+                            $retval =  mail($email, $subject, $message, $headers);
+                            //$retval = sendMail($email, $subject, $message);
 
                             if($retval){
                                 echo "success";
@@ -233,7 +233,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                         $date = date('Y-m-d H:i:s');
                         $generated = $utility->random_string("abcdefghijklmnopqrstvuwxyzABCEFGHIJKLMNOPQRSTUVWXYZ",60);
                         $linkgen = sha1($date . $generated);
-                        var_dump($linkgen);
                         $insertclient = "INSERT INTO `tb_client`(`linkgen`,`customer_id`,`created_at`) VALUES ('".$linkgen."', '".$getlastid."','".dateToday()."')";
                         $queryinserclient = $db->InsertData($insertclient); 
                         if($queryinserclient) {
@@ -348,8 +347,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
                             $headers .= "Reply-To: ". "jbmusicjobtracker@gmail.com" . "\r\n";
                             $headers .= "MIME-Version: 1.0\r\n";
                             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-                            //$retval =  mail($email, $subject, $message, $headers);
-                            $retval = sendMail($email, $subject, $message);
+                            $retval =  mail($email, $subject, $message, $headers);
+                            //$retval = sendMail($email, $subject, $message);
 
                             if($retval){
                                 echo "success";

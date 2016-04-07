@@ -145,9 +145,6 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 	 		}
     	}else if($typetoedit == "notify"){
 
-            var_dump($_POST);
-            exit;
-
     		$partname = trim(filter_input(INPUT_POST, 'partname', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$partcost = trim(filter_input(INPUT_POST, 'partcost', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     		$totalcharge = trim(filter_input(INPUT_POST, 'totalcharge', FILTER_SANITIZE_FULL_SPECIAL_CHARS));

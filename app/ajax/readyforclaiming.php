@@ -10,8 +10,6 @@ $request = filter_input(INPUT_POST, 'action');
 
 if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q="){
 
-
-
     $id = trim(filter_input(INPUT_POST, 'jobid', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
     $emailaddress = trim(filter_input(INPUT_POST, 'emailaddress', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
@@ -104,7 +102,7 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
                                                                         <td align="left" valign="middle" height="100" bgcolor="#3e4095" width="100%" style="padding-top: 15px; padding-right: 10px; padding-bottom: 10px; text-align: center; padding-left: 10px;">
 
-                                                                            <img src="http://weevow.com/resources/img/logo2.png" width="400">
+                                                                            <img src="'.SITE_IMAGES_DIR.'logo2.png" width="400">
 
                                                                         </td>
 
@@ -162,19 +160,15 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
 <br><br>
 
-																							Your item is ready for show off! Visit us and claim your repaired item at our store.
+																							The repair of your item is now done.
+
+<br>
+
+																							We will notify you as soon as your item is ready for pick up at our store.
 
 <br><br>
 
-																							Store Location is: '.$branch.'
-
-<br><br>
-
-																							You can view your billing statement here: <link of the customer\'s soa>
-
-<br><br>
-
-																							Hope to see you soon!
+																							Should you require further assistance, please contact us.
 
                                             
 
@@ -182,8 +176,9 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
                                                                                                 <br>
 
-                                                                                                All the best,<br>
+                                                                                                Have a great day.<br><br>
 
+                                                                                                All the best,<br>
                                                                                                 JB Music and Sports Team
 
 
@@ -284,8 +279,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-        // $retval =  mail($email, $subject, $message, $headers);
-             $retval = sendMail($email, $subject, $message, $headers);
+        $retval =  mail($email, $subject, $message, $headers);
+        //$retval = sendMail($email, $subject, $message, $headers);
 
 
 

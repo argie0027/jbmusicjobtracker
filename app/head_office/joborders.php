@@ -1123,13 +1123,15 @@
 
                 $("#ongoingrepa").on('click',function(){
 
-                $('.modald').fadeIn('fast');
+                    $('.modald').fadeIn('fast');
                       $.ajax({
                             type: 'POST',
                             url: '../ajax/setwaiting.php',
                             data: {
                                 action: 'MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFFNkJyV0o4a2Q=',
-                                jobid: ID
+                                jobid: ID,
+                                customer: $('#view-modal2').find('.namehere').text(),
+                                customeremail: $('#view-modal2').find('.emailhere').text()
                             },
                             success: function(e){
 
@@ -1205,7 +1207,8 @@
                                     lessdiscount: $('.lessdiscount').text(),
                                     balancecharge: $('.balancecharge').text(),
                                     email: emailaddress,
-                                    conforme: 'Waiting for Approval'
+                                    conforme: 'Waiting for Approval',
+                                    customer: $('#view-modal2').find('.namehere').text(),
                                 },
                                 success: function(e){
                                     

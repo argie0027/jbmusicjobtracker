@@ -1412,6 +1412,7 @@
             });
 
             $("#deleteitem").on('click',function(){
+                $('.modald').fadeIn('fast');
                 $.ajax({
                     type: 'POST',
                     url: '../ajax/deletestaff.php',

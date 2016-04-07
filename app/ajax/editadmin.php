@@ -132,8 +132,8 @@ if($request == "MC4yMTQyNzkwMCAxNDI3NzgxMDE1LTgtVlVrNTRZWXpTY240MlE5dXY0ZE1GaTFF
 
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-             // $retval =  mail($email, $subject, $message, $headers);
-             $retval = sendMail($email, $subject, $message, $headers);
+             $retval =  mail($email, $subject, $message, $headers);
+             //$retval = sendMail($email, $subject, $message, $headers);
 
 
 

@@ -1,6 +1,6 @@
 <?php
 // Site Configuration
-$site['url'] = 'http://localhost/jbmusicjobtracker/';
+$site['url'] = 'http://localhost:8888/jbmusicjobtracker/';
 $site['subDir'] = 'app/';
 
 $site['name'] = 'JB Music and Sports | Job Order Tracker';

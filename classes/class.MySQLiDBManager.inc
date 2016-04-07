@@ -33,7 +33,7 @@ class MySQLiDBManager{
 	const SETTINGS_DB_FIELD = 'database';
 	
 	//Initialization of Database Object
-	function MySQLiDBManager($hostName="", $portNumber="", $databaseName="", $userName="", $password=""){
+	function MySQLiDBManager($hostName="localhost", $portNumber="3306", $databaseName="jbguitar", $userName="root", $password="root"){
 		
 		if(strlen($hostName)<=0){
 			
@@ -42,7 +42,7 @@ class MySQLiDBManager{
 			$file = self::SETTINGS_FILENAME;
 			if(!file_exists($file)) {
 				//$file = ".env";
-				$file = "../../.env";
+				$file = "../.env";
 			} 
 			$dbfield = self::SETTINGS_DB_FIELD;
 
@@ -57,7 +57,6 @@ class MySQLiDBManager{
 		}else{
 			
 			//Use the Provided Connection
-			
 			$this->p_HostName = $hostName;
 			$this->p_Password = $password;
 			$this->p_PortNumber = $portNumber;

@@ -2,6 +2,14 @@
 include '../../include.php';
 include '../include.php';
 
+if (strtoupper(substr(PHP_OS,0,3)=='WIN')) { 
+  $eol="\r\n"; 
+} elseif (strtoupper(substr(PHP_OS,0,3)=='MAC')) { 
+  $eol="\r"; 
+} else { 
+  $eol="\n"; 
+}
+
 $subject = 'JB MUSIC & SPORTS';
 $message = '<html>
                     <head>
@@ -101,5 +109,20 @@ $message = '<html>
                         </table><!-- Table Wrap END -->
                     </body>
                     </html>';
+// $headers = "From: JB MUSIC & SPORTS <system@jbmusicjobtracker.com>\r\n";
+// $headers .= "Reply-To: ". "jbmusicjobtracker@gmail.com" . "\r\n";
+// $headers .= "MIME-Version: 1.0\r\n";
+// $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-var_dump(sendMail('argie.navora@gmail.com', $subject, $message));
+$headers = 'From: Jb Team <system@jbmusicjobtracker.com>'.$eol; 
+$headers .= 'Reply-To: Jb Team <jbmusicjobtracker@gmail.com>'.$eol; 
+$headers .= 'Return-Path: Jb Team <jbmusicjobtracker@gmail.com>'.$eol;     // these two to set reply address 
+$headers .= "Message-ID:< TheSystem@".$_SERVER['SERVER_NAME'].">".$eol; 
+$headers .= "X-Mailer: PHP v".phpversion().$eol;           // These two to help avoid spam-filters 
+# Boundry for marking the split & Multitype Headers 
+$mime_boundary=md5(time()); 
+$headers .= 'MIME-Version: 1.0'.$eol; 
+$headers .= "Content-Type: text/html; boundary=\"".$mime_boundary."\"".$eol; 
+
+// var_dump(sendMail('argie.navora@gmail.com', $subject, $message));
+var_dump(mail('argie.navora@gmail.com', $subject, $message, $headers));

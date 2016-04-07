@@ -1,31 +1,39 @@
 <?php 
+
 include '../PHPMailer-master/PHPMailerAutoload.php';
 
 function sendMail($email, $subject, $body) {
-	$mail = new PHPMailer;
 
+	$config = require dirname(__FILE__) .'/../config/mailer.php';
+
+	$mail = new PHPMailer;
 	$mail->IsSMTP();
 	$mail->SMTPAuth = true;
 	$mail->SMTPSecure = "ssl";
-	$mail->Host = "smtp.gmail.com";
-	$mail->Port = 465;
-	$mail->Username = 'jbmusicjobtracker@gmail.com';
-	$mail->Password = 'xe43gd40wg';  
+	$mail->Host = $config['host'];
+	$mail->Port = $config['port'];
+	$mail->Username = $config['username'];
+	$mail->Password = $config['password'];  
 
-	$mail->setFrom('system@jbmusicjobtracker.com', 'JB MUSIC & SPORTS');
+	$mail->setFrom($config['sender'], $config['sender_name']);
+	$mail->addReplyTo($config['username'], $config['replyto_name']);
+
 	$mail->addAddress($email);
-	$mail->addReplyTo('jbmusicjobtracker@gmail.com', 'Information');
 
 	$mail->isHTML(true);
-
 	$mail->Subject = $subject;
-	$mail->Body    = $body;
+	$mail->Body = $body;   
+
+	$mail->addCustomHeader('Organization', $config['organization']);
+	$mail->Priority = $config['priority'];
+	$mail->XMailer = 'PHP' .phpversion();
 
 	if(!$mail->send()) {
 	    return $mail->ErrorInfo;
-	} else {
+	}
+	else { 
 	    return true;
 	}
-
 }
+
 ?>

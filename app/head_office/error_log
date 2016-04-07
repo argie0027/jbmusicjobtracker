@@ -1,3 +1,4 @@
 [26-Sep-2015 08:25:47 America/Denver] PHP Notice:  Undefined offset: 0 in /home1/creeigk6/public_html/weevow/app/head_office/revenueview.php on line 74
 [18-Oct-2015 04:02:04 Asia/Manila] PHP Warning:  Invalid argument supplied for foreach() in /home1/creeigk6/public_html/jbmusicjobtracker/app/head_office/parts.php on line 125
 [13-Nov-2015 05:12:38 Asia/Manila] PHP Notice:  Undefined offset: 0 in /home1/creeigk6/public_html/jbmusicjobtracker/app/head_office/technicians.php on line 94
+[07-Apr-2016 13:50:32 Asia/Manila] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home4/jbmusic/public_html/app/ui_main.php:986) in /home4/jbmusic/public_html/app/ui_main.php on line 12

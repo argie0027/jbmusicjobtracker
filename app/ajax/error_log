@@ -10,3 +10,5 @@
 [13-Nov-2015 04:40:00 Asia/Manila] PHP Notice:  Undefined variable: emailaddress in /home1/creeigk6/public_html/jbmusicjobtracker/app/ajax/createjob.php on line 330
 [13-Nov-2015 05:26:57 Asia/Manila] PHP Notice:  Undefined variable: branch in /home1/creeigk6/public_html/jbmusicjobtracker/app/ajax/updatetech_parts.php on line 308
 [13-Nov-2015 05:26:57 Asia/Manila] PHP Notice:  Undefined variable: emailaddress in /home1/creeigk6/public_html/jbmusicjobtracker/app/ajax/updatetech_parts.php on line 312
+[05-Apr-2016 06:11:19 America/Chicago] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home4/jbmusic/public_html/app/ajax/approvejob.php:2) in /home4/jbmusic/public_html/include.php on line 2
+[06-Apr-2016 07:24:41 America/Chicago] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home4/jbmusic/public_html/app/ajax/approvejob.php:2) in /home4/jbmusic/public_html/include.php on line 2
